@@ -10,10 +10,10 @@ struct ReelStudioView: View {
         var id: String { rawValue }
         var label: String {
             switch self {
-            case .recent30: return "直近30枚"
-            case .recent100: return "直近100枚"
-            case .thisMonth: return "今月"
-            case .all: return "ぜんぶ"
+            case .recent30: return L("直近30枚")
+            case .recent100: return L("直近100枚")
+            case .thisMonth: return L("今月")
+            case .all: return L("ぜんぶ")
             }
         }
     }
@@ -72,29 +72,29 @@ struct ReelStudioView: View {
             Divider().overlay(.white.opacity(0.08))
             ScrollView {
                 VStack(alignment: .leading, spacing: 20) {
-                    ChipRow(title: "どこからどこまで", items: Range.allCases, selection: $range) { $0.label }
-                    ChipRow(title: "はやさ", items: ReelOptions.Speed.allCases, selection: $options.speed) { $0.label }
-                    ChipRow(title: "色数", items: ReelOptions.ColorDepth.allCases, selection: $options.colors) { $0.label }
+                    ChipRow(title: L("どこからどこまで"), items: Range.allCases, selection: $range) { $0.label }
+                    ChipRow(title: L("はやさ"), items: ReelOptions.Speed.allCases, selection: $options.speed) { $0.label }
+                    ChipRow(title: L("色数"), items: ReelOptions.ColorDepth.allCases, selection: $options.colors) { $0.label }
                     if options.colors != .full {
-                        ChipRow(title: "ディザ（色のまぜ方）", items: DitherMode.allCases, selection: $options.dither) { $0.label }
+                        ChipRow(title: L("ディザ（色のまぜ方）"), items: DitherMode.allCases, selection: $options.dither) { $0.label }
                     }
-                    ChipRow(title: "フィルタ", items: ReelOptions.Filter.allCases, selection: $options.filter) { $0.label }
-                    ChipRow(title: "日付の書き方", items: ReelOptions.StampFormat.allCases, selection: $options.stampFormat) { $0.label }
+                    ChipRow(title: L("フィルタ"), items: ReelOptions.Filter.allCases, selection: $options.filter) { $0.label }
+                    ChipRow(title: L("日付の書き方"), items: ReelOptions.StampFormat.allCases, selection: $options.stampFormat) { $0.label }
                     if options.stampFormat != .none {
-                        ChipRow(title: "フォント", items: ReelOptions.StampFont.allCases, selection: $options.stampFont) { $0.label }
-                        ChipRow(title: "日付の色", items: ReelOptions.StampStyle.allCases, selection: $options.stampStyle) { $0.label }
-                        ChipRow(title: "日付の位置", items: ReelOptions.StampLayout.allCases, selection: $options.stampLayout) { $0.label }
+                        ChipRow(title: L("フォント"), items: ReelOptions.StampFont.allCases, selection: $options.stampFont) { $0.label }
+                        ChipRow(title: L("日付の色"), items: ReelOptions.StampStyle.allCases, selection: $options.stampStyle) { $0.label }
+                        ChipRow(title: L("日付の位置"), items: ReelOptions.StampLayout.allCases, selection: $options.stampLayout) { $0.label }
                     }
-                    ChipRow(title: "かたち", items: ReelOptions.Aspect.allCases, selection: $options.aspect) { $0.label }
-                    ChipRow(title: "大きさ（小さいほど軽くてチープ）", items: ReelOptions.Size.allCases, selection: $options.size) { $0.label }
-                    ChipRow(title: "形式", items: ReelOptions.Format.allCases, selection: $options.format) { $0.label }
+                    ChipRow(title: L("かたち"), items: ReelOptions.Aspect.allCases, selection: $options.aspect) { $0.label }
+                    ChipRow(title: L("大きさ（小さいほど軽くてチープ）"), items: ReelOptions.Size.allCases, selection: $options.size) { $0.label }
+                    ChipRow(title: L("形式"), items: ReelOptions.Format.allCases, selection: $options.format) { $0.label }
                 }
                 .padding(.vertical, 18)
             }
             exportBar
         }
         .background(Theme.ink)
-        .navigationTitle("リール")
+        .navigationTitle(L("リール"))
         .navigationBarTitleDisplayMode(.inline)
         .task(id: renderKey) { await renderPreview() }
         .sheet(item: $exported) { reel in
@@ -103,7 +103,7 @@ struct ReelStudioView: View {
                 .tint(Theme.accent)
                 .fontDesign(.rounded)
         }
-        .alert("書き出せませんでした", isPresented: Binding(get: { errorMessage != nil },
+        .alert(L("書き出せませんでした"), isPresented: Binding(get: { errorMessage != nil },
                                                     set: { if !$0 { errorMessage = nil } })) {
             Button("OK", role: .cancel) {}
         } message: {
@@ -120,7 +120,7 @@ struct ReelStudioView: View {
                 if rendering {
                     ProgressView()
                 } else {
-                    Text("この範囲にスライスがありません")
+                    Text(L("この範囲にスライスがありません"))
                         .font(.subheadline)
                         .foregroundStyle(.secondary)
                 }
@@ -139,7 +139,7 @@ struct ReelStudioView: View {
         .frame(height: 330)
         .overlay(alignment: .bottomTrailing) {
             if chosen.count > Self.previewLimit {
-                Text("プレビューは直近 \(Self.previewLimit) コマ")
+                Text(L("プレビューは直近 %d コマ", Self.previewLimit))
                     .font(.caption2.weight(.semibold))
                     .padding(.horizontal, 9)
                     .padding(.vertical, 5)
@@ -191,7 +191,7 @@ struct ReelStudioView: View {
             Button {
                 Task { await export() }
             } label: {
-                Text(exporting ? "書き出し中…" : "\(chosen.count) コマを \(options.format.label) にする")
+                Text(exporting ? L("書き出し中…") : L("%d コマを %@ にする", chosen.count, options.format.label))
                     .font(.headline)
                     .frame(maxWidth: .infinity)
                     .padding(.vertical, 6)
@@ -241,14 +241,14 @@ private struct ExportedReelSheet: View {
             Image(systemName: "checkmark.circle.fill")
                 .font(.system(size: 44))
                 .foregroundStyle(Theme.accent)
-            Text("できました")
+            Text(L("できました"))
                 .font(.title2.bold())
-            Text("\(reel.frameCount) コマ・\(sizeText)")
+            Text(L("%d コマ・%@", reel.frameCount, sizeText))
                 .font(.subheadline.monospacedDigit())
                 .foregroundStyle(.secondary)
 
             ShareLink(item: reel.url) {
-                Label("シェアする", systemImage: "square.and.arrow.up")
+                Label(L("シェアする"), systemImage: "square.and.arrow.up")
                     .font(.headline)
                     .frame(maxWidth: .infinity)
                     .padding(.vertical, 6)
@@ -273,9 +273,9 @@ private struct ExportedReelSheet: View {
 
     private var savedLabel: String {
         switch savedToPhotos {
-        case .some(true): return "「\(PhotoAlbum.title)」に保存しました"
-        case .some(false): return "保存できませんでした（写真へのアクセスを確認）"
-        case .none: return "写真に保存"
+        case .some(true): return L("「%@」に保存しました", PhotoAlbum.title)
+        case .some(false): return L("保存できませんでした（写真へのアクセスを確認）")
+        case .none: return L("写真に保存")
         }
     }
 }

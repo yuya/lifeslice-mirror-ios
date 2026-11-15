@@ -13,6 +13,7 @@ enum Prefs {
         static let quietMode = "ui.quiet"                // 撮れたことを知らせない
         static let showGuides = "ui.guides"
         static let reelThreshold = "reel.threshold"
+        static let language = "app.language"             // "system" / "ja" / "en"
     }
 
     static let defaults: [String: Any] = [
@@ -28,7 +29,16 @@ enum Prefs {
         Key.reelThreshold: 12,
     ]
 
-    static func register() { UserDefaults.standard.register(defaults: defaults) }
+    /// 「次に撮るまで」の選択肢（秒）。
+    static let cooldownChoices: [Double] = [5, 15, 30, 45, 60]
+
+    static func register() {
+        UserDefaults.standard.register(defaults: defaults)
+        // 以前の選択肢（10 秒・5 分）が残っていたら既定値に戻す。
+        if !cooldownChoices.contains(UserDefaults.standard.double(forKey: Key.cooldown)) {
+            UserDefaults.standard.set(30.0, forKey: Key.cooldown)
+        }
+    }
 
     private static var ud: UserDefaults { .standard }
     static var preWindow: Double { ud.double(forKey: Key.preWindow) }

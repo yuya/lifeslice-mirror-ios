@@ -1,0 +1,4 @@
+/* インテントとコントロール（システムが直接読む文言）。画面の文言は Shared/L10n.swift。 */
+"Open Mirror" = "鏡をひらく";
+"Opens the mirror right away." = "鏡をすぐひらきます。";
+"Opens LifeSlice Mirror for a quick face check." = "LifeSlice Mirror を開いて顔チェックします。";

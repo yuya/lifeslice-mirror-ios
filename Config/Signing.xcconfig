@@ -1,0 +1,13 @@
+// 署名まわりの既定値。自分用の値はこのファイルではなく、同じフォルダに
+// Local.xcconfig を作って書いてください（git には入りません）。例:
+//
+//   DEVELOPMENT_TEAM = ABCDE12345
+//   LS_BUNDLE_ID = com.example.lifeslice
+//
+// Bundle ID は拡張が「<LS_BUNDLE_ID>.widgets」「<LS_BUNDLE_ID>.capture」、
+// App Group が「group.<LS_BUNDLE_ID>」に自動でそろいます。
+
+DEVELOPMENT_TEAM =
+LS_BUNDLE_ID = app.lifeslice.mirror
+
+#include? "Local.xcconfig"

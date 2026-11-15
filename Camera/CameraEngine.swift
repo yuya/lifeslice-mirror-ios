@@ -11,7 +11,7 @@ final class CameraEngine: NSObject, ObservableObject {
         case mirror     // 通常：鏡と同じ左右
         case trueView   // 反転：相手から見た自分
         var id: String { rawValue }
-        var label: String { self == .mirror ? "鏡" : "相手から" }
+        var label: String { self == .mirror ? L("鏡") : L("相手から") }
     }
 
     // MARK: 公開状態（メインスレッドで更新）
@@ -123,6 +123,7 @@ final class CameraEngine: NSObject, ObservableObject {
         }
 
         session.commitConfiguration()
+        applyPortraitOrientation()
 
         device = camera
         configured = true
@@ -130,6 +131,16 @@ final class CameraEngine: NSObject, ObservableObject {
         DispatchQueue.main.async {
             self.maxZoom = max(1, limit)
             self.hasCamera = true
+        }
+    }
+
+    /// 保存用フレームを「縦・鏡像」で受け取る指定。構成の確定後にも念のためもう一度かける。
+    private func applyPortraitOrientation() {
+        guard let connection = videoOutput.connection(with: .video) else { return }
+        if connection.isVideoRotationAngleSupported(90) { connection.videoRotationAngle = 90 }
+        if connection.isVideoMirroringSupported {
+            connection.automaticallyAdjustsVideoMirroring = false
+            connection.isVideoMirrored = true
         }
     }
 
@@ -197,6 +208,12 @@ extension CameraEngine: AVCaptureVideoDataOutputSampleBufferDelegate {
         }
 
         var image = CIImage(cvPixelBuffer: pixelBuffer)
+        if image.extent.width > image.extent.height {
+            // 接続側の回転指定が効かず横倒しで届いた場合の保険。時計回りに 90° 起こして縦にする。
+            image = image.oriented(.right)
+            image = image.transformed(by: CGAffineTransform(translationX: -image.extent.origin.x,
+                                                            y: -image.extent.origin.y))
+        }
         if modeFlag {
             // 反転モード：鏡像で届いているので左右を戻す。
             let width = image.extent.width

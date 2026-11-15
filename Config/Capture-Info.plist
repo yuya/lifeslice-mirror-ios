@@ -8,6 +8,6 @@
 		<string>com.apple.securecapture</string>
 	</dict>
 	<key>NSCameraUsageDescription</key>
-	<string>鏡として映すため、そして不意打ちの 1 コマを残すためにカメラを使います。</string>
+	<string>The camera is used to work as a mirror and to keep one surprise frame.</string>
 </dict>
 </plist>

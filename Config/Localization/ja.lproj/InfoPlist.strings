@@ -1,0 +1,4 @@
+"CFBundleDisplayName" = "LifeSlice";
+"NSCameraUsageDescription" = "鏡として映すため、そして不意打ちの 1 コマを残すためにカメラを使います。";
+"NSPhotoLibraryUsageDescription" = "スライスや書き出したリールを「LifeSlice Mirror」アルバムに保存するために使います。";
+"NSPhotoLibraryAddUsageDescription" = "スライスや書き出したリールを「LifeSlice Mirror」アルバムに保存するために使います。";

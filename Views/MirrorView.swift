@@ -11,22 +11,12 @@ struct MirrorView: View {
     @AppStorage(Prefs.Key.showGuides) private var showGuides = false
     @AppStorage(Prefs.Key.quietMode) private var quietMode = false
 
-    private enum Tool { case zoom, brightness, light }
-    private enum LightTone: CaseIterable {
-        case warm, neutral, cool
-        var color: Color {
-            switch self {
-            case .warm: return Color(red: 1.0, green: 0.86, blue: 0.70)
-            case .neutral: return Color(red: 1.0, green: 0.97, blue: 0.93)
-            case .cool: return Color(red: 0.86, green: 0.93, blue: 1.0)
-            }
-        }
-    }
+    private enum Tool { case zoom, brightness }
 
     @State private var tool: Tool?
     @State private var chromeHidden = false
     @State private var lightOn = false
-    @State private var lightTone: LightTone = .warm
+    @State private var flash = false
     @State private var pinchBase: CGFloat?
     @State private var showGallery = false
     @State private var showSettings = false
@@ -39,20 +29,19 @@ struct MirrorView: View {
 
             preview
 
-            if lightOn { lightFrame }
             if showGuides { guides }
 
             if engine.authorization == .denied || engine.authorization == .restricted {
-                notice(title: "カメラが使えません",
-                       message: "鏡になるにはカメラへのアクセスが必要です。",
-                       button: "設定をひらく") {
+                notice(title: L("カメラが使えません"),
+                       message: L("鏡になるにはカメラへのアクセスが必要です。"),
+                       button: L("設定をひらく")) {
                     if let url = URL(string: UIApplication.openSettingsURLString) {
                         UIApplication.shared.open(url)
                     }
                 }
             } else if !engine.hasCamera {
-                notice(title: "インカメラが見つかりません",
-                       message: "シミュレータでは鏡は映りません。実機で試してください。",
+                notice(title: L("インカメラが見つかりません"),
+                       message: L("シミュレータでは鏡は映りません。実機で試してください。"),
                        button: nil, action: {})
             }
 
@@ -64,6 +53,12 @@ struct MirrorView: View {
                 }
                 .transition(.opacity)
             }
+
+            // 撮れた合図。Photo Booth のように一瞬だけ画面を白くする。
+            Color.white
+                .opacity(flash ? 1 : 0)
+                .ignoresSafeArea()
+                .allowsHitTesting(false)
         }
         .statusBarHidden(chromeHidden)
         .persistentSystemOverlays(chromeHidden ? .hidden : .automatic)
@@ -73,6 +68,11 @@ struct MirrorView: View {
         }
         .onChange(of: director.savedTick) { _, _ in
             guard !quietMode else { return }
+            flash = true
+            Task {
+                try? await Task.sleep(nanoseconds: 70_000_000)
+                withAnimation(.easeOut(duration: 0.45)) { flash = false }
+            }
             withAnimation(.spring(duration: 0.35)) { plusOne = true }
             Task {
                 try? await Task.sleep(nanoseconds: 1_400_000_000)
@@ -81,6 +81,7 @@ struct MirrorView: View {
         }
         .sensoryFeedback(.impact(weight: .light), trigger: quietMode ? 0 : director.savedTick)
         .onChange(of: lightOn) { _, on in ScreenLight.set(on: on) }
+        .onDisappear { ScreenLight.set(on: false) }
         .fullScreenCover(isPresented: $showGallery, onDismiss: { director.setMirrorVisible(true) }) {
             GalleryView()
                 .environmentObject(director)
@@ -118,14 +119,6 @@ struct MirrorView: View {
                     }
                     .onEnded { _ in pinchBase = nil }
             )
-    }
-
-    private var lightFrame: some View {
-        Rectangle()
-            .strokeBorder(lightTone.color, lineWidth: 56)
-            .blur(radius: 3)
-            .ignoresSafeArea()
-            .allowsHitTesting(false)
     }
 
     private var guides: some View {
@@ -170,7 +163,7 @@ struct MirrorView: View {
                 .shadow(color: .black.opacity(0.35), radius: 4, y: 1)
             Spacer()
             if engine.isFrozen {
-                Label("とめています", systemImage: "pause.fill")
+                Label(L("とめています"), systemImage: "pause.fill")
                     .font(.caption.weight(.bold))
                     .padding(.horizontal, 12)
                     .padding(.vertical, 7)
@@ -201,7 +194,7 @@ struct MirrorView: View {
                                text: engine.zoom > 1.04 ? String(format: "%.1f×", engine.zoom) : nil,
                                isOn: tool == .zoom) { toggle(.zoom) }
                     ToolButton(symbol: "sun.max.fill", isOn: tool == .brightness) { toggle(.brightness) }
-                    ToolButton(symbol: lightOn ? "lightbulb.fill" : "lightbulb", isOn: lightOn) { toggle(.light) }
+                    ToolButton(symbol: lightOn ? "lightbulb.fill" : "lightbulb", isOn: lightOn) { lightOn.toggle() }
                     ToolButton(symbol: engine.isFrozen ? "play.fill" : "pause.fill", isOn: engine.isFrozen) {
                         engine.setFrozen(!engine.isFrozen)
                     }
@@ -216,27 +209,14 @@ struct MirrorView: View {
                 Spacer()
                 modeSwitch
             }
-            .padding(.horizontal, 26)
+            .padding(.horizontal, 20)
         }
         .padding(.bottom, 14)
     }
 
     private func toggle(_ next: Tool) {
         withAnimation(.snappy(duration: 0.25)) {
-            if next == .light {
-                // 1 回目で点灯＋色選び、パネルが出ている状態でもう一度押すと消灯
-                if !lightOn {
-                    lightOn = true
-                    tool = .light
-                } else if tool == .light {
-                    lightOn = false
-                    tool = nil
-                } else {
-                    tool = .light
-                }
-            } else {
-                tool = (tool == next) ? nil : next
-            }
+            tool = (tool == next) ? nil : next
         }
     }
 
@@ -255,20 +235,6 @@ struct MirrorView: View {
                                       set: { engine.setExposureBias(Float($0)) }),
                        in: -2...2)
                 Image(systemName: "sun.max.fill")
-            case .light:
-                Text("ライトの色").font(.subheadline.weight(.semibold))
-                Spacer()
-                ForEach(Array(LightTone.allCases.enumerated()), id: \.offset) { _, tone in
-                    Button {
-                        lightTone = tone
-                    } label: {
-                        Circle()
-                            .fill(tone.color)
-                            .frame(width: 30, height: 30)
-                            .overlay(Circle().strokeBorder(.white, lineWidth: lightTone == tone ? 2.5 : 0))
-                    }
-                    .buttonStyle(.plain)
-                }
             }
         }
         .font(.system(size: 15, weight: .semibold))
@@ -299,6 +265,7 @@ struct MirrorView: View {
                 .frame(width: 52, height: 52)
                 .clipShape(.rect(cornerRadius: 14))
                 .overlay(RoundedRectangle(cornerRadius: 14).strokeBorder(.white.opacity(0.8), lineWidth: 1.5))
+                .padding(6)
 
                 if plusOne {
                     Text("+1")
@@ -307,13 +274,14 @@ struct MirrorView: View {
                         .padding(.horizontal, 7)
                         .padding(.vertical, 3)
                         .background(Theme.accent, in: .capsule)
-                        .offset(x: 12, y: -12)
+                        .offset(x: 8, y: -8)
                         .transition(.scale.combined(with: .opacity))
                 }
             }
+            .contentShape(.rect)
         }
         .buttonStyle(.plain)
-        .accessibilityLabel("スライス一覧、\(store.slices.count) 枚")
+        .accessibilityLabel(L("スライス一覧、%d 枚", store.slices.count))
     }
 
     private var shutterButton: some View {
@@ -323,9 +291,11 @@ struct MirrorView: View {
                 Circle().fill(.white).frame(width: 60, height: 60)
                     .scaleEffect(shutterPulse ? 0.86 : 1)
             }
+            .padding(6)
+            .contentShape(.circle)
         }
         .buttonStyle(.plain)
-        .accessibilityLabel("シャッター")
+        .accessibilityLabel(L("シャッター"))
     }
 
     private var modeSwitch: some View {
@@ -341,11 +311,13 @@ struct MirrorView: View {
                     .font(.system(size: 10, weight: .bold, design: .rounded))
             }
             .foregroundStyle(engine.mode == .trueView ? Theme.accent : .white)
-            .frame(width: 52, height: 52)
+            .frame(width: 56, height: 56)
             .glassButton()
+            .contentShape(.circle)
+            .padding(4)
         }
         .buttonStyle(.plain)
-        .accessibilityLabel("左右の切り替え、いまは\(engine.mode.label)")
+        .accessibilityLabel(L("左右の切り替え、いまは%@", engine.mode.label))
     }
 
     private func fireShutter() {

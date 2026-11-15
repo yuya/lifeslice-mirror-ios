@@ -7,8 +7,8 @@ struct MirrorAppContext: Codable, Sendable {}
 struct MirrorCaptureIntent: CameraCaptureIntent {
     typealias AppContext = MirrorAppContext
 
-    static let title: LocalizedStringResource = "鏡をひらく"
-    static let description = IntentDescription("LifeSlice Mirror を開いて顔チェックします。")
+    static let title: LocalizedStringResource = "Open Mirror"
+    static let description = IntentDescription("Opens LifeSlice Mirror for a quick face check.")
 
     @MainActor
     func perform() async throws -> some IntentResult {

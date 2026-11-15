@@ -28,10 +28,10 @@ struct ReelOptions: Equatable {
         var fps: Double { rawValue }
         var label: String {
             switch self {
-            case .slow: return "のんびり"
-            case .normal: return "ふつう"
-            case .fast: return "ぱらぱら"
-            case .turbo: return "高速"
+            case .slow: return L("のんびり")
+            case .normal: return L("ふつう")
+            case .fast: return L("ぱらぱら")
+            case .turbo: return L("高速")
             }
         }
     }
@@ -68,14 +68,14 @@ struct ReelOptions: Equatable {
         var id: String { rawValue }
         var label: String {
             switch self {
-            case .none: return "そのまま"
-            case .instant: return "インスタント"
-            case .fade: return "色あせ"
-            case .chrome: return "こってり"
-            case .transfer: return "夕方"
-            case .mono: return "モノクロ"
-            case .noir: return "ノワール"
-            case .sepia: return "セピア"
+            case .none: return L("そのまま")
+            case .instant: return L("インスタント")
+            case .fade: return L("色あせ")
+            case .chrome: return L("こってり")
+            case .transfer: return L("夕方")
+            case .mono: return L("モノクロ")
+            case .noir: return L("ノワール")
+            case .sepia: return L("セピア")
             }
         }
         var ciFilterName: String? {
@@ -97,12 +97,12 @@ struct ReelOptions: Equatable {
         var id: String { rawValue }
         var label: String {
             switch self {
-            case .full: return "フルカラー"
-            case .c256: return "256色"
-            case .c64: return "64色"
-            case .c16: return "16色"
-            case .gameBoy: return "携帯ゲーム機"
-            case .oneBit: return "白黒2値"
+            case .full: return L("フルカラー")
+            case .c256: return L("256色")
+            case .c64: return L("64色")
+            case .c16: return L("16色")
+            case .gameBoy: return L("携帯ゲーム機")
+            case .oneBit: return L("白黒2値")
             }
         }
         var adaptiveCount: Int? {
@@ -120,7 +120,7 @@ struct ReelOptions: Equatable {
         var id: String { rawValue }
         var label: String {
             switch self {
-            case .none: return "なし"
+            case .none: return L("なし")
             case .counter: return "#001"
             default: return text(for: Date(timeIntervalSince1970: 1_794_700_000), index: 0)
             }
@@ -153,14 +153,14 @@ struct ReelOptions: Equatable {
         var id: String { rawValue }
         var label: String {
             switch self {
-            case .digital: return "デジタル"
-            case .rounded: return "まる"
-            case .serif: return "セリフ"
-            case .mincho: return "明朝"
-            case .typewriter: return "タイプ"
-            case .courier: return "クーリエ"
-            case .marker: return "マーカー"
-            case .futura: return "フーツラ"
+            case .digital: return L("デジタル")
+            case .rounded: return L("まる")
+            case .serif: return L("セリフ")
+            case .mincho: return L("明朝")
+            case .typewriter: return L("タイプ")
+            case .courier: return L("クーリエ")
+            case .marker: return L("マーカー")
+            case .futura: return L("フーツラ")
             }
         }
 
@@ -193,11 +193,11 @@ struct ReelOptions: Equatable {
         var id: String { rawValue }
         var label: String {
             switch self {
-            case .camcorder: return "ビデオカメラ"
-            case .white: return "白ぬき"
-            case .subtitle: return "字幕"
-            case .blackLabel: return "黒ラベル"
-            case .whiteLabel: return "白ラベル"
+            case .camcorder: return L("ビデオカメラ")
+            case .white: return L("白ぬき")
+            case .subtitle: return L("字幕")
+            case .blackLabel: return L("黒ラベル")
+            case .whiteLabel: return L("白ラベル")
             }
         }
         var textColor: UIColor {
@@ -229,12 +229,12 @@ struct ReelOptions: Equatable {
         var id: String { rawValue }
         var label: String {
             switch self {
-            case .bottomRight: return "右下"
-            case .bottomLeft: return "左下"
-            case .bottomCenter: return "下まんなか"
-            case .topLeft: return "左上"
-            case .topRight: return "右上"
-            case .centerBig: return "どーんと中央"
+            case .bottomRight: return L("右下")
+            case .bottomLeft: return L("左下")
+            case .bottomCenter: return L("下まんなか")
+            case .topLeft: return L("左上")
+            case .topRight: return L("右上")
+            case .centerBig: return L("どーんと中央")
             }
         }
         var symbol: String {

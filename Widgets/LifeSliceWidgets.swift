@@ -8,6 +8,7 @@ struct LifeSliceWidgetBundle: WidgetBundle {
     var body: some Widget {
         LatestSliceWidget()
         SliceCountWidget()
+        FaceIconWidget()
         MirrorControl()
     }
 }
@@ -54,8 +55,8 @@ struct LatestSliceWidget: Widget {
         StaticConfiguration(kind: "LatestSlice", provider: SliceProvider()) { entry in
             LatestSliceView(entry: entry)
         }
-        .configurationDisplayName("さっきの自分")
-        .description("いちばん新しいスライスを表示します。タップで鏡がひらきます。")
+        .configurationDisplayName(L("さっきの自分"))
+        .description(L("いちばん新しいスライスを表示します。タップで鏡がひらきます。"))
         .supportedFamilies([.systemSmall, .systemMedium])
         .contentMarginsDisabled()
     }
@@ -113,7 +114,7 @@ struct LatestSliceView: View {
                 .font(.system(size: 14, weight: .semibold, design: .rounded))
                 .foregroundStyle(.white.opacity(0.6))
             Spacer(minLength: 0)
-            Text(entry.state.remainingToReel == 0 ? "リールが作れます" : "リールまであと \(entry.state.remainingToReel)")
+            Text(entry.state.remainingToReel == 0 ? L("リールが作れます") : L("リールまであと %d", entry.state.remainingToReel))
                 .font(.system(size: 12, weight: .bold, design: .rounded))
                 .foregroundStyle(accent)
         }
@@ -127,8 +128,8 @@ struct SliceCountWidget: Widget {
         StaticConfiguration(kind: "SliceCount", provider: SliceProvider()) { entry in
             SliceCountView(entry: entry)
         }
-        .configurationDisplayName("スライスの数")
-        .description("たまった枚数と、リールまでの残り。タップで鏡がひらきます。")
+        .configurationDisplayName(L("スライスの数"))
+        .description(L("たまった枚数と、リールまでの残り。タップで鏡がひらきます。"))
         .supportedFamilies([.accessoryCircular, .accessoryRectangular, .accessoryInline])
     }
 }
@@ -147,7 +148,7 @@ struct SliceCountView: View {
             switch family {
             case .accessoryCircular:
                 Gauge(value: progress) {
-                    Image(systemName: "face.smiling")
+                    Text("slices")
                 } currentValueLabel: {
                     Text("\(entry.state.count)")
                         .font(.system(size: 16, weight: .heavy, design: .rounded))
@@ -161,7 +162,7 @@ struct SliceCountView: View {
                         .font(.system(size: 13, weight: .bold, design: .rounded))
                     Text("\(entry.state.count) slices")
                         .font(.system(size: 20, weight: .heavy, design: .rounded))
-                    Text(entry.state.remainingToReel == 0 ? "リールが作れます" : "リールまであと \(entry.state.remainingToReel)")
+                    Text(entry.state.remainingToReel == 0 ? L("リールが作れます") : L("リールまであと %d", entry.state.remainingToReel))
                         .font(.system(size: 12, weight: .medium, design: .rounded))
                         .opacity(0.8)
                 }
@@ -172,16 +173,46 @@ struct SliceCountView: View {
     }
 }
 
+// MARK: - ロック画面：線画アイコンだけ
+
+struct FaceIconWidget: Widget {
+    var body: some WidgetConfiguration {
+        StaticConfiguration(kind: "FaceIcon", provider: SliceProvider()) { _ in
+            FaceIconView()
+        }
+        .configurationDisplayName(L("線画アイコン"))
+        .description(L("アイコンだけのシンプルな入口。タップで鏡がひらきます。"))
+        .supportedFamilies([.accessoryCircular])
+    }
+}
+
+struct FaceIconView: View {
+    var body: some View {
+        GeometryReader { geo in
+            let side = min(geo.size.width, geo.size.height)
+            ZStack {
+                // iOS 標準のロック画面ウィジェットと同じ、うっすらした丸い下地
+                AccessoryWidgetBackground()
+                FaceMark()
+                    .stroke(style: FaceMark.strokeStyle(for: side))
+                    .padding(side * 0.2)
+            }
+        }
+        .widgetAccentable()
+        .containerBackground(.clear, for: .widget)
+    }
+}
+
 // MARK: - コントロール（コントロールセンター／ロック画面下部／カメラコントロール）
 
 struct MirrorControl: ControlWidget {
     var body: some ControlWidgetConfiguration {
         StaticControlConfiguration(kind: "app.lifeslice.mirror.control") {
             ControlWidgetButton(action: MirrorCaptureIntent()) {
-                Label("鏡をひらく", systemImage: "face.smiling")
+                Label("Open Mirror", systemImage: "face.smiling")
             }
         }
         .displayName("LifeSlice Mirror")
-        .description("鏡をすぐひらきます。")
+        .description("Opens the mirror right away.")
     }
 }

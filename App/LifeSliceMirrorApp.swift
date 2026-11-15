@@ -4,6 +4,7 @@ import SwiftUI
 struct LifeSliceMirrorApp: App {
     @StateObject private var director = SliceDirector()
     @Environment(\.scenePhase) private var scenePhase
+    @AppStorage(Prefs.Key.language) private var language = "system"
 
     var body: some Scene {
         WindowGroup {
@@ -14,6 +15,9 @@ struct LifeSliceMirrorApp: App {
                 .tint(Theme.accent)
                 .fontDesign(.rounded)
                 .preferredColorScheme(.dark)
+                .environment(\.locale, L10n.locale)
+                // 言語を切り替えたら画面を作り直して、全部の文言を引き直す
+                .id(language)
                 .onAppear { director.setSceneActive(scenePhase == .active) }
         }
         .onChange(of: scenePhase) { _, phase in

@@ -6,7 +6,7 @@ require 'xcodeproj'
 
 ROOT = File.expand_path('..', __dir__)
 DEPLOY = '26.0'
-BUNDLE = 'app.lifeslice.mirror'
+BUNDLE = '$(LS_BUNDLE_ID)' # 実際の値は Config/Signing.xcconfig（＋ Local.xcconfig）
 
 path = File.join(ROOT, 'LifeSliceMirror.xcodeproj')
 FileUtils.rm_rf(path)
@@ -30,8 +30,20 @@ refs = {}
   group = project.main_group.new_group(dir, dir)
   Dir.children(File.join(ROOT, dir)).sort.each do |name|
     next if name.start_with?('.')
+    next if File.directory?(File.join(ROOT, dir, name)) && !name.end_with?('.xcassets')
     refs["#{dir}/#{name}"] = group.new_file(name)
   end
+end
+
+# 言語別のファイル（en / ja）。lproj があることで、iPhone の設定アプリにも言語の切り替えが出る。
+loc_group = project.main_group.new_group('Localization', 'Config/Localization')
+localized = %w[Localizable.strings InfoPlist.strings].map do |name|
+  variant = loc_group.new_variant_group(name)
+  %w[en ja].each do |lang|
+    ref = variant.new_reference("#{lang}.lproj/#{name}")
+    ref.name = lang
+  end
+  variant
 end
 
 swift = ->(dir) { refs.select { |k, _| k.start_with?("#{dir}/") && k.end_with?('.swift') }.values }
@@ -41,9 +53,12 @@ app.add_resources([refs['App/Assets.xcassets']])
 
 widgets.add_file_references(swift['Widgets'] + swift['Shared'])
 
-capture.add_file_references(swift['CaptureExtension'] +
-                            [refs['Camera/CameraEngine.swift'], refs['Camera/SurpriseBuffer.swift'],
-                             refs['Shared/MirrorCaptureIntent.swift']])
+capture.add_file_references(swift['CaptureExtension'] + swift['Shared'] +
+                            [refs['Camera/CameraEngine.swift'], refs['Camera/SurpriseBuffer.swift']])
+
+[app, widgets, capture].each do |target|
+  localized.each { |variant| target.resources_build_phase.add_file_reference(variant) }
+end
 
 # --- ビルド設定 ---
 common = {
@@ -51,15 +66,15 @@ common = {
   'SWIFT_VERSION' => '5.0',
   'TARGETED_DEVICE_FAMILY' => '1',
   'CODE_SIGN_STYLE' => 'Automatic',
-  'DEVELOPMENT_TEAM' => '',
   'MARKETING_VERSION' => '1.0',
   'CURRENT_PROJECT_VERSION' => '1',
   'GENERATE_INFOPLIST_FILE' => 'YES',
   'SWIFT_EMIT_LOC_STRINGS' => 'YES',
 }
 
-camera_reason = '鏡として映すため、そして不意打ちの 1 コマを残すためにカメラを使います。'
-photos_reason = 'スライスや書き出したリールを「LifeSlice Mirror」アルバムに保存するために使います。'
+# 既定（英語）。日本語は Config/Localization/ja.lproj/InfoPlist.strings
+camera_reason = 'The camera is used to work as a mirror and to keep one surprise frame.'
+photos_reason = 'Used to save slices and exported reels to the LifeSlice Mirror album.'
 
 per_target = {
   app => {
@@ -105,6 +120,11 @@ per_target.each do |target, settings|
   end
 end
 
+# 署名の値は xcconfig から。プロジェクトを作り直しても各自の Team / Bundle ID が消えない。
+project.build_configurations.each do |config|
+  config.base_configuration_reference = refs['Config/Signing.xcconfig']
+end
+
 # --- 拡張の埋め込み ---
 [widgets, capture].each { |ext| app.add_dependency(ext) }
 
@@ -121,8 +141,9 @@ build_file.settings = { 'ATTRIBUTES' => ['RemoveHeadersOnCopy'] }
 
 project.root_object.attributes['LastSwiftUpdateCheck'] = '2600'
 project.root_object.attributes['LastUpgradeCheck'] = '2600'
-project.root_object.development_region = 'ja'
-project.root_object.known_regions = %w[ja en Base]
+# 開発言語は英語。日本語以外の端末では英語になる。
+project.root_object.development_region = 'en'
+project.root_object.known_regions = %w[en ja Base]
 
 project.save
 puts "wrote #{path}"

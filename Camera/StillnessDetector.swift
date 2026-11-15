@@ -9,9 +9,9 @@ final class StillnessDetector {
         var id: Int { rawValue }
         var label: String {
             switch self {
-            case .loose: return "ゆるめ"
-            case .normal: return "ふつう"
-            case .strict: return "きびしめ"
+            case .loose: return L("ゆるめ")
+            case .normal: return L("ふつう")
+            case .strict: return L("きびしめ")
             }
         }
         /// (回転 rad/s, 加速度 g, 止まっている必要のある秒数)

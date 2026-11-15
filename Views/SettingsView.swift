@@ -1,4 +1,5 @@
 import SwiftUI
+import UIKit
 
 struct SettingsView: View {
     @EnvironmentObject private var director: SliceDirector
@@ -14,15 +15,20 @@ struct SettingsView: View {
     @AppStorage(Prefs.Key.quietMode) private var quietMode = false
     @AppStorage(Prefs.Key.showGuides) private var showGuides = false
     @AppStorage(Prefs.Key.reelThreshold) private var reelThreshold = 12
+    @AppStorage(Prefs.Key.language) private var language = "system"
 
     @State private var photosDenied = false
 
     private var windowSummary: String {
         if preWindow < 0.05 && postWindow < 0.05 {
-            return "振り幅ゼロ。押した瞬間がそのまま残ります。"
+            return L("振り幅ゼロ。押した瞬間がそのまま残ります。")
         }
-        return String(format: "押した瞬間の %.1f 秒前 〜 %.1f 秒後のどこか 1 コマが残ります。どれになるかは毎回くじ引きです。",
-                      preWindow, postWindow)
+        return L("押した瞬間の %.1f 秒前 〜 %.1f 秒後のどこか 1 コマが残ります。どれになるかは毎回くじ引きです。",
+                 preWindow, postWindow)
+    }
+
+    private func cooldownLabel(_ seconds: Double) -> String {
+        seconds >= 60 ? L("%d分", Int(seconds / 60)) : L("%d秒", Int(seconds))
     }
 
     var body: some View {
@@ -31,50 +37,49 @@ struct SettingsView: View {
                 Section {
                     VStack(alignment: .leading, spacing: 6) {
                         HStack {
-                            Text("前")
+                            Text(L("前"))
                             Spacer()
-                            Text(String(format: "−%.1f 秒", preWindow)).monospacedDigit().foregroundStyle(.secondary)
+                            Text(L("−%.1f 秒", preWindow)).monospacedDigit().foregroundStyle(.secondary)
                         }
                         Slider(value: $preWindow, in: 0...3, step: 0.1)
                     }
                     VStack(alignment: .leading, spacing: 6) {
                         HStack {
-                            Text("後")
+                            Text(L("後"))
                             Spacer()
-                            Text(String(format: "＋%.1f 秒", postWindow)).monospacedDigit().foregroundStyle(.secondary)
+                            Text(L("＋%.1f 秒", postWindow)).monospacedDigit().foregroundStyle(.secondary)
                         }
                         Slider(value: $postWindow, in: 0...3, step: 0.1)
                     }
                 } header: {
-                    Text("不意打ちの振り幅")
+                    Text(L("不意打ちの振り幅"))
                 } footer: {
                     Text(windowSummary)
                 }
 
                 Section {
-                    Toggle("止まったら自動で撮る", isOn: $autoSlice)
+                    Toggle(L("止まったら自動で撮る"), isOn: $autoSlice)
                     if autoSlice {
-                        Picker("止まった判定", selection: $sensitivity) {
+                        Picker(L("止まった判定"), selection: $sensitivity) {
                             ForEach(StillnessDetector.Sensitivity.allCases) { item in
                                 Text(item.label).tag(item.rawValue)
                             }
                         }
-                        Picker("次に撮るまでの間隔", selection: $cooldown) {
-                            Text("10秒").tag(10.0)
-                            Text("30秒").tag(30.0)
-                            Text("1分").tag(60.0)
-                            Text("5分").tag(300.0)
+                        Picker(L("次に撮るまでの間隔"), selection: $cooldown) {
+                            ForEach(Prefs.cooldownChoices, id: \.self) { seconds in
+                                Text(cooldownLabel(seconds)).tag(seconds)
+                            }
                         }
                     }
-                    Toggle("止まらなくても 1 枚もらう", isOn: $driftSlice)
+                    Toggle(L("止まらなくても 1 枚もらう"), isOn: $driftSlice)
                 } header: {
-                    Text("勝手にたまる仕組み")
+                    Text(L("勝手にたまる仕組み"))
                 } footer: {
-                    Text("顔が映った状態で手が止まると自動で撮ります。一度も撮れないまま閉じたときは、開いていた間の映像から適当に 1 コマだけ残します。残さなかった映像はその場で捨てています。")
+                    Text(L("顔が映った状態で手が止まると自動で撮ります。一度も撮れないまま閉じたときは、開いていた間の映像から適当に 1 コマだけ残します。残さなかった映像はその場で捨てています。"))
                 }
 
                 Section {
-                    Toggle("写真アプリにも保存", isOn: $saveToPhotos)
+                    Toggle(L("写真アプリにも保存"), isOn: $saveToPhotos)
                         .onChange(of: saveToPhotos) { _, on in
                             guard on else { return }
                             Task {
@@ -85,40 +90,61 @@ struct SettingsView: View {
                             }
                         }
                 } header: {
-                    Text("保存")
+                    Text(L("保存"))
                 } footer: {
-                    Text("スライスはいつもアプリの中に残ります。オンにすると、写真アプリの「\(PhotoAlbum.title)」アルバムにも同じものを入れます。")
-                }
-
-                Section("鏡") {
-                    Toggle("撮れたことを知らせない", isOn: $quietMode)
-                    Toggle("ガイド線", isOn: $showGuides)
+                    Text(L("スライスはいつもアプリの中に残ります。オンにすると、写真アプリの「%@」アルバムにも同じものを入れます。", PhotoAlbum.title))
                 }
 
                 Section {
-                    Stepper("\(reelThreshold) 枚たまったら", value: $reelThreshold, in: 4...60)
+                    Toggle(L("撮れたことを知らせない"), isOn: $quietMode)
+                    Toggle(L("ガイド線"), isOn: $showGuides)
+                } header: {
+                    Text(L("鏡"))
+                } footer: {
+                    Text(L("ふだんは撮れた瞬間に画面が一瞬白く光ります。"))
+                }
+
+                Section {
+                    Stepper(L("%d 枚たまったら", reelThreshold), value: $reelThreshold, in: 4...60)
                         .onChange(of: reelThreshold) { _, _ in director.store.publishToWidget() }
                 } header: {
-                    Text("リールが作れるようになる枚数")
+                    Text(L("リールが作れるようになる枚数"))
+                }
+
+                Section {
+                    Picker(L("言語"), selection: $language) {
+                        Text(L("iPhone の設定に合わせる")).tag("system")
+                        Text("日本語").tag("ja")
+                        Text("English").tag("en")
+                    }
+                    Button(L("iPhone の設定アプリで変える")) {
+                        if let url = URL(string: UIApplication.openSettingsURLString) {
+                            UIApplication.shared.open(url)
+                        }
+                    }
+                } header: {
+                    Text(L("言語"))
+                } footer: {
+                    Text(L("ウィジェットとロック画面の表示は iPhone の設定に従います。"))
                 }
 
                 #if DEBUG
-                Section("開発用") {
-                    Button("ダミーのスライスを 24 枚つくる") { director.seedDemoSlices() }
+                Section(L("開発用")) {
+                    Button(L("ダミーのスライスを 24 枚つくる")) { director.seedDemoSlices() }
                 }
                 #endif
             }
-            .navigationTitle("設定")
+            .navigationTitle(L("設定"))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .confirmationAction) {
-                    Button("閉じる") { dismiss() }
+                    Button(L("閉じる")) { dismiss() }
                 }
             }
-            .alert("写真へのアクセスが許可されていません", isPresented: $photosDenied) {
+            .alert(L("写真へのアクセスが許可されていません"), isPresented: $photosDenied) {
                 Button("OK", role: .cancel) {}
             } message: {
-                Text("設定アプリで写真へのアクセスを許可すると使えます。")
+                Text(L("設定アプリで写真へのアクセスを許可すると使えます。"))
             }
         }
         .preferredColorScheme(.dark)

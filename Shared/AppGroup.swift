@@ -3,8 +3,15 @@ import Foundation
 /// アプリ本体とウィジェットで共有する置き場所。
 /// App Group が未設定でもアプリ本体は動くように、取れなければ通常のコンテナへフォールバックする。
 enum AppGroup {
-    /// ⚠️ 自分の Team で作った App Group ID に合わせて変更してください（entitlements も同じ値に）。
-    static let identifier = "group.app.lifeslice.mirror"
+    /// 「group.<アプリ本体の Bundle ID>」。Bundle ID は Config/Signing.xcconfig の LS_BUNDLE_ID で決まる。
+    static let identifier: String = {
+        var id = Bundle.main.bundleIdentifier ?? "app.lifeslice.mirror"
+        // 拡張（.appex）の中では末尾の ".widgets" などを外して本体の ID に戻す
+        if Bundle.main.bundleURL.pathExtension == "appex", let dot = id.lastIndex(of: ".") {
+            id = String(id[..<dot])
+        }
+        return "group." + id
+    }()
 
     static var sharedContainer: URL? {
         FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: identifier)

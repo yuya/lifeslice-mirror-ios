@@ -22,15 +22,15 @@ struct Slice: Codable, Identifiable, Hashable {
     var caption: String {
         let head: String
         switch source {
-        case .shutter: head = "シャッター"
-        case .still: head = "静止を検知"
-        case .drift: return "立ち去り際のどこか 1 コマ"
-        case .locked: head = "ロック中に撮影"
+        case .shutter: head = L("シャッター")
+        case .still: head = L("静止を検知")
+        case .drift: return L("立ち去り際のどこか 1 コマ")
+        case .locked: head = L("ロック中に撮影")
         }
         guard let offset else { return head }
-        if abs(offset) < 0.07 { return "\(head)・ぴったりその瞬間" }
+        if abs(offset) < 0.07 { return L("%@・ぴったりその瞬間", head) }
         let seconds = String(format: "%.1f", abs(offset))
-        return offset < 0 ? "\(head)の \(seconds) 秒前" : "\(head)の \(seconds) 秒後"
+        return offset < 0 ? L("%@の %@ 秒前", head, seconds) : L("%@の %@ 秒後", head, seconds)
     }
 }
 

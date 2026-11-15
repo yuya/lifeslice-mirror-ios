@@ -13,9 +13,9 @@ enum DitherMode: String, CaseIterable, Identifiable {
     var id: String { rawValue }
     var label: String {
         switch self {
-        case .none: return "なし"
-        case .pattern: return "あみ点"
-        case .diffusion: return "ざらざら"
+        case .none: return L("なし")
+        case .pattern: return L("あみ点")
+        case .diffusion: return L("ざらざら")
         }
     }
 }

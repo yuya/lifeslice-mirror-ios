@@ -44,8 +44,10 @@ struct ToolButton: View {
                 }
             }
             .foregroundStyle(isOn ? Theme.accent : .white)
-            .frame(width: 44, height: 44)
+            .frame(width: 48, height: 48)
             .glassButton()
+            // 絵柄だけでなく丸全体を押せるようにする
+            .contentShape(.circle)
         }
         .buttonStyle(.plain)
     }
@@ -77,6 +79,7 @@ struct ChipRow<Item: Identifiable & Equatable>: View {
                                 .padding(.horizontal, 14)
                                 .padding(.vertical, 9)
                                 .background(selected ? Theme.paper : Theme.card, in: .capsule)
+                                .contentShape(.capsule)
                         }
                         .buttonStyle(.plain)
                     }
@@ -129,7 +132,7 @@ enum ScreenLight {
         UIApplication.shared.connectedScenes.compactMap { ($0 as? UIWindowScene)?.screen }.first
     }
 
-    /// ライト点灯中は画面の明るさを最大に、消したら元に戻す。
+    /// ライト＝画面の明るさを最大にするだけ（映像には何も重ねない）。消したら元に戻す。
     static func set(on: Bool) {
         guard let screen else { return }
         if on {

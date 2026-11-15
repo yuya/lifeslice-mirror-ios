@@ -1,0 +1,4 @@
+"CFBundleDisplayName" = "LifeSlice";
+"NSCameraUsageDescription" = "The camera is used to work as a mirror and to keep one surprise frame.";
+"NSPhotoLibraryUsageDescription" = "Used to save slices and exported reels to the “LifeSlice Mirror” album.";
+"NSPhotoLibraryAddUsageDescription" = "Used to save slices and exported reels to the “LifeSlice Mirror” album.";
