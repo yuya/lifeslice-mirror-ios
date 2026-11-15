@@ -1,0 +1,771 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		0F1300EC6D66AC6905AE9C3A /* LifeSliceMirrorApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 945FCAEFA2F877335D88E09C /* LifeSliceMirrorApp.swift */; };
+		1CA4D45C47E1E2A7D8582C97 /* SliceDirector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3684E2B496137C734207A3F3 /* SliceDirector.swift */; };
+		255CF3E78B12F5C0587BF85F /* PhotoAlbum.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0B1B64F084387ACACFEF721 /* PhotoAlbum.swift */; };
+		26788A4D102A8DA0D559A9C7 /* LifeSliceWidgets.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBD0063CEDECF73255114E98 /* LifeSliceWidgets.swift */; };
+		27450D7A1EEA4C16E59BD06E /* MirrorCaptureIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00C495A54B1CF28EAA0D4710 /* MirrorCaptureIntent.swift */; };
+		2EB7697DCF05066CE5C60F93 /* MirrorCaptureIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00C495A54B1CF28EAA0D4710 /* MirrorCaptureIntent.swift */; };
+		2F8FA655979D7C4BC7448969 /* GalleryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9780DDCDD8BD9FC2045D7DED /* GalleryView.swift */; };
+		439D3CB7087F46C5C3911187 /* ReelOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B5963F612D0F48BBB9AB0C0 /* ReelOptions.swift */; };
+		648420DA2D81E7FCB2B1A972 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8523147CFE178DF9C3D4FBB1 /* SettingsView.swift */; };
+		67CAFF287B16EDE5565E5C2E /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99C6B1B75F51244F61093A8C /* Theme.swift */; };
+		8614A9CE0114220C0B671C89 /* ReelRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C65C16C8950F4747265E69B /* ReelRenderer.swift */; };
+		A37A69726A474FD0A0A6B8AE /* MirrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4440B19485920D594A1244CE /* MirrorView.swift */; };
+		A3E628D9B41C27C8029877B1 /* ReelStudioView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A97CFA3B277B18B8724C8E8 /* ReelStudioView.swift */; };
+		A6628F9D79BD0437A90A9343 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 77F53505FDF0ABCE644030F2 /* Assets.xcassets */; };
+		A6846E607E198811CA60586A /* AppGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E40259959FF5F7BBCF81EBA /* AppGroup.swift */; };
+		A83A9E27A581514BDDB7F649 /* MirrorCaptureIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00C495A54B1CF28EAA0D4710 /* MirrorCaptureIntent.swift */; };
+		B285D55C98409E92E5DC6F47 /* LifeSliceCapture.appex in Embed ExtensionKit Extensions */ = {isa = PBXBuildFile; fileRef = FBC5BB601722D2A5E6A14B81 /* LifeSliceCapture.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		BD33E86A92A4ED5160BAB38F /* SurpriseBuffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A6FC90867844EE4536C2F4B /* SurpriseBuffer.swift */; };
+		C4788C45E523E935C65D9893 /* LifeSliceCaptureExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0759562C80C8A8BE2EDB3576 /* LifeSliceCaptureExtension.swift */; };
+		CFDCDE295F0CD482DF0351E4 /* LifeSliceWidgets.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 3259C06F4D99C27785B31F25 /* LifeSliceWidgets.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		D0EF388B5A3AF53A9B43C092 /* StillnessDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3FBEDF30625901FCD5B5A2F /* StillnessDetector.swift */; };
+		D8CE8AF25C4840D69DE3AC85 /* Prefs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81748DFB51D1E7A1169B1DEA /* Prefs.swift */; };
+		D9A4FBD8BE8F963FF4FAD91F /* SurpriseBuffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A6FC90867844EE4536C2F4B /* SurpriseBuffer.swift */; };
+		DF004961E7FE927A781DD85F /* CameraEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E5442F7EEB28A85F054BE7A /* CameraEngine.swift */; };
+		E22AAC5FD1DEA04633F885B9 /* Quantizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4459C87369DE7ED23862B0CE /* Quantizer.swift */; };
+		EE88CF3448B380363A74EB8E /* AppGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E40259959FF5F7BBCF81EBA /* AppGroup.swift */; };
+		F0171D6C9777D4194AB2E23B /* CameraEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E5442F7EEB28A85F054BE7A /* CameraEngine.swift */; };
+		F945C215E8CE7080FCB60524 /* SliceStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E31079782A9BB44F14E3770 /* SliceStore.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		AF9EF305D29FDCC00C2BA61B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 5360FDA4C8F09F3C5FB69055 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 56722E56C9D5A4F95144047C;
+			remoteInfo = LifeSliceWidgets;
+		};
+		D060196B829B3336C8BC446A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 5360FDA4C8F09F3C5FB69055 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 93C76D4924A84C754D4B5109;
+			remoteInfo = LifeSliceCapture;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		17A55B9A6CDDFB85B3C024E4 /* Embed ExtensionKit Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "$(EXTENSIONS_FOLDER_PATH)";
+			dstSubfolderSpec = 16;
+			files = (
+				B285D55C98409E92E5DC6F47 /* LifeSliceCapture.appex in Embed ExtensionKit Extensions */,
+			);
+			name = "Embed ExtensionKit Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		35EB9104BBA9FC963349EE9C /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				CFDCDE295F0CD482DF0351E4 /* LifeSliceWidgets.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		00C495A54B1CF28EAA0D4710 /* MirrorCaptureIntent.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = MirrorCaptureIntent.swift; sourceTree = "<group>"; };
+		0759562C80C8A8BE2EDB3576 /* LifeSliceCaptureExtension.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LifeSliceCaptureExtension.swift; sourceTree = "<group>"; };
+		0C65C16C8950F4747265E69B /* ReelRenderer.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ReelRenderer.swift; sourceTree = "<group>"; };
+		1D1D4FC200838D827297EFA8 /* generate_project.rb */ = {isa = PBXFileReference; includeInIndex = 1; path = generate_project.rb; sourceTree = "<group>"; };
+		2197E3E53B7B1D36A7003843 /* Capture-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Capture-Info.plist"; sourceTree = "<group>"; };
+		30A3F492323A0A31F75321E8 /* AppIcon-source.svg */ = {isa = PBXFileReference; includeInIndex = 1; path = "AppIcon-source.svg"; sourceTree = "<group>"; };
+		322C1CD7F5EC47C53485978F /* LifeSliceMirror.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LifeSliceMirror.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		3259C06F4D99C27785B31F25 /* LifeSliceWidgets.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = LifeSliceWidgets.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		32C58BDE92B4F63FC1D20070 /* Widgets.entitlements */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.entitlements; path = Widgets.entitlements; sourceTree = "<group>"; };
+		3684E2B496137C734207A3F3 /* SliceDirector.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SliceDirector.swift; sourceTree = "<group>"; };
+		4440B19485920D594A1244CE /* MirrorView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = MirrorView.swift; sourceTree = "<group>"; };
+		4459C87369DE7ED23862B0CE /* Quantizer.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Quantizer.swift; sourceTree = "<group>"; };
+		4A6FC90867844EE4536C2F4B /* SurpriseBuffer.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SurpriseBuffer.swift; sourceTree = "<group>"; };
+		4A97CFA3B277B18B8724C8E8 /* ReelStudioView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ReelStudioView.swift; sourceTree = "<group>"; };
+		5E5442F7EEB28A85F054BE7A /* CameraEngine.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = CameraEngine.swift; sourceTree = "<group>"; };
+		6E31079782A9BB44F14E3770 /* SliceStore.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SliceStore.swift; sourceTree = "<group>"; };
+		6EA0AA658CB91D9A6EB45043 /* Widgets-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Widgets-Info.plist"; sourceTree = "<group>"; };
+		77F53505FDF0ABCE644030F2 /* Assets.xcassets */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		7E40259959FF5F7BBCF81EBA /* AppGroup.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AppGroup.swift; sourceTree = "<group>"; };
+		81748DFB51D1E7A1169B1DEA /* Prefs.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Prefs.swift; sourceTree = "<group>"; };
+		8523147CFE178DF9C3D4FBB1 /* SettingsView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		945FCAEFA2F877335D88E09C /* LifeSliceMirrorApp.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LifeSliceMirrorApp.swift; sourceTree = "<group>"; };
+		9780DDCDD8BD9FC2045D7DED /* GalleryView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = GalleryView.swift; sourceTree = "<group>"; };
+		99C6B1B75F51244F61093A8C /* Theme.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
+		9B5963F612D0F48BBB9AB0C0 /* ReelOptions.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ReelOptions.swift; sourceTree = "<group>"; };
+		C3FBEDF30625901FCD5B5A2F /* StillnessDetector.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = StillnessDetector.swift; sourceTree = "<group>"; };
+		CBD0063CEDECF73255114E98 /* LifeSliceWidgets.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LifeSliceWidgets.swift; sourceTree = "<group>"; };
+		CCAA3BED0D9BA72077F1FE95 /* App.entitlements */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.entitlements; path = App.entitlements; sourceTree = "<group>"; };
+		F0B1B64F084387ACACFEF721 /* PhotoAlbum.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PhotoAlbum.swift; sourceTree = "<group>"; };
+		FBC5BB601722D2A5E6A14B81 /* LifeSliceCapture.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.extensionkit-extension"; includeInIndex = 0; path = LifeSliceCapture.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		0CC64E1D7C8766E69D2C0E99 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		AEDEA4A3BE382713BC9C4AD1 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B2FC02B5A13C72C0A92A57E7 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		183DAA40F1387C97C816F706 = {
+			isa = PBXGroup;
+			children = (
+				D39F8345E8CBFE5911D9BAE5 /* Products */,
+				52FF9CD51D4DBE1D6B6920B7 /* Frameworks */,
+				F69683EC15CED84616E09FF7 /* App */,
+				1F92FAD2F75F1B5D62BBA193 /* Shared */,
+				AC4588F7C26D0C833035E3E9 /* Camera */,
+				A70214F51CF5D72BDF811508 /* Store */,
+				D0D6D0F1C16D7FD6974643FC /* Reel */,
+				6D568973D630735FBD609CFC /* Views */,
+				33B741EAED01D9A5D22E9043 /* Widgets */,
+				814D2C199A13C0F2D00EF2E0 /* CaptureExtension */,
+				747FB93C6B3AD777FE12E6F2 /* Config */,
+			);
+			sourceTree = "<group>";
+		};
+		1F92FAD2F75F1B5D62BBA193 /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				7E40259959FF5F7BBCF81EBA /* AppGroup.swift */,
+				00C495A54B1CF28EAA0D4710 /* MirrorCaptureIntent.swift */,
+			);
+			name = Shared;
+			path = Shared;
+			sourceTree = "<group>";
+		};
+		33B741EAED01D9A5D22E9043 /* Widgets */ = {
+			isa = PBXGroup;
+			children = (
+				CBD0063CEDECF73255114E98 /* LifeSliceWidgets.swift */,
+			);
+			name = Widgets;
+			path = Widgets;
+			sourceTree = "<group>";
+		};
+		52FF9CD51D4DBE1D6B6920B7 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		6D568973D630735FBD609CFC /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				9780DDCDD8BD9FC2045D7DED /* GalleryView.swift */,
+				4440B19485920D594A1244CE /* MirrorView.swift */,
+				4A97CFA3B277B18B8724C8E8 /* ReelStudioView.swift */,
+				8523147CFE178DF9C3D4FBB1 /* SettingsView.swift */,
+			);
+			name = Views;
+			path = Views;
+			sourceTree = "<group>";
+		};
+		747FB93C6B3AD777FE12E6F2 /* Config */ = {
+			isa = PBXGroup;
+			children = (
+				CCAA3BED0D9BA72077F1FE95 /* App.entitlements */,
+				30A3F492323A0A31F75321E8 /* AppIcon-source.svg */,
+				2197E3E53B7B1D36A7003843 /* Capture-Info.plist */,
+				6EA0AA658CB91D9A6EB45043 /* Widgets-Info.plist */,
+				32C58BDE92B4F63FC1D20070 /* Widgets.entitlements */,
+				1D1D4FC200838D827297EFA8 /* generate_project.rb */,
+			);
+			name = Config;
+			path = Config;
+			sourceTree = "<group>";
+		};
+		814D2C199A13C0F2D00EF2E0 /* CaptureExtension */ = {
+			isa = PBXGroup;
+			children = (
+				0759562C80C8A8BE2EDB3576 /* LifeSliceCaptureExtension.swift */,
+			);
+			name = CaptureExtension;
+			path = CaptureExtension;
+			sourceTree = "<group>";
+		};
+		A70214F51CF5D72BDF811508 /* Store */ = {
+			isa = PBXGroup;
+			children = (
+				F0B1B64F084387ACACFEF721 /* PhotoAlbum.swift */,
+				81748DFB51D1E7A1169B1DEA /* Prefs.swift */,
+				3684E2B496137C734207A3F3 /* SliceDirector.swift */,
+				6E31079782A9BB44F14E3770 /* SliceStore.swift */,
+			);
+			name = Store;
+			path = Store;
+			sourceTree = "<group>";
+		};
+		AC4588F7C26D0C833035E3E9 /* Camera */ = {
+			isa = PBXGroup;
+			children = (
+				5E5442F7EEB28A85F054BE7A /* CameraEngine.swift */,
+				C3FBEDF30625901FCD5B5A2F /* StillnessDetector.swift */,
+				4A6FC90867844EE4536C2F4B /* SurpriseBuffer.swift */,
+			);
+			name = Camera;
+			path = Camera;
+			sourceTree = "<group>";
+		};
+		D0D6D0F1C16D7FD6974643FC /* Reel */ = {
+			isa = PBXGroup;
+			children = (
+				4459C87369DE7ED23862B0CE /* Quantizer.swift */,
+				9B5963F612D0F48BBB9AB0C0 /* ReelOptions.swift */,
+				0C65C16C8950F4747265E69B /* ReelRenderer.swift */,
+			);
+			name = Reel;
+			path = Reel;
+			sourceTree = "<group>";
+		};
+		D39F8345E8CBFE5911D9BAE5 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				322C1CD7F5EC47C53485978F /* LifeSliceMirror.app */,
+				3259C06F4D99C27785B31F25 /* LifeSliceWidgets.appex */,
+				FBC5BB601722D2A5E6A14B81 /* LifeSliceCapture.appex */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		F69683EC15CED84616E09FF7 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				77F53505FDF0ABCE644030F2 /* Assets.xcassets */,
+				945FCAEFA2F877335D88E09C /* LifeSliceMirrorApp.swift */,
+				99C6B1B75F51244F61093A8C /* Theme.swift */,
+			);
+			name = App;
+			path = App;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		3C00CF07DD5EDA0EDF6A1092 /* LifeSliceMirror */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1FC2B400FDD2617E8B3679DC /* Build configuration list for PBXNativeTarget "LifeSliceMirror" */;
+			buildPhases = (
+				9CF4FFCDA3980104366F61FD /* Sources */,
+				B2FC02B5A13C72C0A92A57E7 /* Frameworks */,
+				589A181B8393680EB23DD88A /* Resources */,
+				35EB9104BBA9FC963349EE9C /* Embed Foundation Extensions */,
+				17A55B9A6CDDFB85B3C024E4 /* Embed ExtensionKit Extensions */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				0D584F2BDE42AFD09F3C7447 /* PBXTargetDependency */,
+				117683E84851773C8F62C72A /* PBXTargetDependency */,
+			);
+			name = LifeSliceMirror;
+			productName = LifeSliceMirror;
+			productReference = 322C1CD7F5EC47C53485978F /* LifeSliceMirror.app */;
+			productType = "com.apple.product-type.application";
+		};
+		56722E56C9D5A4F95144047C /* LifeSliceWidgets */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C6B2E4E0EE07C3918EF1B6DD /* Build configuration list for PBXNativeTarget "LifeSliceWidgets" */;
+			buildPhases = (
+				2D674A0E5D01B1814EF22B03 /* Sources */,
+				0CC64E1D7C8766E69D2C0E99 /* Frameworks */,
+				1CAC5A964C5624322D53A283 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = LifeSliceWidgets;
+			productName = LifeSliceWidgets;
+			productReference = 3259C06F4D99C27785B31F25 /* LifeSliceWidgets.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+		93C76D4924A84C754D4B5109 /* LifeSliceCapture */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 529D6302210DCFCE6CDCAE64 /* Build configuration list for PBXNativeTarget "LifeSliceCapture" */;
+			buildPhases = (
+				95E9E3EAB57F343FA4CC2BAB /* Sources */,
+				AEDEA4A3BE382713BC9C4AD1 /* Frameworks */,
+				596B5FDBDECE4D80340B6C1C /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = LifeSliceCapture;
+			productName = LifeSliceCapture;
+			productReference = FBC5BB601722D2A5E6A14B81 /* LifeSliceCapture.appex */;
+			productType = "com.apple.product-type.extensionkit-extension";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		5360FDA4C8F09F3C5FB69055 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 2600;
+				LastUpgradeCheck = 2600;
+			};
+			buildConfigurationList = 3787101C33394B460426ACBD /* Build configuration list for PBXProject "LifeSliceMirror" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = ja;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				ja,
+				en,
+				Base,
+			);
+			mainGroup = 183DAA40F1387C97C816F706;
+			minimizedProjectReferenceProxies = 0;
+			preferredProjectObjectVersion = 100;
+			productRefGroup = D39F8345E8CBFE5911D9BAE5 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				3C00CF07DD5EDA0EDF6A1092 /* LifeSliceMirror */,
+				56722E56C9D5A4F95144047C /* LifeSliceWidgets */,
+				93C76D4924A84C754D4B5109 /* LifeSliceCapture */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		1CAC5A964C5624322D53A283 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		589A181B8393680EB23DD88A /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A6628F9D79BD0437A90A9343 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		596B5FDBDECE4D80340B6C1C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		2D674A0E5D01B1814EF22B03 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				26788A4D102A8DA0D559A9C7 /* LifeSliceWidgets.swift in Sources */,
+				EE88CF3448B380363A74EB8E /* AppGroup.swift in Sources */,
+				2EB7697DCF05066CE5C60F93 /* MirrorCaptureIntent.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		95E9E3EAB57F343FA4CC2BAB /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C4788C45E523E935C65D9893 /* LifeSliceCaptureExtension.swift in Sources */,
+				DF004961E7FE927A781DD85F /* CameraEngine.swift in Sources */,
+				BD33E86A92A4ED5160BAB38F /* SurpriseBuffer.swift in Sources */,
+				27450D7A1EEA4C16E59BD06E /* MirrorCaptureIntent.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9CF4FFCDA3980104366F61FD /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0F1300EC6D66AC6905AE9C3A /* LifeSliceMirrorApp.swift in Sources */,
+				67CAFF287B16EDE5565E5C2E /* Theme.swift in Sources */,
+				A6846E607E198811CA60586A /* AppGroup.swift in Sources */,
+				A83A9E27A581514BDDB7F649 /* MirrorCaptureIntent.swift in Sources */,
+				F0171D6C9777D4194AB2E23B /* CameraEngine.swift in Sources */,
+				D0EF388B5A3AF53A9B43C092 /* StillnessDetector.swift in Sources */,
+				D9A4FBD8BE8F963FF4FAD91F /* SurpriseBuffer.swift in Sources */,
+				255CF3E78B12F5C0587BF85F /* PhotoAlbum.swift in Sources */,
+				D8CE8AF25C4840D69DE3AC85 /* Prefs.swift in Sources */,
+				1CA4D45C47E1E2A7D8582C97 /* SliceDirector.swift in Sources */,
+				F945C215E8CE7080FCB60524 /* SliceStore.swift in Sources */,
+				E22AAC5FD1DEA04633F885B9 /* Quantizer.swift in Sources */,
+				439D3CB7087F46C5C3911187 /* ReelOptions.swift in Sources */,
+				8614A9CE0114220C0B671C89 /* ReelRenderer.swift in Sources */,
+				2F8FA655979D7C4BC7448969 /* GalleryView.swift in Sources */,
+				A37A69726A474FD0A0A6B8AE /* MirrorView.swift in Sources */,
+				A3E628D9B41C27C8029877B1 /* ReelStudioView.swift in Sources */,
+				648420DA2D81E7FCB2B1A972 /* SettingsView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		0D584F2BDE42AFD09F3C7447 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = LifeSliceWidgets;
+			target = 56722E56C9D5A4F95144047C /* LifeSliceWidgets */;
+			targetProxy = AF9EF305D29FDCC00C2BA61B /* PBXContainerItemProxy */;
+		};
+		117683E84851773C8F62C72A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = LifeSliceCapture;
+			target = 93C76D4924A84C754D4B5109 /* LifeSliceCapture */;
+			targetProxy = D060196B829B3336C8BC446A /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		26A64B3E07C0F2EEEE06C63E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Config/Capture-Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = LifeSlice;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = app.lifeslice.mirror.capture;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		28C76C2B7E8640192998D19C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGN_ENTITLEMENTS = Config/Widgets.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Config/Widgets-Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = LifeSlice;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = app.lifeslice.mirror.widgets;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		4CB4DA48532A340E95B2B685 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		59E1E35104888B3F45A6C95F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		809C7AD16605BFC6CE02C17E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Config/Capture-Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = LifeSlice;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = app.lifeslice.mirror.capture;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		AECBD24EF7C306EBF2C50E0C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGN_ENTITLEMENTS = Config/App.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = LifeSlice;
+				INFOPLIST_KEY_NSCameraUsageDescription = "鏡として映すため、そして不意打ちの 1 コマを残すためにカメラを使います。";
+				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "スライスや書き出したリールを「LifeSlice Mirror」アルバムに保存するために使います。";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "スライスや書き出したリールを「LifeSlice Mirror」アルバムに保存するために使います。";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UIStatusBarStyle = UIStatusBarStyleLightContent;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = app.lifeslice.mirror;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		C696F70E0353435FC8F120BF /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGN_ENTITLEMENTS = Config/Widgets.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Config/Widgets-Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = LifeSlice;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = app.lifeslice.mirror.widgets;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		D02BFDBE4D8BC4E9824FC19E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGN_ENTITLEMENTS = Config/App.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = LifeSlice;
+				INFOPLIST_KEY_NSCameraUsageDescription = "鏡として映すため、そして不意打ちの 1 コマを残すためにカメラを使います。";
+				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "スライスや書き出したリールを「LifeSlice Mirror」アルバムに保存するために使います。";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "スライスや書き出したリールを「LifeSlice Mirror」アルバムに保存するために使います。";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UIStatusBarStyle = UIStatusBarStyleLightContent;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = app.lifeslice.mirror;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		1FC2B400FDD2617E8B3679DC /* Build configuration list for PBXNativeTarget "LifeSliceMirror" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D02BFDBE4D8BC4E9824FC19E /* Release */,
+				AECBD24EF7C306EBF2C50E0C /* Debug */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		3787101C33394B460426ACBD /* Build configuration list for PBXProject "LifeSliceMirror" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4CB4DA48532A340E95B2B685 /* Debug */,
+				59E1E35104888B3F45A6C95F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		529D6302210DCFCE6CDCAE64 /* Build configuration list for PBXNativeTarget "LifeSliceCapture" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				26A64B3E07C0F2EEEE06C63E /* Release */,
+				809C7AD16605BFC6CE02C17E /* Debug */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C6B2E4E0EE07C3918EF1B6DD /* Build configuration list for PBXNativeTarget "LifeSliceWidgets" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				28C76C2B7E8640192998D19C /* Release */,
+				C696F70E0353435FC8F120BF /* Debug */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 5360FDA4C8F09F3C5FB69055 /* Project object */;
+}
