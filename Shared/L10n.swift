@@ -179,6 +179,10 @@ enum L10n {
         "たまった枚数と、リールまでの残り。タップで鏡がひらきます。": "How many slices you have and how many to go. Tap to open the mirror.",
         "線画アイコン": "Line icon",
         "アイコンだけのシンプルな入口。タップで鏡がひらきます。": "Just the icon. Tap to open the mirror.",
+        "範囲": "Range",
+        "日付": "Date",
+        "出力": "Output",
+        "見本は、えらんだ範囲のいちばん新しいスライスで作っています。": "Samples use the newest slice in the selected range.",
     ]
 }
 

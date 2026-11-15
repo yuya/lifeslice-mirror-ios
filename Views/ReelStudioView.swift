@@ -39,6 +39,9 @@ struct ReelStudioView: View {
     @State private var periodReady = false
 
     @State private var frames: [UIImage] = []
+    @State private var tab: Tab = .colors
+    /// 見本タイル（キーは "colors.c256" のように 種類.値）
+    @State private var tileImages: [String: UIImage] = [:]
     @State private var rendering = false
     @State private var exporting = false
     @State private var exportProgress = 0.0
@@ -110,29 +113,12 @@ struct ReelStudioView: View {
         VStack(spacing: 0) {
             previewArea
             Divider().overlay(.white.opacity(0.08))
+            tabBar
             ScrollView {
                 VStack(alignment: .leading, spacing: 20) {
-                    rangeSection
-
-                    ChipRow(title: L("色数"), items: ReelOptions.ColorDepth.allCases, selection: $options.colors) { $0.label }
-                    if options.colors != .full {
-                        ChipRow(title: L("ディザ（色のまぜ方）"), items: DitherMode.allCases, selection: $options.dither) { $0.label }
-                    }
-                    ChipRow(title: L("フィルタ"), items: ReelOptions.Filter.allCases, selection: $options.filter) { $0.label }
-
-                    ChipRow(title: L("日付の書き方"), items: ReelOptions.StampFormat.allCases, selection: $options.stampFormat) { $0.label }
-                    if options.stampFormat != .none {
-                        ChipRow(title: L("フォント"), items: ReelOptions.StampFont.allCases, selection: $options.stampFont) { $0.label }
-                        ChipRow(title: L("日付の色"), items: ReelOptions.StampStyle.allCases, selection: $options.stampStyle) { $0.label }
-                        ChipRow(title: L("日付の位置"), items: ReelOptions.StampLayout.allCases, selection: $options.stampLayout) { $0.label }
-                    }
-
-                    ChipRow(title: L("はやさ"), items: ReelOptions.Speed.allCases, selection: $options.speed) { $0.label }
-                    ChipRow(title: L("かたち"), items: ReelOptions.Aspect.allCases, selection: $options.aspect) { $0.label }
-                    ChipRow(title: L("大きさ（小さいほど軽くてチープ）"), items: ReelOptions.Size.allCases, selection: $options.size) { $0.label }
-                    ChipRow(title: L("形式"), items: ReelOptions.Format.allCases, selection: $options.format) { $0.label }
+                    tabContent
                 }
-                .padding(.vertical, 18)
+                .padding(.vertical, 16)
             }
             exportBar
         }
@@ -146,6 +132,7 @@ struct ReelStudioView: View {
         }
         .onAppear(perform: preparePeriod)
         .task(id: renderKey) { await renderPreview() }
+        .task(id: tileKey) { await renderTiles() }
         .sheet(item: $exported) { reel in
             ExportedReelSheet(reel: reel) {
                 // シートを閉じてから、一覧ごと閉じて鏡へ
@@ -165,6 +152,177 @@ struct ReelStudioView: View {
         } message: {
             Text(errorMessage ?? "")
         }
+    }
+
+    // MARK: タブ
+
+    enum Tab: String, CaseIterable, Identifiable {
+        case range, colors, filter, date, output
+        var id: String { rawValue }
+        var title: String {
+            switch self {
+            case .range: return L("範囲")
+            case .colors: return L("色数")
+            case .filter: return L("フィルタ")
+            case .date: return L("日付")
+            case .output: return L("出力")
+            }
+        }
+    }
+
+    private func currentValue(of tab: Tab) -> String {
+        switch tab {
+        case .range: return range.label
+        case .colors: return options.colors.label
+        case .filter: return options.filter.label
+        case .date: return options.stampFormat.label
+        case .output: return "\(options.format.label)・\(options.size.width)"
+        }
+    }
+
+    private var tabBar: some View {
+        HStack(spacing: 2) {
+            ForEach(Tab.allCases) { item in
+                let on = item == tab
+                Button {
+                    withAnimation(.snappy(duration: 0.2)) { tab = item }
+                } label: {
+                    VStack(spacing: 2) {
+                        Text(item.title)
+                            .font(.system(size: 13, weight: .heavy, design: .rounded))
+                        Text(currentValue(of: item))
+                            .font(.system(size: 10, weight: .semibold, design: .rounded))
+                            .foregroundStyle(on ? Theme.ink.opacity(0.7) : .secondary)
+                            .lineLimit(1)
+                            .minimumScaleFactor(0.7)
+                    }
+                    .foregroundStyle(on ? Theme.ink : .white)
+                    .frame(maxWidth: .infinity, minHeight: 50)
+                    .padding(.horizontal, 2)
+                    .background(on ? Theme.paper : .clear, in: .rect(cornerRadius: 14))
+                    .contentShape(.rect)
+                }
+                .buttonStyle(.plain)
+                .accessibilityAddTraits(on ? .isSelected : [])
+            }
+        }
+        .padding(4)
+        .background(Theme.card, in: .rect(cornerRadius: 18))
+        .padding(.horizontal, 14)
+        .padding(.top, 12)
+    }
+
+    @ViewBuilder
+    private var tabContent: some View {
+        switch tab {
+        case .range:
+            rangeSection
+        case .colors:
+            TileGrid(title: L("色数"), items: ReelOptions.ColorDepth.allCases, selection: $options.colors,
+                     label: { $0.label }, image: { tileImages["colors." + $0.rawValue] })
+            if options.colors != .full {
+                ChipRow(title: L("ディザ（色のまぜ方）"), items: DitherMode.allCases, selection: $options.dither) { $0.label }
+            }
+            sampleNote
+        case .filter:
+            TileGrid(title: L("フィルタ"), items: ReelOptions.Filter.allCases, selection: $options.filter,
+                     label: { $0.label }, image: { tileImages["filter." + $0.rawValue] })
+            sampleNote
+        case .date:
+            ChipRow(title: L("日付の書き方"), items: ReelOptions.StampFormat.allCases, selection: $options.stampFormat) { $0.label }
+            if options.stampFormat != .none {
+                TileGrid(title: L("日付の色"), items: ReelOptions.StampStyle.allCases, selection: $options.stampStyle,
+                         label: { $0.label }, image: { tileImages["stamp." + $0.rawValue] })
+                ChipRow(title: L("フォント"), items: ReelOptions.StampFont.allCases, selection: $options.stampFont) { $0.label }
+                ChipRow(title: L("日付の位置"), items: ReelOptions.StampLayout.allCases, selection: $options.stampLayout) { $0.label }
+            }
+        case .output:
+            ChipRow(title: L("はやさ"), items: ReelOptions.Speed.allCases, selection: $options.speed) { $0.label }
+            ChipRow(title: L("かたち"), items: ReelOptions.Aspect.allCases, selection: $options.aspect) { $0.label }
+            ChipRow(title: L("大きさ（小さいほど軽くてチープ）"), items: ReelOptions.Size.allCases, selection: $options.size) { $0.label }
+            ChipRow(title: L("形式"), items: ReelOptions.Format.allCases, selection: $options.format) { $0.label }
+        }
+    }
+
+    private var sampleNote: some View {
+        Text(L("見本は、えらんだ範囲のいちばん新しいスライスで作っています。"))
+            .font(.caption)
+            .foregroundStyle(.secondary)
+            .padding(.horizontal, 20)
+    }
+
+    // MARK: 見本タイル
+
+    /// タイルを描き直すきっかけ。そのタブで並べている項目そのものは、どれを選んでも見本は変わらないので外す。
+    private struct TileKey: Equatable {
+        var tab: Tab
+        var options: ReelOptions
+        var sampleID: UUID?
+    }
+
+    private var tileSample: Slice? { chosen.last ?? store.slices.last }
+
+    private var tileKey: TileKey {
+        var o = options
+        o.speed = .normal
+        o.format = .gif
+        o.size = .tiny
+        o.aspect = .classic
+        switch tab {
+        case .colors: o.colors = .full
+        case .filter: o.filter = .none
+        case .date: o.stampStyle = .camcorder
+        case .range, .output: break
+        }
+        return TileKey(tab: tab, options: o, sampleID: tileSample?.id)
+    }
+
+    private func renderTiles() async {
+        try? await Task.sleep(nanoseconds: 150_000_000)
+        if Task.isCancelled { return }
+        guard let sample = tileSample else { return }
+        let source = ReelRenderer.Source(url: store.url(for: sample), date: sample.date)
+        let base = tileKey.options
+
+        var variants: [(String, ReelOptions)] = []
+        switch tab {
+        case .colors:
+            for item in ReelOptions.ColorDepth.allCases {
+                var o = base; o.colors = item
+                variants.append(("colors." + item.rawValue, o))
+            }
+        case .filter:
+            for item in ReelOptions.Filter.allCases {
+                var o = base; o.filter = item
+                variants.append(("filter." + item.rawValue, o))
+            }
+        case .date:
+            guard base.stampFormat != .none else { return }
+            for item in ReelOptions.StampStyle.allCases {
+                // 色の違いが見えるよう、見本だけ日付を大きく中央に置く
+                var o = base; o.stampStyle = item; o.stampLayout = .centerBig
+                variants.append(("stamp." + item.rawValue, o))
+            }
+        case .range, .output:
+            return
+        }
+
+        let work = Task.detached(priority: .userInitiated) { () -> [String: UIImage] in
+            var out: [String: UIImage] = [:]
+            for (key, o) in variants {
+                if Task.isCancelled { return [:] }
+                let renderer = ReelRenderer(sources: [source], options: o)
+                if let cg = renderer.frame(at: 0) { out[key] = UIImage(cgImage: cg) }
+            }
+            return out
+        }
+        let result = await withTaskCancellationHandler {
+            await work.value
+        } onCancel: {
+            work.cancel()
+        }
+        if Task.isCancelled { return }
+        tileImages.merge(result) { _, new in new }
     }
 
     // MARK: 範囲のえらび方
@@ -230,7 +388,7 @@ struct ReelStudioView: View {
                 .opacity(rendering ? 0.5 : 1)
             }
         }
-        .frame(height: 300)
+        .frame(height: 260)
         .overlay(alignment: .bottomTrailing) {
             if chosen.count > Self.previewLimit {
                 Text(L("プレビューは直近 %d コマ", Self.previewLimit))
@@ -403,5 +561,65 @@ private struct ExportedReelSheet: View {
         case .some(false): return L("保存できませんでした（写真へのアクセスを確認）")
         case .none: return L("写真に保存")
         }
+    }
+}
+
+/// 見本の絵で 1 つ選ぶタイルの並び（3 列）。絵がまだ無いときは名前だけの枠を出す。
+private struct TileGrid<Item: Identifiable & Equatable>: View {
+    let title: String
+    let items: [Item]
+    @Binding var selection: Item
+    let label: (Item) -> String
+    let image: (Item) -> UIImage?
+
+    private let columns = Array(repeating: GridItem(.flexible(), spacing: 10), count: 3)
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text(title)
+                .font(.caption.weight(.semibold))
+                .foregroundStyle(.secondary)
+            LazyVGrid(columns: columns, spacing: 12) {
+                ForEach(items) { item in
+                    let selected = item == selection
+                    Button {
+                        selection = item
+                    } label: {
+                        VStack(spacing: 6) {
+                            Color.clear
+                                .aspectRatio(3.0 / 4.0, contentMode: .fit)
+                                .overlay {
+                                    ZStack {
+                                        Theme.card
+                                        if let picture = image(item) {
+                                            Image(uiImage: picture)
+                                                .interpolation(.none)
+                                                .resizable()
+                                                .scaledToFill()
+                                        } else {
+                                            ProgressView().controlSize(.small)
+                                        }
+                                    }
+                                }
+                                .clipShape(.rect(cornerRadius: 12))
+                                .overlay {
+                                    RoundedRectangle(cornerRadius: 12)
+                                        .strokeBorder(selected ? Theme.paper : .clear, lineWidth: 3)
+                                }
+                            Text(label(item))
+                                .font(.system(size: 13, weight: selected ? .heavy : .semibold, design: .rounded))
+                                .foregroundStyle(selected ? Theme.paper : .white)
+                                .lineLimit(1)
+                                .minimumScaleFactor(0.75)
+                        }
+                        .contentShape(.rect)
+                    }
+                    .buttonStyle(.plain)
+                    .accessibilityLabel(label(item))
+                    .accessibilityAddTraits(selected ? .isSelected : [])
+                }
+            }
+        }
+        .padding(.horizontal, 20)
     }
 }
