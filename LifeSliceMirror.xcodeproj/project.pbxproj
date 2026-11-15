@@ -7,85 +7,86 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		05D75368F9FBDD14D4AADD3D /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C1716A7CF69414093FDF009 /* SettingsView.swift */; };
-		1A7C4F71B1EF6E90E7233718 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3ECE8291B19255608FDF1CA7 /* Localizable.strings */; };
-		1B0203F3A0FD56FDA81C4DB1 /* MirrorCaptureIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E1430E4BA839E37FAE10306 /* MirrorCaptureIntent.swift */; };
-		1B2FD378D5A6ADAFD3B8DA69 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3ECE8291B19255608FDF1CA7 /* Localizable.strings */; };
-		21D18DB5F46D1799C0A596AC /* LifeSliceWidgets.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 79C9CF9D61C7E7BEFD21A351 /* LifeSliceWidgets.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		2C17B3CFB37CB0A99B04CFCD /* CameraEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF0356A804A4EC1775D0D6BF /* CameraEngine.swift */; };
-		300519D062589A4E418A119D /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFEAD5E5D9FB3C1EB0877BF0 /* Theme.swift */; };
-		31961E9215E0B33F984D0BAF /* Prefs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22EAF16997480C0D97025F47 /* Prefs.swift */; };
-		4881FC1A9345C771B84B0CE0 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = F0729223EFE814925A995100 /* InfoPlist.strings */; };
-		4889D332B70D40561DB6659C /* SurpriseBuffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = F980ECE7D04CA10DDD926429 /* SurpriseBuffer.swift */; };
-		49F67E996B31B73A43952E5A /* ReelStudioView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FBF37DC9B5C62296C9B307B /* ReelStudioView.swift */; };
-		59126028B3F74CEADE92F5AC /* L10n.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0283683B9C6EC87582102F3A /* L10n.swift */; };
-		5A2950C58707D0C594D309DE /* FaceMark.swift in Sources */ = {isa = PBXBuildFile; fileRef = 104F99440B825106B0E5A99B /* FaceMark.swift */; };
-		5B432499BFB9570B5F8F74AF /* L10n.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0283683B9C6EC87582102F3A /* L10n.swift */; };
-		61B8EE4AD779466AD2BA0158 /* L10n.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0283683B9C6EC87582102F3A /* L10n.swift */; };
-		7028D23261C0C4DD39DF6BCF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4550E50775B47F895B9CB808 /* Assets.xcassets */; };
-		7840430B33DEBFB48AB5AD17 /* AppGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 441F4A10944A7D42653A0E16 /* AppGroup.swift */; };
-		7AE0CE54F99B918098A21722 /* ReelRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FA31714EDA6F04310DC99DB /* ReelRenderer.swift */; };
-		7C980DCB5AD6A4D2D2854BAD /* SliceDirector.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6DE4AAE006622D8D7E6D96F /* SliceDirector.swift */; };
-		8548B7F265D9AF19BD1C4272 /* CameraEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF0356A804A4EC1775D0D6BF /* CameraEngine.swift */; };
-		8676CC1B1707CEF121D29634 /* FaceMark.swift in Sources */ = {isa = PBXBuildFile; fileRef = 104F99440B825106B0E5A99B /* FaceMark.swift */; };
-		872C374DB86099E80F654149 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = F0729223EFE814925A995100 /* InfoPlist.strings */; };
-		9420754673C5E90F7155BC03 /* MirrorCaptureIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E1430E4BA839E37FAE10306 /* MirrorCaptureIntent.swift */; };
-		9DA9C0FF1DCAB1C390C2E77E /* Quantizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A7FBF88D32CE9A349886D47 /* Quantizer.swift */; };
-		A4E71C7A34720A15E02C8BAD /* ReelOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31448C1C7DB1457187B04DF0 /* ReelOptions.swift */; };
-		A524AEE1E1A7C583BBD66C2C /* GalleryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3A0F2F42ADC0DCB1B0C6B54 /* GalleryView.swift */; };
-		A96D66E265C49E85976DFE68 /* MirrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE25A8EAD5ED999F50A85235 /* MirrorView.swift */; };
-		AFB17723B2FE25F69F5BA016 /* AppGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 441F4A10944A7D42653A0E16 /* AppGroup.swift */; };
-		B8780EE4C52D0C73D5AB0C3A /* LifeSliceWidgets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34E48503AEB75C3C76013C2B /* LifeSliceWidgets.swift */; };
-		B8CB55EB0B72875CB7C49384 /* SliceStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F37B315DA843EAF5E879B63 /* SliceStore.swift */; };
-		BDE45212931021A18032F0E9 /* SurpriseBuffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = F980ECE7D04CA10DDD926429 /* SurpriseBuffer.swift */; };
-		C2964943B413D958CF66D189 /* StillnessDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A2735825DCBD1D7E397E72F /* StillnessDetector.swift */; };
-		C87C241325265C3772644866 /* AppGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 441F4A10944A7D42653A0E16 /* AppGroup.swift */; };
-		CAE32A6405B7EFAC1A7EAAA7 /* LifeSliceCapture.appex in Embed ExtensionKit Extensions */ = {isa = PBXBuildFile; fileRef = 33F5B95A450A2442CA9E0DA7 /* LifeSliceCapture.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		D4029213AB5BE2B612A577B2 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = F0729223EFE814925A995100 /* InfoPlist.strings */; };
-		D60064992EEF04B2AA746501 /* MirrorCaptureIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E1430E4BA839E37FAE10306 /* MirrorCaptureIntent.swift */; };
-		DC6AF4B57FA37FCABAE2383F /* FaceMark.swift in Sources */ = {isa = PBXBuildFile; fileRef = 104F99440B825106B0E5A99B /* FaceMark.swift */; };
-		E5F37CA68AE4D3FDCD9ED3A7 /* LifeSliceCaptureExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48EFB0BCA9C6F2DB72ABDCB1 /* LifeSliceCaptureExtension.swift */; };
-		ED3CF5DF727B224C0052B495 /* PhotoAlbum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AA1C402E5F4B299F20AE851 /* PhotoAlbum.swift */; };
-		F2950728634C6C4D715FDC35 /* LifeSliceMirrorApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57F67FBE3E4ED1624594E32F /* LifeSliceMirrorApp.swift */; };
-		FF0EF409A37E95F3CA8A84D3 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3ECE8291B19255608FDF1CA7 /* Localizable.strings */; };
+		0CEE862B624CA41117054E42 /* LifeSliceCaptureExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14E3D3D0DC50F446FFC3E91B /* LifeSliceCaptureExtension.swift */; };
+		1A109A70898D066CB2D68D21 /* L10n.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65C77C38D2E7D69DA4EAD15C /* L10n.swift */; };
+		1AA712EABAB34E7F59314AB1 /* MirrorCaptureIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BE373B00A9DC5F946668645 /* MirrorCaptureIntent.swift */; };
+		210B7A213ABC5CF93E3F0205 /* L10n.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65C77C38D2E7D69DA4EAD15C /* L10n.swift */; };
+		259787CDDF5AAF5392897C3B /* AppGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 525000A5709B559FCB56AC36 /* AppGroup.swift */; };
+		295BD020A2602E719A84AF0C /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = CF148B7A0CC431B5AF56A73C /* InfoPlist.strings */; };
+		2DBBA0721475C6575D299ADA /* ReelStudioView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BBD1AC5AEFE24D09A385022 /* ReelStudioView.swift */; };
+		32A55CB8759A09F8E974F5D0 /* SurpriseBuffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A61A3D5D3718DDD48E0C0979 /* SurpriseBuffer.swift */; };
+		3843EC1524418456C505EEDE /* LifeSliceWidgets.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = CEE4DBB13A60CC9A0A24642A /* LifeSliceWidgets.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		3DF6B5A0DEBD1CBF2A67C88D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E619E4F3CBC8FA7AF00AC4ED /* Assets.xcassets */; };
+		3F9E39A2CC000EB095224399 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = CF148B7A0CC431B5AF56A73C /* InfoPlist.strings */; };
+		4145CC94E7E838BB75D757B1 /* AppGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 525000A5709B559FCB56AC36 /* AppGroup.swift */; };
+		4A55F4C33B8D2073FADE7B1F /* SliceDirector.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA487929BA2641FBF4600D78 /* SliceDirector.swift */; };
+		51428C049F0DE3DD1B4306F8 /* MirrorMark.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF489583FBB31B2E12B37406 /* MirrorMark.swift */; };
+		532DB6008CEFC395EDBF8F3F /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 8A825C0BF158BCBE80E64234 /* Localizable.strings */; };
+		58A55DC25EFE124B2471A0C9 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 8A825C0BF158BCBE80E64234 /* Localizable.strings */; };
+		5A912FAEB1172F5F6F99E7BB /* LifeSliceWidgets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 311AFBA6FE23612E23769A17 /* LifeSliceWidgets.swift */; };
+		6AEF7CD4FF00D02ABAFE831C /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = CF148B7A0CC431B5AF56A73C /* InfoPlist.strings */; };
+		6C0E34B162AFC395BA89B47C /* Prefs.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5F50C6DFF1E01C2470DBE9E /* Prefs.swift */; };
+		6F8B8B1D8EFC8C0F8AA1F715 /* LifeSliceCapture.appex in Embed ExtensionKit Extensions */ = {isa = PBXBuildFile; fileRef = B4B20ADA929F7FDF5491BF84 /* LifeSliceCapture.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		7850389E99581733E36152D8 /* Quantizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D49AA717F88AEA48A9C90A8 /* Quantizer.swift */; };
+		7BDC954D9D477CB18B88DC82 /* MirrorMark.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF489583FBB31B2E12B37406 /* MirrorMark.swift */; };
+		8C45D2331EF092425915CF87 /* MirrorCaptureIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BE373B00A9DC5F946668645 /* MirrorCaptureIntent.swift */; };
+		91A7827AD827F27AFCB5DC55 /* PhotoAlbum.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3B519F4D7DC854B8088E2A3 /* PhotoAlbum.swift */; };
+		A7232BF57E071FDBA2EA99A2 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 8A825C0BF158BCBE80E64234 /* Localizable.strings */; };
+		B8C0EAA2D23531DF9EC66175 /* MirrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A45E7DD801EF7AF96F47F360 /* MirrorView.swift */; };
+		C26314405D8BDBFEAB88C452 /* CameraEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84FC6F3756933A004E03DE99 /* CameraEngine.swift */; };
+		C265A4AC388F1042551541CB /* CameraEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84FC6F3756933A004E03DE99 /* CameraEngine.swift */; };
+		C4A62DF71052C25CF11BF432 /* MirrorMark.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF489583FBB31B2E12B37406 /* MirrorMark.swift */; };
+		C5FF1B5573567C75D2A6CCCD /* LifeSliceMirrorApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC3E1A8D5276208295768B8B /* LifeSliceMirrorApp.swift */; };
+		C7CC1DB8CAA1A093DA8D864E /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 658047094030FADD76C9EFDE /* Theme.swift */; };
+		C8D0C1643CE7800C4C0EC8DB /* SurpriseBuffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A61A3D5D3718DDD48E0C0979 /* SurpriseBuffer.swift */; };
+		CB245418040B56324F8D146C /* StillnessDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = D230D3B31C321DFE8B3681CC /* StillnessDetector.swift */; };
+		CB7721F5320F0F93A56601DD /* GalleryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42B4A242D032320BD1EB941E /* GalleryView.swift */; };
+		D5E1D4C511A88A465926B64D /* ReelRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA741407D179A2D1006291B9 /* ReelRenderer.swift */; };
+		D7B3BC67D1B67EA9A28EB318 /* MirrorCaptureIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BE373B00A9DC5F946668645 /* MirrorCaptureIntent.swift */; };
+		D7DCE6F73E40617311B335EE /* AppGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 525000A5709B559FCB56AC36 /* AppGroup.swift */; };
+		DFFFE4E89548672F56AA9715 /* SliceStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C70DE37FEA3969CDBFF33A8 /* SliceStore.swift */; };
+		E063B5A6DB69D2752C61ACA0 /* L10n.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65C77C38D2E7D69DA4EAD15C /* L10n.swift */; };
+		F12644A3079A0E1391971511 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1ACA9F2FBAEF58819E6AD389 /* Assets.xcassets */; };
+		FA1768468EE300E5BA2C3938 /* ReelOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F06083C8CB14EEA9061D0B3A /* ReelOptions.swift */; };
+		FEDA23B32A8DCB451DE965FD /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15303384B978D5C7C57F89BB /* SettingsView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		24E23E3C86913FB7850BD657 /* PBXContainerItemProxy */ = {
+		1AC9E325A0C285791C2A3410 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = F66D272A151FE31D6B34A15E /* Project object */;
+			containerPortal = B2BE3B8628036CCBCA1EA835 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 24CC6E3DD2EA388561E7CCA8;
-			remoteInfo = LifeSliceCapture;
-		};
-		311D10743F3F0336668F8FCB /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = F66D272A151FE31D6B34A15E /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 97CC3B67E7B99C5E0D12DB1A;
+			remoteGlobalIDString = 557EDD22CA19FE856896B029;
 			remoteInfo = LifeSliceWidgets;
+		};
+		A3D138229166EDF7DF67E0C1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B2BE3B8628036CCBCA1EA835 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 06533A358FFD00CABC4D1146;
+			remoteInfo = LifeSliceCapture;
 		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		3362EBFC3FBA264DA8A03C74 /* Embed ExtensionKit Extensions */ = {
+		03BDE98EE3306F8B43FA8413 /* Embed ExtensionKit Extensions */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "$(EXTENSIONS_FOLDER_PATH)";
 			dstSubfolderSpec = 16;
 			files = (
-				CAE32A6405B7EFAC1A7EAAA7 /* LifeSliceCapture.appex in Embed ExtensionKit Extensions */,
+				6F8B8B1D8EFC8C0F8AA1F715 /* LifeSliceCapture.appex in Embed ExtensionKit Extensions */,
 			);
 			name = "Embed ExtensionKit Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		EFE7B51C385F3328C4BF97DF /* Embed Foundation Extensions */ = {
+		D48C1DE26766A730CC0C4CCB /* Embed Foundation Extensions */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
-				21D18DB5F46D1799C0A596AC /* LifeSliceWidgets.appex in Embed Foundation Extensions */,
+				3843EC1524418456C505EEDE /* LifeSliceWidgets.appex in Embed Foundation Extensions */,
 			);
 			name = "Embed Foundation Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -93,60 +94,61 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		0283683B9C6EC87582102F3A /* L10n.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = L10n.swift; sourceTree = "<group>"; };
-		02FD01B1C30E29D2CD1A72C9 /* ja */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Localizable.strings; sourceTree = "<group>"; };
-		104F99440B825106B0E5A99B /* FaceMark.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = FaceMark.swift; sourceTree = "<group>"; };
-		1693333FB366A42C3ECE6A07 /* en */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		1A2735825DCBD1D7E397E72F /* StillnessDetector.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = StillnessDetector.swift; sourceTree = "<group>"; };
-		1F37B315DA843EAF5E879B63 /* SliceStore.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SliceStore.swift; sourceTree = "<group>"; };
-		22EAF16997480C0D97025F47 /* Prefs.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Prefs.swift; sourceTree = "<group>"; };
-		2B07C477E34A74275AFE11B4 /* en */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
-		2F10A340252E4B8744329399 /* Signing.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = Signing.xcconfig; sourceTree = "<group>"; };
-		31448C1C7DB1457187B04DF0 /* ReelOptions.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ReelOptions.swift; sourceTree = "<group>"; };
-		32E9D70BD1B82DF61467FFAC /* generate_project.rb */ = {isa = PBXFileReference; includeInIndex = 1; path = generate_project.rb; sourceTree = "<group>"; };
-		33F5B95A450A2442CA9E0DA7 /* LifeSliceCapture.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.extensionkit-extension"; includeInIndex = 0; path = LifeSliceCapture.appex; sourceTree = BUILT_PRODUCTS_DIR; };
-		34E48503AEB75C3C76013C2B /* LifeSliceWidgets.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LifeSliceWidgets.swift; sourceTree = "<group>"; };
-		3AA1C402E5F4B299F20AE851 /* PhotoAlbum.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PhotoAlbum.swift; sourceTree = "<group>"; };
-		441F4A10944A7D42653A0E16 /* AppGroup.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AppGroup.swift; sourceTree = "<group>"; };
-		4550E50775B47F895B9CB808 /* Assets.xcassets */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		48EFB0BCA9C6F2DB72ABDCB1 /* LifeSliceCaptureExtension.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LifeSliceCaptureExtension.swift; sourceTree = "<group>"; };
-		57F67FBE3E4ED1624594E32F /* LifeSliceMirrorApp.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LifeSliceMirrorApp.swift; sourceTree = "<group>"; };
-		5C1716A7CF69414093FDF009 /* SettingsView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
-		66E4447B9A552D8645F52CA7 /* Widgets-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Widgets-Info.plist"; sourceTree = "<group>"; };
-		6E1430E4BA839E37FAE10306 /* MirrorCaptureIntent.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = MirrorCaptureIntent.swift; sourceTree = "<group>"; };
-		6FBF37DC9B5C62296C9B307B /* ReelStudioView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ReelStudioView.swift; sourceTree = "<group>"; };
-		79C9CF9D61C7E7BEFD21A351 /* LifeSliceWidgets.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = LifeSliceWidgets.appex; sourceTree = BUILT_PRODUCTS_DIR; };
-		7A3989D4265A2090377C14CF /* ja */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		8A7FBF88D32CE9A349886D47 /* Quantizer.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Quantizer.swift; sourceTree = "<group>"; };
-		9FA31714EDA6F04310DC99DB /* ReelRenderer.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ReelRenderer.swift; sourceTree = "<group>"; };
-		A3F7E22F532E1FDEC9463E51 /* Capture-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Capture-Info.plist"; sourceTree = "<group>"; };
-		C3A0F2F42ADC0DCB1B0C6B54 /* GalleryView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = GalleryView.swift; sourceTree = "<group>"; };
-		C6DE4AAE006622D8D7E6D96F /* SliceDirector.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SliceDirector.swift; sourceTree = "<group>"; };
-		D2BC910FCEDC03240AA14599 /* App.entitlements */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.entitlements; path = App.entitlements; sourceTree = "<group>"; };
-		D3DA30740B43A0B8A9BF22C0 /* Widgets.entitlements */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.entitlements; path = Widgets.entitlements; sourceTree = "<group>"; };
-		DE25A8EAD5ED999F50A85235 /* MirrorView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = MirrorView.swift; sourceTree = "<group>"; };
-		EF0356A804A4EC1775D0D6BF /* CameraEngine.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = CameraEngine.swift; sourceTree = "<group>"; };
-		EFEAD5E5D9FB3C1EB0877BF0 /* Theme.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
-		F980ECE7D04CA10DDD926429 /* SurpriseBuffer.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SurpriseBuffer.swift; sourceTree = "<group>"; };
-		FD18FFD7161164C4E49D501E /* LifeSliceMirror.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LifeSliceMirror.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		14E3D3D0DC50F446FFC3E91B /* LifeSliceCaptureExtension.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LifeSliceCaptureExtension.swift; sourceTree = "<group>"; };
+		15303384B978D5C7C57F89BB /* SettingsView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		1A9AF9DEC8030C6417DDF571 /* ja */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Localizable.strings; sourceTree = "<group>"; };
+		1ACA9F2FBAEF58819E6AD389 /* Assets.xcassets */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		2C70DE37FEA3969CDBFF33A8 /* SliceStore.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SliceStore.swift; sourceTree = "<group>"; };
+		311AFBA6FE23612E23769A17 /* LifeSliceWidgets.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LifeSliceWidgets.swift; sourceTree = "<group>"; };
+		3D49AA717F88AEA48A9C90A8 /* Quantizer.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Quantizer.swift; sourceTree = "<group>"; };
+		42B4A242D032320BD1EB941E /* GalleryView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = GalleryView.swift; sourceTree = "<group>"; };
+		4EC8BE936821308469CE7A1A /* en */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		525000A5709B559FCB56AC36 /* AppGroup.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AppGroup.swift; sourceTree = "<group>"; };
+		658047094030FADD76C9EFDE /* Theme.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
+		65C77C38D2E7D69DA4EAD15C /* L10n.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = L10n.swift; sourceTree = "<group>"; };
+		6ED26B64C4EE90279BFE4F37 /* Capture-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Capture-Info.plist"; sourceTree = "<group>"; };
+		7BBD1AC5AEFE24D09A385022 /* ReelStudioView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ReelStudioView.swift; sourceTree = "<group>"; };
+		7E14CB1DBD754FF8DCBB73F2 /* generate_project.rb */ = {isa = PBXFileReference; includeInIndex = 1; path = generate_project.rb; sourceTree = "<group>"; };
+		84FC6F3756933A004E03DE99 /* CameraEngine.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = CameraEngine.swift; sourceTree = "<group>"; };
+		8BE373B00A9DC5F946668645 /* MirrorCaptureIntent.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = MirrorCaptureIntent.swift; sourceTree = "<group>"; };
+		A0AF41ABDF75A8BF0AD8C8AC /* ja */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		A45E7DD801EF7AF96F47F360 /* MirrorView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = MirrorView.swift; sourceTree = "<group>"; };
+		A5F50C6DFF1E01C2470DBE9E /* Prefs.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Prefs.swift; sourceTree = "<group>"; };
+		A61A3D5D3718DDD48E0C0979 /* SurpriseBuffer.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SurpriseBuffer.swift; sourceTree = "<group>"; };
+		AA487929BA2641FBF4600D78 /* SliceDirector.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SliceDirector.swift; sourceTree = "<group>"; };
+		AA741407D179A2D1006291B9 /* ReelRenderer.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ReelRenderer.swift; sourceTree = "<group>"; };
+		AB83EAE9D8C3E3C4F2A7ED98 /* Signing.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = Signing.xcconfig; sourceTree = "<group>"; };
+		AF489583FBB31B2E12B37406 /* MirrorMark.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = MirrorMark.swift; sourceTree = "<group>"; };
+		B0C0A27E301E0850A523B745 /* Widgets.entitlements */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.entitlements; path = Widgets.entitlements; sourceTree = "<group>"; };
+		B4B20ADA929F7FDF5491BF84 /* LifeSliceCapture.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.extensionkit-extension"; includeInIndex = 0; path = LifeSliceCapture.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		CEE4DBB13A60CC9A0A24642A /* LifeSliceWidgets.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = LifeSliceWidgets.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		CEEA473F58DBFDE38367BE7D /* LifeSliceMirror.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LifeSliceMirror.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		D230D3B31C321DFE8B3681CC /* StillnessDetector.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = StillnessDetector.swift; sourceTree = "<group>"; };
+		D255BA349C1BB5C742DF8AAF /* App.entitlements */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.entitlements; path = App.entitlements; sourceTree = "<group>"; };
+		E3B519F4D7DC854B8088E2A3 /* PhotoAlbum.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PhotoAlbum.swift; sourceTree = "<group>"; };
+		E619E4F3CBC8FA7AF00AC4ED /* Assets.xcassets */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		EC3E1A8D5276208295768B8B /* LifeSliceMirrorApp.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LifeSliceMirrorApp.swift; sourceTree = "<group>"; };
+		EF1B6FB8727FFF071AFA6E91 /* Widgets-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Widgets-Info.plist"; sourceTree = "<group>"; };
+		F06083C8CB14EEA9061D0B3A /* ReelOptions.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ReelOptions.swift; sourceTree = "<group>"; };
+		FAFE2AEFE0035F71301F3273 /* en */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		4A2E00EF640F303960FA49C2 /* Frameworks */ = {
+		85A7F4C63C47EEED31A9AF7E /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		88162497E6842B3CD2606648 /* Frameworks */ = {
+		C15462C2C7F6A7A9EF657956 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		9EAE47B850AB618D730156BB /* Frameworks */ = {
+		E1676DD85799195E053A604B /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -156,162 +158,163 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		126A23BF55D0A84D3E129722 /* Store */ = {
+		159F055D50AFA2EFD3AA8CDC /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				3AA1C402E5F4B299F20AE851 /* PhotoAlbum.swift */,
-				22EAF16997480C0D97025F47 /* Prefs.swift */,
-				C6DE4AAE006622D8D7E6D96F /* SliceDirector.swift */,
-				1F37B315DA843EAF5E879B63 /* SliceStore.swift */,
+				CEEA473F58DBFDE38367BE7D /* LifeSliceMirror.app */,
+				CEE4DBB13A60CC9A0A24642A /* LifeSliceWidgets.appex */,
+				B4B20ADA929F7FDF5491BF84 /* LifeSliceCapture.appex */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		1B1FA223B0110B4002A8265B /* Store */ = {
+			isa = PBXGroup;
+			children = (
+				E3B519F4D7DC854B8088E2A3 /* PhotoAlbum.swift */,
+				A5F50C6DFF1E01C2470DBE9E /* Prefs.swift */,
+				AA487929BA2641FBF4600D78 /* SliceDirector.swift */,
+				2C70DE37FEA3969CDBFF33A8 /* SliceStore.swift */,
 			);
 			name = Store;
 			path = Store;
 			sourceTree = "<group>";
 		};
-		1A3FD8D993978CF2720CD627 /* Views */ = {
+		1EBFF929180602ACE109C356 /* Widgets */ = {
 			isa = PBXGroup;
 			children = (
-				C3A0F2F42ADC0DCB1B0C6B54 /* GalleryView.swift */,
-				DE25A8EAD5ED999F50A85235 /* MirrorView.swift */,
-				6FBF37DC9B5C62296C9B307B /* ReelStudioView.swift */,
-				5C1716A7CF69414093FDF009 /* SettingsView.swift */,
+				E619E4F3CBC8FA7AF00AC4ED /* Assets.xcassets */,
+				311AFBA6FE23612E23769A17 /* LifeSliceWidgets.swift */,
 			);
-			name = Views;
-			path = Views;
+			name = Widgets;
+			path = Widgets;
 			sourceTree = "<group>";
 		};
-		25810F78395B5A059F4EEA37 /* Reel */ = {
+		29A5EDC7DDE2E571B02257CA /* App */ = {
 			isa = PBXGroup;
 			children = (
-				8A7FBF88D32CE9A349886D47 /* Quantizer.swift */,
-				31448C1C7DB1457187B04DF0 /* ReelOptions.swift */,
-				9FA31714EDA6F04310DC99DB /* ReelRenderer.swift */,
+				1ACA9F2FBAEF58819E6AD389 /* Assets.xcassets */,
+				EC3E1A8D5276208295768B8B /* LifeSliceMirrorApp.swift */,
+				658047094030FADD76C9EFDE /* Theme.swift */,
 			);
-			name = Reel;
-			path = Reel;
+			name = App;
+			path = App;
 			sourceTree = "<group>";
 		};
-		3D2B9786669D440265E11F77 /* Products */ = {
+		4FEA22889D79DF14FD289903 /* Camera */ = {
 			isa = PBXGroup;
 			children = (
-				FD18FFD7161164C4E49D501E /* LifeSliceMirror.app */,
-				79C9CF9D61C7E7BEFD21A351 /* LifeSliceWidgets.appex */,
-				33F5B95A450A2442CA9E0DA7 /* LifeSliceCapture.appex */,
+				84FC6F3756933A004E03DE99 /* CameraEngine.swift */,
+				D230D3B31C321DFE8B3681CC /* StillnessDetector.swift */,
+				A61A3D5D3718DDD48E0C0979 /* SurpriseBuffer.swift */,
 			);
-			name = Products;
+			name = Camera;
+			path = Camera;
 			sourceTree = "<group>";
 		};
-		58F583D0027E218B5154BF1E /* Frameworks */ = {
+		513D0DF5EAF45E20E7F156F6 /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				525000A5709B559FCB56AC36 /* AppGroup.swift */,
+				65C77C38D2E7D69DA4EAD15C /* L10n.swift */,
+				8BE373B00A9DC5F946668645 /* MirrorCaptureIntent.swift */,
+				AF489583FBB31B2E12B37406 /* MirrorMark.swift */,
+			);
+			name = Shared;
+			path = Shared;
+			sourceTree = "<group>";
+		};
+		63E6BAA1353AFE748F3682EE /* Config */ = {
+			isa = PBXGroup;
+			children = (
+				D255BA349C1BB5C742DF8AAF /* App.entitlements */,
+				6ED26B64C4EE90279BFE4F37 /* Capture-Info.plist */,
+				AB83EAE9D8C3E3C4F2A7ED98 /* Signing.xcconfig */,
+				EF1B6FB8727FFF071AFA6E91 /* Widgets-Info.plist */,
+				B0C0A27E301E0850A523B745 /* Widgets.entitlements */,
+				7E14CB1DBD754FF8DCBB73F2 /* generate_project.rb */,
+			);
+			name = Config;
+			path = Config;
+			sourceTree = "<group>";
+		};
+		712490A9EBDA9DCECA7CE34E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		672F0C63E9C77566EAFFE85B /* Config */ = {
+		9BA4E2B04734B91ADD118DBF = {
 			isa = PBXGroup;
 			children = (
-				D2BC910FCEDC03240AA14599 /* App.entitlements */,
-				A3F7E22F532E1FDEC9463E51 /* Capture-Info.plist */,
-				2F10A340252E4B8744329399 /* Signing.xcconfig */,
-				66E4447B9A552D8645F52CA7 /* Widgets-Info.plist */,
-				D3DA30740B43A0B8A9BF22C0 /* Widgets.entitlements */,
-				32E9D70BD1B82DF61467FFAC /* generate_project.rb */,
+				159F055D50AFA2EFD3AA8CDC /* Products */,
+				712490A9EBDA9DCECA7CE34E /* Frameworks */,
+				29A5EDC7DDE2E571B02257CA /* App */,
+				513D0DF5EAF45E20E7F156F6 /* Shared */,
+				4FEA22889D79DF14FD289903 /* Camera */,
+				1B1FA223B0110B4002A8265B /* Store */,
+				B80D882247BFC4C4AD0A0181 /* Reel */,
+				DA586745F06DB4C20CB18B41 /* Views */,
+				1EBFF929180602ACE109C356 /* Widgets */,
+				D94A1FD68D7560E93DFB1526 /* CaptureExtension */,
+				63E6BAA1353AFE748F3682EE /* Config */,
+				F29902D85DE2D035FA4E802F /* Localization */,
 			);
-			name = Config;
-			path = Config;
 			sourceTree = "<group>";
 		};
-		752CC710EA5B85B75D72DCA2 /* Camera */ = {
+		B80D882247BFC4C4AD0A0181 /* Reel */ = {
 			isa = PBXGroup;
 			children = (
-				EF0356A804A4EC1775D0D6BF /* CameraEngine.swift */,
-				1A2735825DCBD1D7E397E72F /* StillnessDetector.swift */,
-				F980ECE7D04CA10DDD926429 /* SurpriseBuffer.swift */,
+				3D49AA717F88AEA48A9C90A8 /* Quantizer.swift */,
+				F06083C8CB14EEA9061D0B3A /* ReelOptions.swift */,
+				AA741407D179A2D1006291B9 /* ReelRenderer.swift */,
 			);
-			name = Camera;
-			path = Camera;
+			name = Reel;
+			path = Reel;
 			sourceTree = "<group>";
 		};
-		787DF24BF1ED5B891601C245 /* Widgets */ = {
+		D94A1FD68D7560E93DFB1526 /* CaptureExtension */ = {
 			isa = PBXGroup;
 			children = (
-				34E48503AEB75C3C76013C2B /* LifeSliceWidgets.swift */,
-			);
-			name = Widgets;
-			path = Widgets;
-			sourceTree = "<group>";
-		};
-		7D65A294178D8BD26D74BDC2 /* CaptureExtension */ = {
-			isa = PBXGroup;
-			children = (
-				48EFB0BCA9C6F2DB72ABDCB1 /* LifeSliceCaptureExtension.swift */,
+				14E3D3D0DC50F446FFC3E91B /* LifeSliceCaptureExtension.swift */,
 			);
 			name = CaptureExtension;
 			path = CaptureExtension;
 			sourceTree = "<group>";
 		};
-		D066587FCC742E213642D022 /* Shared */ = {
+		DA586745F06DB4C20CB18B41 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				441F4A10944A7D42653A0E16 /* AppGroup.swift */,
-				104F99440B825106B0E5A99B /* FaceMark.swift */,
-				0283683B9C6EC87582102F3A /* L10n.swift */,
-				6E1430E4BA839E37FAE10306 /* MirrorCaptureIntent.swift */,
+				42B4A242D032320BD1EB941E /* GalleryView.swift */,
+				A45E7DD801EF7AF96F47F360 /* MirrorView.swift */,
+				7BBD1AC5AEFE24D09A385022 /* ReelStudioView.swift */,
+				15303384B978D5C7C57F89BB /* SettingsView.swift */,
 			);
-			name = Shared;
-			path = Shared;
+			name = Views;
+			path = Views;
 			sourceTree = "<group>";
 		};
-		D642885B471D0683399CAF82 = {
+		F29902D85DE2D035FA4E802F /* Localization */ = {
 			isa = PBXGroup;
 			children = (
-				3D2B9786669D440265E11F77 /* Products */,
-				58F583D0027E218B5154BF1E /* Frameworks */,
-				E62C4CDDE5F4AFA6A3BADC1F /* App */,
-				D066587FCC742E213642D022 /* Shared */,
-				752CC710EA5B85B75D72DCA2 /* Camera */,
-				126A23BF55D0A84D3E129722 /* Store */,
-				25810F78395B5A059F4EEA37 /* Reel */,
-				1A3FD8D993978CF2720CD627 /* Views */,
-				787DF24BF1ED5B891601C245 /* Widgets */,
-				7D65A294178D8BD26D74BDC2 /* CaptureExtension */,
-				672F0C63E9C77566EAFFE85B /* Config */,
-				DE88D7E7DE231F7EF97DD03D /* Localization */,
-			);
-			sourceTree = "<group>";
-		};
-		DE88D7E7DE231F7EF97DD03D /* Localization */ = {
-			isa = PBXGroup;
-			children = (
-				3ECE8291B19255608FDF1CA7 /* Localizable.strings */,
-				F0729223EFE814925A995100 /* InfoPlist.strings */,
+				8A825C0BF158BCBE80E64234 /* Localizable.strings */,
+				CF148B7A0CC431B5AF56A73C /* InfoPlist.strings */,
 			);
 			name = Localization;
 			path = Config/Localization;
 			sourceTree = "<group>";
 		};
-		E62C4CDDE5F4AFA6A3BADC1F /* App */ = {
-			isa = PBXGroup;
-			children = (
-				4550E50775B47F895B9CB808 /* Assets.xcassets */,
-				57F67FBE3E4ED1624594E32F /* LifeSliceMirrorApp.swift */,
-				EFEAD5E5D9FB3C1EB0877BF0 /* Theme.swift */,
-			);
-			name = App;
-			path = App;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		24CC6E3DD2EA388561E7CCA8 /* LifeSliceCapture */ = {
+		06533A358FFD00CABC4D1146 /* LifeSliceCapture */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = D0AA5962654501ACF3997C64 /* Build configuration list for PBXNativeTarget "LifeSliceCapture" */;
+			buildConfigurationList = BA003FEFBC54436CE7BBC712 /* Build configuration list for PBXNativeTarget "LifeSliceCapture" */;
 			buildPhases = (
-				67815794FDA9D5935A5D16E7 /* Sources */,
-				9EAE47B850AB618D730156BB /* Frameworks */,
-				129CDC947A3DE4D4C8E63067 /* Resources */,
+				261330764A91455280C0ABA3 /* Sources */,
+				E1676DD85799195E053A604B /* Frameworks */,
+				6BED97808CBFAA1BE76EA913 /* Resources */,
 			);
 			buildRules = (
 			);
@@ -319,16 +322,16 @@
 			);
 			name = LifeSliceCapture;
 			productName = LifeSliceCapture;
-			productReference = 33F5B95A450A2442CA9E0DA7 /* LifeSliceCapture.appex */;
+			productReference = B4B20ADA929F7FDF5491BF84 /* LifeSliceCapture.appex */;
 			productType = "com.apple.product-type.extensionkit-extension";
 		};
-		97CC3B67E7B99C5E0D12DB1A /* LifeSliceWidgets */ = {
+		557EDD22CA19FE856896B029 /* LifeSliceWidgets */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = ECCE08F5525542EE5DE61041 /* Build configuration list for PBXNativeTarget "LifeSliceWidgets" */;
+			buildConfigurationList = AB0F1078E6B312DAE4DA56C8 /* Build configuration list for PBXNativeTarget "LifeSliceWidgets" */;
 			buildPhases = (
-				3231CACDF02388A121E05F3C /* Sources */,
-				88162497E6842B3CD2606648 /* Frameworks */,
-				98EAA0F24F3314C93F262AD9 /* Resources */,
+				EF09DCDA292C6DC88013F3C4 /* Sources */,
+				85A7F4C63C47EEED31A9AF7E /* Frameworks */,
+				BE915BDE14A48B28498A31A5 /* Resources */,
 			);
 			buildRules = (
 			);
@@ -336,40 +339,40 @@
 			);
 			name = LifeSliceWidgets;
 			productName = LifeSliceWidgets;
-			productReference = 79C9CF9D61C7E7BEFD21A351 /* LifeSliceWidgets.appex */;
+			productReference = CEE4DBB13A60CC9A0A24642A /* LifeSliceWidgets.appex */;
 			productType = "com.apple.product-type.app-extension";
 		};
-		F0951C166B92719DEDF697AB /* LifeSliceMirror */ = {
+		5CC80B14B08B94BE2970D22B /* LifeSliceMirror */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 90D05B4CEC8F3D62F7A72CB9 /* Build configuration list for PBXNativeTarget "LifeSliceMirror" */;
+			buildConfigurationList = CD0CAAA0CCD2590D6A36895A /* Build configuration list for PBXNativeTarget "LifeSliceMirror" */;
 			buildPhases = (
-				C8BFC7DE65164ADC05908FC6 /* Sources */,
-				4A2E00EF640F303960FA49C2 /* Frameworks */,
-				810A3F1C827C135A145243C8 /* Resources */,
-				EFE7B51C385F3328C4BF97DF /* Embed Foundation Extensions */,
-				3362EBFC3FBA264DA8A03C74 /* Embed ExtensionKit Extensions */,
+				9A6EA79BD09DB103F2D14C20 /* Sources */,
+				C15462C2C7F6A7A9EF657956 /* Frameworks */,
+				B4A3F7DA29FA2D4882644C4E /* Resources */,
+				D48C1DE26766A730CC0C4CCB /* Embed Foundation Extensions */,
+				03BDE98EE3306F8B43FA8413 /* Embed ExtensionKit Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				47CF75BDD9966A37A42DA9D0 /* PBXTargetDependency */,
-				CF43BC64E9E358B2F5E09722 /* PBXTargetDependency */,
+				A3567651A72AE6A7BAE0D3B9 /* PBXTargetDependency */,
+				558F125E1539C14255DD6495 /* PBXTargetDependency */,
 			);
 			name = LifeSliceMirror;
 			productName = LifeSliceMirror;
-			productReference = FD18FFD7161164C4E49D501E /* LifeSliceMirror.app */;
+			productReference = CEEA473F58DBFDE38367BE7D /* LifeSliceMirror.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
-		F66D272A151FE31D6B34A15E /* Project object */ = {
+		B2BE3B8628036CCBCA1EA835 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 2600;
 				LastUpgradeCheck = 2600;
 			};
-			buildConfigurationList = 22AB6D213E283EA9ADDBA54E /* Build configuration list for PBXProject "LifeSliceMirror" */;
+			buildConfigurationList = C23012E74FB7534A68BBD7D2 /* Build configuration list for PBXProject "LifeSliceMirror" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -378,137 +381,138 @@
 				ja,
 				Base,
 			);
-			mainGroup = D642885B471D0683399CAF82;
+			mainGroup = 9BA4E2B04734B91ADD118DBF;
 			minimizedProjectReferenceProxies = 0;
 			preferredProjectObjectVersion = 100;
-			productRefGroup = 3D2B9786669D440265E11F77 /* Products */;
+			productRefGroup = 159F055D50AFA2EFD3AA8CDC /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				F0951C166B92719DEDF697AB /* LifeSliceMirror */,
-				97CC3B67E7B99C5E0D12DB1A /* LifeSliceWidgets */,
-				24CC6E3DD2EA388561E7CCA8 /* LifeSliceCapture */,
+				5CC80B14B08B94BE2970D22B /* LifeSliceMirror */,
+				557EDD22CA19FE856896B029 /* LifeSliceWidgets */,
+				06533A358FFD00CABC4D1146 /* LifeSliceCapture */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		129CDC947A3DE4D4C8E63067 /* Resources */ = {
+		6BED97808CBFAA1BE76EA913 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1A7C4F71B1EF6E90E7233718 /* Localizable.strings in Resources */,
-				4881FC1A9345C771B84B0CE0 /* InfoPlist.strings in Resources */,
+				532DB6008CEFC395EDBF8F3F /* Localizable.strings in Resources */,
+				295BD020A2602E719A84AF0C /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		810A3F1C827C135A145243C8 /* Resources */ = {
+		B4A3F7DA29FA2D4882644C4E /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7028D23261C0C4DD39DF6BCF /* Assets.xcassets in Resources */,
-				FF0EF409A37E95F3CA8A84D3 /* Localizable.strings in Resources */,
-				D4029213AB5BE2B612A577B2 /* InfoPlist.strings in Resources */,
+				F12644A3079A0E1391971511 /* Assets.xcassets in Resources */,
+				58A55DC25EFE124B2471A0C9 /* Localizable.strings in Resources */,
+				3F9E39A2CC000EB095224399 /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		98EAA0F24F3314C93F262AD9 /* Resources */ = {
+		BE915BDE14A48B28498A31A5 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1B2FD378D5A6ADAFD3B8DA69 /* Localizable.strings in Resources */,
-				872C374DB86099E80F654149 /* InfoPlist.strings in Resources */,
+				3DF6B5A0DEBD1CBF2A67C88D /* Assets.xcassets in Resources */,
+				A7232BF57E071FDBA2EA99A2 /* Localizable.strings in Resources */,
+				6AEF7CD4FF00D02ABAFE831C /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		3231CACDF02388A121E05F3C /* Sources */ = {
+		261330764A91455280C0ABA3 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B8780EE4C52D0C73D5AB0C3A /* LifeSliceWidgets.swift in Sources */,
-				7840430B33DEBFB48AB5AD17 /* AppGroup.swift in Sources */,
-				8676CC1B1707CEF121D29634 /* FaceMark.swift in Sources */,
-				61B8EE4AD779466AD2BA0158 /* L10n.swift in Sources */,
-				1B0203F3A0FD56FDA81C4DB1 /* MirrorCaptureIntent.swift in Sources */,
+				0CEE862B624CA41117054E42 /* LifeSliceCaptureExtension.swift in Sources */,
+				4145CC94E7E838BB75D757B1 /* AppGroup.swift in Sources */,
+				210B7A213ABC5CF93E3F0205 /* L10n.swift in Sources */,
+				8C45D2331EF092425915CF87 /* MirrorCaptureIntent.swift in Sources */,
+				C4A62DF71052C25CF11BF432 /* MirrorMark.swift in Sources */,
+				C26314405D8BDBFEAB88C452 /* CameraEngine.swift in Sources */,
+				C8D0C1643CE7800C4C0EC8DB /* SurpriseBuffer.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		67815794FDA9D5935A5D16E7 /* Sources */ = {
+		9A6EA79BD09DB103F2D14C20 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E5F37CA68AE4D3FDCD9ED3A7 /* LifeSliceCaptureExtension.swift in Sources */,
-				C87C241325265C3772644866 /* AppGroup.swift in Sources */,
-				5A2950C58707D0C594D309DE /* FaceMark.swift in Sources */,
-				59126028B3F74CEADE92F5AC /* L10n.swift in Sources */,
-				D60064992EEF04B2AA746501 /* MirrorCaptureIntent.swift in Sources */,
-				8548B7F265D9AF19BD1C4272 /* CameraEngine.swift in Sources */,
-				BDE45212931021A18032F0E9 /* SurpriseBuffer.swift in Sources */,
+				C5FF1B5573567C75D2A6CCCD /* LifeSliceMirrorApp.swift in Sources */,
+				C7CC1DB8CAA1A093DA8D864E /* Theme.swift in Sources */,
+				D7DCE6F73E40617311B335EE /* AppGroup.swift in Sources */,
+				1A109A70898D066CB2D68D21 /* L10n.swift in Sources */,
+				1AA712EABAB34E7F59314AB1 /* MirrorCaptureIntent.swift in Sources */,
+				7BDC954D9D477CB18B88DC82 /* MirrorMark.swift in Sources */,
+				C265A4AC388F1042551541CB /* CameraEngine.swift in Sources */,
+				CB245418040B56324F8D146C /* StillnessDetector.swift in Sources */,
+				32A55CB8759A09F8E974F5D0 /* SurpriseBuffer.swift in Sources */,
+				91A7827AD827F27AFCB5DC55 /* PhotoAlbum.swift in Sources */,
+				6C0E34B162AFC395BA89B47C /* Prefs.swift in Sources */,
+				4A55F4C33B8D2073FADE7B1F /* SliceDirector.swift in Sources */,
+				DFFFE4E89548672F56AA9715 /* SliceStore.swift in Sources */,
+				7850389E99581733E36152D8 /* Quantizer.swift in Sources */,
+				FA1768468EE300E5BA2C3938 /* ReelOptions.swift in Sources */,
+				D5E1D4C511A88A465926B64D /* ReelRenderer.swift in Sources */,
+				CB7721F5320F0F93A56601DD /* GalleryView.swift in Sources */,
+				B8C0EAA2D23531DF9EC66175 /* MirrorView.swift in Sources */,
+				2DBBA0721475C6575D299ADA /* ReelStudioView.swift in Sources */,
+				FEDA23B32A8DCB451DE965FD /* SettingsView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		C8BFC7DE65164ADC05908FC6 /* Sources */ = {
+		EF09DCDA292C6DC88013F3C4 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F2950728634C6C4D715FDC35 /* LifeSliceMirrorApp.swift in Sources */,
-				300519D062589A4E418A119D /* Theme.swift in Sources */,
-				AFB17723B2FE25F69F5BA016 /* AppGroup.swift in Sources */,
-				DC6AF4B57FA37FCABAE2383F /* FaceMark.swift in Sources */,
-				5B432499BFB9570B5F8F74AF /* L10n.swift in Sources */,
-				9420754673C5E90F7155BC03 /* MirrorCaptureIntent.swift in Sources */,
-				2C17B3CFB37CB0A99B04CFCD /* CameraEngine.swift in Sources */,
-				C2964943B413D958CF66D189 /* StillnessDetector.swift in Sources */,
-				4889D332B70D40561DB6659C /* SurpriseBuffer.swift in Sources */,
-				ED3CF5DF727B224C0052B495 /* PhotoAlbum.swift in Sources */,
-				31961E9215E0B33F984D0BAF /* Prefs.swift in Sources */,
-				7C980DCB5AD6A4D2D2854BAD /* SliceDirector.swift in Sources */,
-				B8CB55EB0B72875CB7C49384 /* SliceStore.swift in Sources */,
-				9DA9C0FF1DCAB1C390C2E77E /* Quantizer.swift in Sources */,
-				A4E71C7A34720A15E02C8BAD /* ReelOptions.swift in Sources */,
-				7AE0CE54F99B918098A21722 /* ReelRenderer.swift in Sources */,
-				A524AEE1E1A7C583BBD66C2C /* GalleryView.swift in Sources */,
-				A96D66E265C49E85976DFE68 /* MirrorView.swift in Sources */,
-				49F67E996B31B73A43952E5A /* ReelStudioView.swift in Sources */,
-				05D75368F9FBDD14D4AADD3D /* SettingsView.swift in Sources */,
+				5A912FAEB1172F5F6F99E7BB /* LifeSliceWidgets.swift in Sources */,
+				259787CDDF5AAF5392897C3B /* AppGroup.swift in Sources */,
+				E063B5A6DB69D2752C61ACA0 /* L10n.swift in Sources */,
+				D7B3BC67D1B67EA9A28EB318 /* MirrorCaptureIntent.swift in Sources */,
+				51428C049F0DE3DD1B4306F8 /* MirrorMark.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		47CF75BDD9966A37A42DA9D0 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = LifeSliceWidgets;
-			target = 97CC3B67E7B99C5E0D12DB1A /* LifeSliceWidgets */;
-			targetProxy = 311D10743F3F0336668F8FCB /* PBXContainerItemProxy */;
-		};
-		CF43BC64E9E358B2F5E09722 /* PBXTargetDependency */ = {
+		558F125E1539C14255DD6495 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = LifeSliceCapture;
-			target = 24CC6E3DD2EA388561E7CCA8 /* LifeSliceCapture */;
-			targetProxy = 24E23E3C86913FB7850BD657 /* PBXContainerItemProxy */;
+			target = 06533A358FFD00CABC4D1146 /* LifeSliceCapture */;
+			targetProxy = A3D138229166EDF7DF67E0C1 /* PBXContainerItemProxy */;
+		};
+		A3567651A72AE6A7BAE0D3B9 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = LifeSliceWidgets;
+			target = 557EDD22CA19FE856896B029 /* LifeSliceWidgets */;
+			targetProxy = 1AC9E325A0C285791C2A3410 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		3ECE8291B19255608FDF1CA7 /* Localizable.strings */ = {
+		8A825C0BF158BCBE80E64234 /* Localizable.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
-				2B07C477E34A74275AFE11B4 /* en */,
-				02FD01B1C30E29D2CD1A72C9 /* ja */,
+				4EC8BE936821308469CE7A1A /* en */,
+				1A9AF9DEC8030C6417DDF571 /* ja */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
 		};
-		F0729223EFE814925A995100 /* InfoPlist.strings */ = {
+		CF148B7A0CC431B5AF56A73C /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
-				1693333FB366A42C3ECE6A07 /* en */,
-				7A3989D4265A2090377C14CF /* ja */,
+				FAFE2AEFE0035F71301F3273 /* en */,
+				A0AF41ABDF75A8BF0AD8C8AC /* ja */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
@@ -516,22 +520,31 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
-		1EB290C2BE0541986E9FE918 /* Release */ = {
+		0269B31E316FA7D74F40997E /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGN_ENTITLEMENTS = Config/App.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "Config/Capture-Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = LifeSlice;
+				INFOPLIST_KEY_NSCameraUsageDescription = "The camera is used to work as a mirror and to keep one surprise frame.";
+				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "Used to save slices and exported reels to the LifeSlice Mirror album.";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Used to save slices and exported reels to the LifeSlice Mirror album.";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UIStatusBarStyle = UIStatusBarStyleLightContent;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "$(LS_BUNDLE_ID).capture";
+				PRODUCT_BUNDLE_IDENTIFIER = "$(LS_BUNDLE_ID)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
@@ -539,9 +552,32 @@
 			};
 			name = Release;
 		};
-		48DCA3B25BE97E09B48C47E5 /* Release */ = {
+		03F26561E65A81E22C0B2923 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 2F10A340252E4B8744329399 /* Signing.xcconfig */;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGN_ENTITLEMENTS = Config/Widgets.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Config/Widgets-Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = LifeSlice;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "$(LS_BUNDLE_ID).widgets";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		2D27CD8C5556B00D4C0F890E /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = AB83EAE9D8C3E3C4F2A7ED98 /* Signing.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -594,7 +630,7 @@
 			};
 			name = Release;
 		};
-		5D2F0F6E1AE1663D1447F6DA /* Debug */ = {
+		5793C47751DA9DAB8AA0E2C6 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -625,41 +661,9 @@
 			};
 			name = Debug;
 		};
-		940872B634D6B1E08C2FA9B1 /* Release */ = {
+		A4F6D2D25EC40F3896F484D1 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CLANG_ENABLE_OBJC_WEAK = NO;
-				CODE_SIGN_ENTITLEMENTS = Config/App.entitlements;
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				ENABLE_PREVIEWS = YES;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_CFBundleDisplayName = LifeSlice;
-				INFOPLIST_KEY_NSCameraUsageDescription = "The camera is used to work as a mirror and to keep one surprise frame.";
-				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "Used to save slices and exported reels to the LifeSlice Mirror album.";
-				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Used to save slices and exported reels to the LifeSlice Mirror album.";
-				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
-				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UIStatusBarStyle = UIStatusBarStyleLightContent;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
-				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "$(LS_BUNDLE_ID)";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = iphoneos;
-				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = 1;
-				VALIDATE_PRODUCT = YES;
-			};
-			name = Release;
-		};
-		BBA9D0EF2E10E7FA52FEC8C8 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 2F10A340252E4B8744329399 /* Signing.xcconfig */;
+			baseConfigurationReference = AB83EAE9D8C3E3C4F2A7ED98 /* Signing.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -719,52 +723,7 @@
 			};
 			name = Debug;
 		};
-		C49144D3E0FC6372C850F050 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CLANG_ENABLE_OBJC_WEAK = NO;
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "Config/Capture-Info.plist";
-				INFOPLIST_KEY_CFBundleDisplayName = LifeSlice;
-				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "$(LS_BUNDLE_ID).capture";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = 1;
-			};
-			name = Debug;
-		};
-		E0D0108E82DC50AB9E28CC86 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CLANG_ENABLE_OBJC_WEAK = NO;
-				CODE_SIGN_ENTITLEMENTS = Config/Widgets.entitlements;
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "Config/Widgets-Info.plist";
-				INFOPLIST_KEY_CFBundleDisplayName = LifeSlice;
-				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "$(LS_BUNDLE_ID).widgets";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = 1;
-			};
-			name = Debug;
-		};
-		F62554AF897FBA6E5CDD85BF /* Release */ = {
+		BC755A4E0EBB574DD087AB79 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_OBJC_WEAK = NO;
@@ -788,46 +747,91 @@
 			};
 			name = Release;
 		};
+		D9A53102F3DDAA0E3CD522CC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Config/Capture-Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = LifeSlice;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "$(LS_BUNDLE_ID).capture";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		F3A0426DCB5434C98BEB3DB0 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Config/Capture-Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = LifeSlice;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "$(LS_BUNDLE_ID).capture";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		22AB6D213E283EA9ADDBA54E /* Build configuration list for PBXProject "LifeSliceMirror" */ = {
+		AB0F1078E6B312DAE4DA56C8 /* Build configuration list for PBXNativeTarget "LifeSliceWidgets" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				BBA9D0EF2E10E7FA52FEC8C8 /* Debug */,
-				48DCA3B25BE97E09B48C47E5 /* Release */,
+				BC755A4E0EBB574DD087AB79 /* Release */,
+				03F26561E65A81E22C0B2923 /* Debug */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		90D05B4CEC8F3D62F7A72CB9 /* Build configuration list for PBXNativeTarget "LifeSliceMirror" */ = {
+		BA003FEFBC54436CE7BBC712 /* Build configuration list for PBXNativeTarget "LifeSliceCapture" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				940872B634D6B1E08C2FA9B1 /* Release */,
-				5D2F0F6E1AE1663D1447F6DA /* Debug */,
+				F3A0426DCB5434C98BEB3DB0 /* Release */,
+				D9A53102F3DDAA0E3CD522CC /* Debug */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		D0AA5962654501ACF3997C64 /* Build configuration list for PBXNativeTarget "LifeSliceCapture" */ = {
+		C23012E74FB7534A68BBD7D2 /* Build configuration list for PBXProject "LifeSliceMirror" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				1EB290C2BE0541986E9FE918 /* Release */,
-				C49144D3E0FC6372C850F050 /* Debug */,
+				A4F6D2D25EC40F3896F484D1 /* Debug */,
+				2D27CD8C5556B00D4C0F890E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		ECCE08F5525542EE5DE61041 /* Build configuration list for PBXNativeTarget "LifeSliceWidgets" */ = {
+		CD0CAAA0CCD2590D6A36895A /* Build configuration list for PBXNativeTarget "LifeSliceMirror" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				F62554AF897FBA6E5CDD85BF /* Release */,
-				E0D0108E82DC50AB9E28CC86 /* Debug */,
+				0269B31E316FA7D74F40997E /* Release */,
+				5793C47751DA9DAB8AA0E2C6 /* Debug */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
-	rootObject = F66D272A151FE31D6B34A15E /* Project object */;
+	rootObject = B2BE3B8628036CCBCA1EA835 /* Project object */;
 }

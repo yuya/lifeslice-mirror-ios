@@ -193,8 +193,8 @@ struct FaceIconView: View {
             ZStack {
                 // iOS 標準のロック画面ウィジェットと同じ、うっすらした丸い下地
                 AccessoryWidgetBackground()
-                FaceMark()
-                    .stroke(style: FaceMark.strokeStyle(for: side))
+                MirrorMark()
+                    .fill(style: FillStyle(eoFill: true))
                     .padding(side * 0.2)
             }
         }
@@ -209,7 +209,7 @@ struct MirrorControl: ControlWidget {
     var body: some ControlWidgetConfiguration {
         StaticControlConfiguration(kind: "app.lifeslice.mirror.control") {
             ControlWidgetButton(action: MirrorCaptureIntent()) {
-                Label("Open Mirror", systemImage: "face.smiling")
+                Label("Open Mirror", image: "MirrorGlyph")
             }
         }
         .displayName("LifeSlice Mirror")

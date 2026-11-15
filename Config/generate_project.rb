@@ -52,6 +52,7 @@ app.add_file_references(swift['App'] + swift['Shared'] + swift['Camera'] + swift
 app.add_resources([refs['App/Assets.xcassets']])
 
 widgets.add_file_references(swift['Widgets'] + swift['Shared'])
+widgets.add_resources([refs['Widgets/Assets.xcassets']])
 
 capture.add_file_references(swift['CaptureExtension'] + swift['Shared'] +
                             [refs['Camera/CameraEngine.swift'], refs['Camera/SurpriseBuffer.swift']])
