@@ -6,12 +6,18 @@ struct LifeSliceMirrorApp: App {
     @Environment(\.scenePhase) private var scenePhase
     @AppStorage(Prefs.Key.language) private var language = "system"
 
+    init() {
+        // アプリスイッチャーのサムネイルに顔を残さない
+        PrivacyShield.install()
+    }
+
     var body: some Scene {
         WindowGroup {
             MirrorView()
                 .environmentObject(director)
                 .environmentObject(director.engine)
                 .environmentObject(director.store)
+                .environmentObject(director.reels)
                 .tint(Theme.accent)
                 .fontDesign(.rounded)
                 .preferredColorScheme(.dark)

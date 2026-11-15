@@ -5,13 +5,14 @@ import SwiftUI
 import UIKit
 
 /// 「いつ・どのコマを残すか」を決める係。
-/// - シャッター／静止検知 → 前後の振り幅からランダムに 1 コマ
+/// - 静止を検知 → その瞬間の前後の振り幅からランダムに 1 コマ（暗すぎるコマは残さない）
 /// - 何も撮れないまま閉じられた → 立ち去り際にバッファから 1 コマ
 /// - 閉じたらバッファは必ず捨てる（映像は溜め込まない）
 @MainActor
 final class SliceDirector: ObservableObject {
     let engine = CameraEngine()
     let store = SliceStore()
+    let reels = ReelArchive()
 
     /// 直近に保存されたスライス（「＋1」の合図用）。
     @Published private(set) var lastSaved: Slice?
@@ -72,7 +73,8 @@ final class SliceDirector: ObservableObject {
         guard sessionStartedAt == nil else { return }
         sessionStartedAt = CACurrentMediaTime()
         slicesThisSession = 0
-        engine.buffer.keepSeconds = max(Prefs.preWindow + 1.0, 6.0)
+        // 抽選は「後」の秒数が過ぎてから行うので、前後ぶん＋余裕を持っておく。
+        engine.buffer.keepSeconds = max(Prefs.preWindow + Prefs.postWindow + 1.5, 6.0)
         engine.start()
         detector.sensitivity = StillnessDetector.Sensitivity(rawValue: Prefs.sensitivity) ?? .normal
         detector.start()
@@ -84,7 +86,7 @@ final class SliceDirector: ObservableObject {
         sessionStartedAt = nil
         detector.stop()
 
-        // 待機中のシャッターは、いま手元にあるコマの範囲で確定させる。
+        // 抽選待ちのものは、いま手元にあるコマの範囲で確定させる。
         for item in pending { resolve(item) }
         pending.removeAll()
 
@@ -106,14 +108,9 @@ final class SliceDirector: ObservableObject {
 
     // MARK: 撮る
 
-    /// シャッター（画面のボタン／カメラコントロール／音量ボタン）。
-    func shutter() {
-        schedule(source: .shutter)
-    }
-
     private func handleStill() {
         guard Prefs.autoSlice, sessionStartedAt != nil, !engine.isFrozen else { return }
-        guard engine.faceVisible else { return }
+        guard engine.faceVisible, !engine.tooDark else { return }
         let now = CACurrentMediaTime()
         guard now - lastAutoAt >= Prefs.cooldown else { return }
         lastAutoAt = now
@@ -206,7 +203,7 @@ final class SliceDirector: ObservableObject {
             }
             guard let data = image.jpegData(compressionQuality: 0.8) else { continue }
             let date = Calendar.current.date(byAdding: .day, value: -(count - i), to: Date()) ?? Date()
-            _ = store.add(jpeg: data, date: date, source: .still, offset: Double.random(in: -1.5...1.5))
+            _ = store.add(jpeg: data, date: date, source: .still, offset: Double.random(in: -3...3))
         }
     }
     #endif

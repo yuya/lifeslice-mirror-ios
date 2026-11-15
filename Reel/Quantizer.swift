@@ -8,7 +8,7 @@ struct RGB: Equatable {
     var r: UInt8, g: UInt8, b: UInt8
 }
 
-enum DitherMode: String, CaseIterable, Identifiable {
+enum DitherMode: String, CaseIterable, Identifiable, Codable {
     case none, pattern, diffusion
     var id: String { rawValue }
     var label: String {

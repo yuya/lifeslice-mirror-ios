@@ -21,6 +21,8 @@ final class CameraEngine: NSObject, ObservableObject {
     @Published private(set) var exposureBias: Float = 0
     @Published private(set) var isFrozen = false
     @Published private(set) var faceVisible = false
+    /// いま映っている映像が、残す価値のないほど暗いかどうか。
+    @Published private(set) var tooDark = false
     @Published private(set) var authorization = AVCaptureDevice.authorizationStatus(for: .video)
     @Published private(set) var hasCamera = true
 
@@ -44,6 +46,7 @@ final class CameraEngine: NSObject, ObservableObject {
     private var lastBufferedTime: TimeInterval = 0
     private var frameCounter = 0
     private var lastFace = false
+    private var lastDark = false
     // スレッドをまたいで読むフラグ（厳密な同期は不要な程度の値）
     private var modeFlag = false
     private var frozenFlag = false
@@ -207,6 +210,14 @@ extension CameraEngine: AVCaptureVideoDataOutputSampleBufferDelegate {
             }
         }
 
+        // 明るさ。暗すぎるコマは後で候補から外す。
+        let luma = Self.meanLuma(of: pixelBuffer)
+        let dark = luma < SurpriseBuffer.minimumLuma
+        if dark != lastDark {
+            lastDark = dark
+            DispatchQueue.main.async { self.tooDark = dark }
+        }
+
         var image = CIImage(cvPixelBuffer: pixelBuffer)
         if image.extent.width > image.extent.height {
             // 接続側の回転指定が効かず横倒しで届いた場合の保険。時計回りに 90° 起こして縦にする。
@@ -223,7 +234,35 @@ extension CameraEngine: AVCaptureVideoDataOutputSampleBufferDelegate {
         guard let jpeg = ciContext.jpegRepresentation(of: image,
                                                       colorSpace: colorSpace,
                                                       options: [quality: 0.82]) else { return }
-        buffer.append(.init(time: now, jpeg: jpeg, hasFace: lastFace))
+        buffer.append(.init(time: now, jpeg: jpeg, hasFace: lastFace, luma: luma))
+    }
+
+    /// BGRA のピクセルバッファを粗く拾って平均の明るさ（0...1）を出す。
+    private static func meanLuma(of pixelBuffer: CVPixelBuffer) -> Float {
+        CVPixelBufferLockBaseAddress(pixelBuffer, .readOnly)
+        defer { CVPixelBufferUnlockBaseAddress(pixelBuffer, .readOnly) }
+        guard let base = CVPixelBufferGetBaseAddress(pixelBuffer) else { return 1 }
+        let width = CVPixelBufferGetWidth(pixelBuffer)
+        let height = CVPixelBufferGetHeight(pixelBuffer)
+        let bytesPerRow = CVPixelBufferGetBytesPerRow(pixelBuffer)
+        let pixels = base.assumingMemoryBound(to: UInt8.self)
+        let step = 24
+        var sum = 0
+        var count = 0
+        var y = 0
+        while y < height {
+            let row = pixels + y * bytesPerRow
+            var x = 0
+            while x < width {
+                let p = row + x * 4
+                sum += Int(p[2]) * 77 + Int(p[1]) * 150 + Int(p[0]) * 29   // R, G, B
+                count += 1
+                x += step
+            }
+            y += step
+        }
+        guard count > 0 else { return 1 }
+        return Float(sum) / Float(count) / 65280.0
     }
 }
 

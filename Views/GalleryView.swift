@@ -4,10 +4,12 @@ import UIKit
 /// たまったスライスの一覧。ここからリール作りへ。
 struct GalleryView: View {
     @EnvironmentObject private var store: SliceStore
+    @EnvironmentObject private var reels: ReelArchive
     @Environment(\.dismiss) private var dismiss
     @AppStorage(Prefs.Key.reelThreshold) private var threshold = 12
 
     @State private var selected: Slice?
+    @State private var playing: ReelRecord?
     @State private var showStudio = false
 
     private struct Month: Identifiable {
@@ -42,6 +44,11 @@ struct GalleryView: View {
                 VStack(alignment: .leading, spacing: 22) {
                     reelCard
                         .padding(.horizontal, 16)
+
+                    if !reels.records.isEmpty {
+                        reelHistory
+                            .padding(.horizontal, 16)
+                    }
 
                     if store.slices.isEmpty {
                         emptyState
@@ -84,6 +91,7 @@ struct GalleryView: View {
             .navigationDestination(isPresented: $showStudio) {
                 ReelStudioView()
                     .environmentObject(store)
+                    .environmentObject(reels)
             }
         }
         .preferredColorScheme(.dark)
@@ -147,6 +155,34 @@ struct GalleryView: View {
         }
         .padding(18)
         .background(Theme.card, in: .rect(cornerRadius: 24))
+    }
+
+    /// これまでに書き出したリール（本数の上限は設定で変えられる）。
+    private var reelHistory: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            HStack(alignment: .firstTextBaseline) {
+                Text(L("これまでのリール")).font(.headline)
+                Text("\(reels.records.count)")
+                    .font(.subheadline.monospacedDigit())
+                    .foregroundStyle(.secondary)
+            }
+            LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 8), count: 4), spacing: 8) {
+                ForEach(reels.records) { record in
+                    Button {
+                        playing = record
+                    } label: {
+                        ReelPoster(record: record, posterURL: reels.posterURL(for: record))
+                    }
+                    .buttonStyle(.plain)
+                }
+            }
+        }
+        .sheet(item: $playing) { record in
+            ReelPlayerSheet(record: record)
+                .environmentObject(reels)
+                .tint(Theme.accent)
+                .fontDesign(.rounded)
+        }
     }
 
     private var emptyState: some View {

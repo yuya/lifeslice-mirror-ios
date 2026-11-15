@@ -53,7 +53,50 @@ struct ToolButton: View {
     }
 }
 
-/// 横スクロールで 1 つ選ぶチップの列。
+/// 幅に収まらないぶんは次の行へ折り返す並べ方。選択肢を 1 つも隠さないために使う。
+struct FlowLayout: Layout {
+    var spacing: CGFloat = 8
+
+    func sizeThatFits(proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) -> CGSize {
+        let maxWidth = proposal.width ?? .infinity
+        var x: CGFloat = 0
+        var y: CGFloat = 0
+        var rowHeight: CGFloat = 0
+        var widest: CGFloat = 0
+        for subview in subviews {
+            let size = subview.sizeThatFits(.unspecified)
+            if x > 0, x + size.width > maxWidth {
+                x = 0
+                y += rowHeight + spacing
+                rowHeight = 0
+            }
+            x += size.width
+            widest = max(widest, x)
+            x += spacing
+            rowHeight = max(rowHeight, size.height)
+        }
+        return CGSize(width: proposal.width ?? widest, height: y + rowHeight)
+    }
+
+    func placeSubviews(in bounds: CGRect, proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) {
+        var x = bounds.minX
+        var y = bounds.minY
+        var rowHeight: CGFloat = 0
+        for subview in subviews {
+            let size = subview.sizeThatFits(.unspecified)
+            if x > bounds.minX, x + size.width > bounds.maxX {
+                x = bounds.minX
+                y += rowHeight + spacing
+                rowHeight = 0
+            }
+            subview.place(at: CGPoint(x: x, y: y), proposal: ProposedViewSize(size))
+            x += size.width + spacing
+            rowHeight = max(rowHeight, size.height)
+        }
+    }
+}
+
+/// 1 つ選ぶチップの集まり。横スクロールで隠さず、入りきらないぶんは折り返して全部見せる。
 struct ChipRow<Item: Identifiable & Equatable>: View {
     let title: String
     let items: [Item]
@@ -65,28 +108,40 @@ struct ChipRow<Item: Identifiable & Equatable>: View {
             Text(title)
                 .font(.caption.weight(.semibold))
                 .foregroundStyle(.secondary)
-                .padding(.horizontal, 20)
-            ScrollView(.horizontal, showsIndicators: false) {
-                HStack(spacing: 8) {
-                    ForEach(items) { item in
-                        let selected = item == selection
-                        Button {
-                            selection = item
-                        } label: {
-                            Text(label(item))
-                                .font(.subheadline.weight(.semibold))
-                                .foregroundStyle(selected ? Theme.ink : .white)
-                                .padding(.horizontal, 14)
-                                .padding(.vertical, 9)
-                                .background(selected ? Theme.paper : Theme.card, in: .capsule)
-                                .contentShape(.capsule)
-                        }
-                        .buttonStyle(.plain)
+            FlowLayout(spacing: 8) {
+                ForEach(items) { item in
+                    let selected = item == selection
+                    Button {
+                        selection = item
+                    } label: {
+                        Text(label(item))
+                            .font(.subheadline.weight(.semibold))
+                            .foregroundStyle(selected ? Theme.ink : .white)
+                            .padding(.horizontal, 14)
+                            .padding(.vertical, 9)
+                            .background(selected ? Theme.paper : Theme.card, in: .capsule)
+                            .contentShape(.capsule)
                     }
+                    .buttonStyle(.plain)
                 }
-                .padding(.horizontal, 20)
             }
         }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(.horizontal, 20)
+    }
+}
+
+// MARK: - 鏡へ戻る導線
+
+private struct ReturnToMirrorKey: EnvironmentKey {
+    static let defaultValue: () -> Void = {}
+}
+
+extension EnvironmentValues {
+    /// 一覧やリール作りの奥からでも、一気に鏡の画面まで戻るための合図。
+    var returnToMirror: () -> Void {
+        get { self[ReturnToMirrorKey.self] }
+        set { self[ReturnToMirrorKey.self] = newValue }
     }
 }
 

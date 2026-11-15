@@ -3,27 +3,28 @@ import UIKit
 
 struct SettingsView: View {
     @EnvironmentObject private var director: SliceDirector
+    @EnvironmentObject private var reels: ReelArchive
     @Environment(\.dismiss) private var dismiss
 
-    @AppStorage(Prefs.Key.preWindow) private var preWindow = 1.5
-    @AppStorage(Prefs.Key.postWindow) private var postWindow = 1.5
+    @AppStorage(Prefs.Key.preWindow) private var preWindow = 3.0
+    @AppStorage(Prefs.Key.postWindow) private var postWindow = 3.0
     @AppStorage(Prefs.Key.autoSlice) private var autoSlice = true
     @AppStorage(Prefs.Key.driftSlice) private var driftSlice = true
     @AppStorage(Prefs.Key.cooldown) private var cooldown = 30.0
     @AppStorage(Prefs.Key.sensitivity) private var sensitivity = 1
     @AppStorage(Prefs.Key.saveToPhotos) private var saveToPhotos = false
     @AppStorage(Prefs.Key.quietMode) private var quietMode = false
-    @AppStorage(Prefs.Key.showGuides) private var showGuides = false
     @AppStorage(Prefs.Key.reelThreshold) private var reelThreshold = 12
+    @AppStorage(Prefs.Key.reelHistory) private var reelHistory = 8
     @AppStorage(Prefs.Key.language) private var language = "system"
 
     @State private var photosDenied = false
 
     private var windowSummary: String {
         if preWindow < 0.05 && postWindow < 0.05 {
-            return L("振り幅ゼロ。押した瞬間がそのまま残ります。")
+            return L("振り幅ゼロ。止まった瞬間がそのまま残ります。")
         }
-        return L("押した瞬間の %.1f 秒前 〜 %.1f 秒後のどこか 1 コマが残ります。どれになるかは毎回くじ引きです。",
+        return L("止まった瞬間の %.1f 秒前 〜 %.1f 秒後のどこか 1 コマが残ります。どれになるかは毎回くじ引きです。",
                  preWindow, postWindow)
     }
 
@@ -41,7 +42,7 @@ struct SettingsView: View {
                             Spacer()
                             Text(L("−%.1f 秒", preWindow)).monospacedDigit().foregroundStyle(.secondary)
                         }
-                        Slider(value: $preWindow, in: 0...3, step: 0.1)
+                        Slider(value: $preWindow, in: 0...Prefs.windowLimit, step: 0.5)
                     }
                     VStack(alignment: .leading, spacing: 6) {
                         HStack {
@@ -49,7 +50,7 @@ struct SettingsView: View {
                             Spacer()
                             Text(L("＋%.1f 秒", postWindow)).monospacedDigit().foregroundStyle(.secondary)
                         }
-                        Slider(value: $postWindow, in: 0...3, step: 0.1)
+                        Slider(value: $postWindow, in: 0...Prefs.windowLimit, step: 0.5)
                     }
                 } header: {
                     Text(L("不意打ちの振り幅"))
@@ -75,7 +76,7 @@ struct SettingsView: View {
                 } header: {
                     Text(L("勝手にたまる仕組み"))
                 } footer: {
-                    Text(L("顔が映った状態で手が止まると自動で撮ります。一度も撮れないまま閉じたときは、開いていた間の映像から適当に 1 コマだけ残します。残さなかった映像はその場で捨てています。"))
+                    Text(L("顔が映った状態で手が止まると自動で撮ります。一度も撮れないまま閉じたときは、開いていた間の映像から適当に 1 コマだけ残します。真っ暗に近いコマは残しません。残さなかった映像はその場で捨てています。"))
                 }
 
                 Section {
@@ -97,7 +98,6 @@ struct SettingsView: View {
 
                 Section {
                     Toggle(L("撮れたことを知らせない"), isOn: $quietMode)
-                    Toggle(L("ガイド線"), isOn: $showGuides)
                 } header: {
                     Text(L("鏡"))
                 } footer: {
@@ -109,6 +109,22 @@ struct SettingsView: View {
                         .onChange(of: reelThreshold) { _, _ in director.store.publishToWidget() }
                 } header: {
                     Text(L("リールが作れるようになる枚数"))
+                }
+
+                Section {
+                    Picker(L("残す本数"), selection: $reelHistory) {
+                        ForEach(Prefs.reelHistoryChoices, id: \.self) { count in
+                            Text(L("%d 本", count)).tag(count)
+                        }
+                    }
+                    .onChange(of: reelHistory) { _, _ in reels.prune() }
+                } header: {
+                    Text(L("リールの履歴"))
+                } footer: {
+                    Text(L("書き出したリールをアプリ内に残します。本数を超えたぶんと、合計が %@ を超えたぶんは古い順に消えます。いまは %d 本・%@ です。",
+                           ByteCountFormatter.string(fromByteCount: Int64(ReelArchive.byteLimit), countStyle: .file),
+                           reels.records.count,
+                           ByteCountFormatter.string(fromByteCount: Int64(reels.totalBytes), countStyle: .file)))
                 }
 
                 Section {

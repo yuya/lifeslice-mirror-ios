@@ -1,8 +1,8 @@
 import SwiftUI
 import UIKit
 
-/// リール（GIF / MP4）書き出しの選択肢ぜんぶ。
-struct ReelOptions: Equatable {
+/// リール（GIF / MP4）書き出しの選択肢ぜんぶ。前回書き出したときの内容を覚えておく。
+struct ReelOptions: Equatable, Codable {
     var format: Format = .gif
     var speed: Speed = .normal
     var size: Size = .small
@@ -15,14 +15,14 @@ struct ReelOptions: Equatable {
     var stampStyle: StampStyle = .camcorder
     var stampLayout: StampLayout = .bottomRight
 
-    enum Format: String, CaseIterable, Identifiable {
+    enum Format: String, CaseIterable, Identifiable, Codable {
         case gif, mp4
         var id: String { rawValue }
         var label: String { self == .gif ? "GIF" : "MP4" }
         var fileExtension: String { rawValue }
     }
 
-    enum Speed: Double, CaseIterable, Identifiable {
+    enum Speed: Double, CaseIterable, Identifiable, Codable {
         case slow = 3, normal = 6, fast = 10, turbo = 15
         var id: Double { rawValue }
         var fps: Double { rawValue }
@@ -36,14 +36,14 @@ struct ReelOptions: Equatable {
         }
     }
 
-    enum Size: Int, CaseIterable, Identifiable {
+    enum Size: Int, CaseIterable, Identifiable, Codable {
         case tiny = 240, small = 360, medium = 480, large = 720
         var id: Int { rawValue }
         var width: Int { rawValue }
         var label: String { "\(rawValue)px" }
     }
 
-    enum Aspect: String, CaseIterable, Identifiable {
+    enum Aspect: String, CaseIterable, Identifiable, Codable {
         case portrait, classic, square
         var id: String { rawValue }
         var label: String {
@@ -63,7 +63,7 @@ struct ReelOptions: Equatable {
         }
     }
 
-    enum Filter: String, CaseIterable, Identifiable {
+    enum Filter: String, CaseIterable, Identifiable, Codable {
         case none, instant, fade, chrome, transfer, mono, noir, sepia
         var id: String { rawValue }
         var label: String {
@@ -92,7 +92,7 @@ struct ReelOptions: Equatable {
         }
     }
 
-    enum ColorDepth: String, CaseIterable, Identifiable {
+    enum ColorDepth: String, CaseIterable, Identifiable, Codable {
         case full, c256, c64, c16, gameBoy, oneBit
         var id: String { rawValue }
         var label: String {
@@ -115,7 +115,7 @@ struct ReelOptions: Equatable {
         }
     }
 
-    enum StampFormat: String, CaseIterable, Identifiable {
+    enum StampFormat: String, CaseIterable, Identifiable, Codable {
         case none, camcorder, dotted, dateTime, english, japanese, weekdayTime, counter
         var id: String { rawValue }
         var label: String {
@@ -148,7 +148,7 @@ struct ReelOptions: Equatable {
         }
     }
 
-    enum StampFont: String, CaseIterable, Identifiable {
+    enum StampFont: String, CaseIterable, Identifiable, Codable {
         case digital, rounded, serif, mincho, typewriter, courier, marker, futura
         var id: String { rawValue }
         var label: String {
@@ -188,7 +188,7 @@ struct ReelOptions: Equatable {
         }
     }
 
-    enum StampStyle: String, CaseIterable, Identifiable {
+    enum StampStyle: String, CaseIterable, Identifiable, Codable {
         case camcorder, white, subtitle, blackLabel, whiteLabel
         var id: String { rawValue }
         var label: String {
@@ -224,7 +224,7 @@ struct ReelOptions: Equatable {
         }
     }
 
-    enum StampLayout: String, CaseIterable, Identifiable {
+    enum StampLayout: String, CaseIterable, Identifiable, Codable {
         case bottomRight, bottomLeft, bottomCenter, topLeft, topRight, centerBig
         var id: String { rawValue }
         var label: String {
@@ -254,5 +254,23 @@ struct ReelOptions: Equatable {
         let w = size.width
         let h = Int((Double(w) * aspect.ratio).rounded())
         return (w - w % 2, h - h % 2)
+    }
+}
+
+// MARK: - 前回の設定
+
+extension ReelOptions {
+    /// 前回書き出したときの設定（無ければ初期値）。
+    static func loadLast() -> ReelOptions {
+        guard let data = UserDefaults.standard.data(forKey: Prefs.Key.lastReelOptions),
+              let options = try? JSONDecoder().decode(ReelOptions.self, from: data) else {
+            return ReelOptions()
+        }
+        return options
+    }
+
+    func saveAsLast() {
+        guard let data = try? JSONEncoder().encode(self) else { return }
+        UserDefaults.standard.set(data, forKey: Prefs.Key.lastReelOptions)
     }
 }

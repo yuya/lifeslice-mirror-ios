@@ -49,13 +49,15 @@ end
 swift = ->(dir) { refs.select { |k, _| k.start_with?("#{dir}/") && k.end_with?('.swift') }.values }
 
 app.add_file_references(swift['App'] + swift['Shared'] + swift['Camera'] + swift['Store'] + swift['Reel'] + swift['Views'])
-app.add_resources([refs['App/Assets.xcassets']])
+# Symbols.xcassets はコントロール用のカスタムシンボル。アプリ本体とウィジェットの両方に入れる。
+app.add_resources([refs['App/Assets.xcassets'], refs['Shared/Symbols.xcassets']])
 
 widgets.add_file_references(swift['Widgets'] + swift['Shared'])
-widgets.add_resources([refs['Widgets/Assets.xcassets']])
+widgets.add_resources([refs['Shared/Symbols.xcassets']])
 
 capture.add_file_references(swift['CaptureExtension'] + swift['Shared'] +
-                            [refs['Camera/CameraEngine.swift'], refs['Camera/SurpriseBuffer.swift']])
+                            [refs['Camera/CameraEngine.swift'], refs['Camera/SurpriseBuffer.swift'],
+                             refs['Camera/StillnessDetector.swift']])
 
 [app, widgets, capture].each do |target|
   localized.each { |variant| target.resources_build_phase.add_file_reference(variant) }

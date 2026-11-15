@@ -2,14 +2,15 @@ import AVKit
 import SwiftUI
 import UIKit
 
-/// メイン画面。まず鏡であること。
+/// メイン画面。まず鏡であること。撮影ボタンは置かない（スライスは勝手にたまる）。
 struct MirrorView: View {
     @EnvironmentObject private var director: SliceDirector
     @EnvironmentObject private var engine: CameraEngine
     @EnvironmentObject private var store: SliceStore
+    @EnvironmentObject private var reels: ReelArchive
 
-    @AppStorage(Prefs.Key.showGuides) private var showGuides = false
     @AppStorage(Prefs.Key.quietMode) private var quietMode = false
+    @Environment(\.scenePhase) private var scenePhase
 
     private enum Tool { case zoom, brightness }
 
@@ -21,15 +22,13 @@ struct MirrorView: View {
     @State private var showGallery = false
     @State private var showSettings = false
     @State private var plusOne = false
-    @State private var shutterPulse = false
+    @State private var modeToast: String?
 
     var body: some View {
         ZStack {
             Color.black.ignoresSafeArea()
 
             preview
-
-            if showGuides { guides }
 
             if engine.authorization == .denied || engine.authorization == .restricted {
                 notice(title: L("カメラが使えません"),
@@ -62,9 +61,9 @@ struct MirrorView: View {
         }
         .statusBarHidden(chromeHidden)
         .persistentSystemOverlays(chromeHidden ? .hidden : .automatic)
-        // カメラコントロール／音量ボタンをシャッターにする
+        // カメラコントロール／音量ボタンは「一時停止」の切り替え（撮影ではない）
         .onCameraCaptureEvent { event in
-            if event.phase == .ended { fireShutter() }
+            if event.phase == .ended { engine.setFrozen(!engine.isFrozen) }
         }
         .onChange(of: director.savedTick) { _, _ in
             guard !quietMode else { return }
@@ -81,17 +80,22 @@ struct MirrorView: View {
         }
         .sensoryFeedback(.impact(weight: .light), trigger: quietMode ? 0 : director.savedTick)
         .onChange(of: lightOn) { _, on in ScreenLight.set(on: on) }
+        // アプリを離れている間は画面の明るさを元に戻し、戻ってきたら点け直す
+        .onChange(of: scenePhase) { _, phase in ScreenLight.set(on: lightOn && phase == .active) }
         .onDisappear { ScreenLight.set(on: false) }
         .fullScreenCover(isPresented: $showGallery, onDismiss: { director.setMirrorVisible(true) }) {
             GalleryView()
                 .environmentObject(director)
                 .environmentObject(store)
+                .environmentObject(reels)
+                .environment(\.returnToMirror, { showGallery = false })
                 .tint(Theme.accent)
                 .fontDesign(.rounded)
         }
         .sheet(isPresented: $showSettings, onDismiss: { director.setMirrorVisible(true) }) {
             SettingsView()
                 .environmentObject(director)
+                .environmentObject(reels)
                 .tint(Theme.accent)
                 .fontDesign(.rounded)
         }
@@ -121,20 +125,6 @@ struct MirrorView: View {
             )
     }
 
-    private var guides: some View {
-        GeometryReader { geo in
-            Path { path in
-                path.move(to: CGPoint(x: geo.size.width / 2, y: 0))
-                path.addLine(to: CGPoint(x: geo.size.width / 2, y: geo.size.height))
-                path.move(to: CGPoint(x: 0, y: geo.size.height * 0.45))
-                path.addLine(to: CGPoint(x: geo.size.width, y: geo.size.height * 0.45))
-            }
-            .stroke(.white.opacity(0.55), lineWidth: 0.75)
-        }
-        .ignoresSafeArea()
-        .allowsHitTesting(false)
-    }
-
     private func notice(title: String, message: String, button: String?, action: @escaping () -> Void) -> some View {
         VStack(spacing: 12) {
             Text(title).font(.title3.bold())
@@ -157,59 +147,68 @@ struct MirrorView: View {
 
     private var topBar: some View {
         HStack {
-            Text("LifeSlice")
+            Text("LifeSlice Mirror")
                 .font(.system(size: 15, weight: .heavy, design: .rounded))
                 .foregroundStyle(.white.opacity(0.9))
                 .shadow(color: .black.opacity(0.35), radius: 4, y: 1)
-            Spacer()
-            if engine.isFrozen {
-                Label(L("とめています"), systemImage: "pause.fill")
-                    .font(.caption.weight(.bold))
-                    .padding(.horizontal, 12)
-                    .padding(.vertical, 7)
-                    .glassCapsule()
-            }
             Spacer()
             ToolButton(symbol: "gearshape.fill") {
                 director.setMirrorVisible(false)
                 showSettings = true
             }
         }
+        .overlay {
+            // 状態のひとこと（一時停止中／左右を切り替えた直後）
+            if engine.isFrozen {
+                statusCapsule(L("とめています"), symbol: "pause.fill")
+            } else if let modeToast {
+                statusCapsule(modeToast, symbol: "arrow.left.and.right")
+                    .transition(.opacity)
+            }
+        }
         .padding(.horizontal, 18)
         .padding(.top, 6)
+    }
+
+    private func statusCapsule(_ text: String, symbol: String) -> some View {
+        Label(text, systemImage: symbol)
+            .font(.caption.weight(.bold))
+            .padding(.horizontal, 12)
+            .padding(.vertical, 7)
+            .glassCapsule()
+            .allowsHitTesting(false)
     }
 
     // MARK: 下
 
     private var bottomTray: some View {
-        VStack(spacing: 14) {
+        VStack(spacing: 12) {
             if let tool {
                 toolPanel(tool)
                     .transition(.move(edge: .bottom).combined(with: .opacity))
             }
 
-            GlassEffectContainer(spacing: 10) {
-                HStack(spacing: 10) {
-                    ToolButton(symbol: "plus.magnifyingglass",
-                               text: engine.zoom > 1.04 ? String(format: "%.1f×", engine.zoom) : nil,
-                               isOn: tool == .zoom) { toggle(.zoom) }
-                    ToolButton(symbol: "sun.max.fill", isOn: tool == .brightness) { toggle(.brightness) }
-                    ToolButton(symbol: lightOn ? "lightbulb.fill" : "lightbulb", isOn: lightOn) { lightOn.toggle() }
-                    ToolButton(symbol: engine.isFrozen ? "play.fill" : "pause.fill", isOn: engine.isFrozen) {
-                        engine.setFrozen(!engine.isFrozen)
+            HStack(spacing: 8) {
+                galleryButton
+                Spacer(minLength: 0)
+                GlassEffectContainer(spacing: 8) {
+                    HStack(spacing: 8) {
+                        ToolButton(symbol: "plus.magnifyingglass",
+                                   text: engine.zoom > 1.04 ? String(format: "%.1f×", engine.zoom) : nil,
+                                   isOn: tool == .zoom) { toggle(.zoom) }
+                        ToolButton(symbol: "sun.max.fill",
+                                   isOn: tool == .brightness || abs(engine.exposureBias) > 0.05) { toggle(.brightness) }
+                        ToolButton(symbol: lightOn ? "lightbulb.fill" : "lightbulb", isOn: lightOn) { lightOn.toggle() }
+                        ToolButton(symbol: engine.isFrozen ? "play.fill" : "pause.fill", isOn: engine.isFrozen) {
+                            engine.setFrozen(!engine.isFrozen)
+                        }
+                        ToolButton(symbol: "arrow.left.and.right.righttriangle.left.righttriangle.right.fill",
+                                   isOn: engine.mode == .trueView) { flipMode() }
+                            .accessibilityLabel(L("左右の切り替え、いまは%@", engine.mode.label))
                     }
-                    ToolButton(symbol: "plus.viewfinder", isOn: showGuides) { showGuides.toggle() }
                 }
             }
-
-            HStack {
-                galleryButton
-                Spacer()
-                shutterButton
-                Spacer()
-                modeSwitch
-            }
-            .padding(.horizontal, 20)
+            .padding(.horizontal, 12)
         }
         .padding(.bottom, 14)
     }
@@ -217,6 +216,19 @@ struct MirrorView: View {
     private func toggle(_ next: Tool) {
         withAnimation(.snappy(duration: 0.25)) {
             tool = (tool == next) ? nil : next
+        }
+    }
+
+    private func flipMode() {
+        engine.mode = engine.mode == .mirror ? .trueView : .mirror
+        let label = engine.mode.label
+        withAnimation(.easeOut(duration: 0.15)) { modeToast = label }
+        Task {
+            try? await Task.sleep(nanoseconds: 1_300_000_000)
+            // その間にもう一度切り替えていたら、新しいほうの表示を消さない
+            if modeToast == label {
+                withAnimation(.easeOut(duration: 0.3)) { modeToast = nil }
+            }
         }
     }
 
@@ -229,20 +241,39 @@ struct MirrorView: View {
                 Slider(value: Binding(get: { engine.zoom }, set: { engine.setZoom($0) }),
                        in: 1...max(1.01, engine.maxZoom))
                 Image(systemName: "plus.magnifyingglass")
+                resetButton(isDefault: engine.zoom < 1.01) { engine.setZoom(1) }
             case .brightness:
                 Image(systemName: "sun.min.fill")
                 Slider(value: Binding(get: { Double(engine.exposureBias) },
                                       set: { engine.setExposureBias(Float($0)) }),
                        in: -2...2)
                 Image(systemName: "sun.max.fill")
+                resetButton(isDefault: abs(engine.exposureBias) < 0.01) { engine.setExposureBias(0) }
             }
         }
         .font(.system(size: 15, weight: .semibold))
         .foregroundStyle(.white)
-        .padding(.horizontal, 18)
+        .padding(.leading, 18)
+        .padding(.trailing, 8)
         .frame(height: 54)
         .glassPanel(cornerRadius: 27)
-        .padding(.horizontal, 22)
+        .padding(.horizontal, 16)
+    }
+
+    /// スライダーを初期値に戻すボタン。すでに初期値のときは薄く表示する。
+    private func resetButton(isDefault: Bool, action: @escaping () -> Void) -> some View {
+        Button {
+            withAnimation(.snappy(duration: 0.2)) { action() }
+        } label: {
+            Image(systemName: "arrow.counterclockwise")
+                .font(.system(size: 15, weight: .bold))
+                .foregroundStyle(isDefault ? .white.opacity(0.35) : Theme.accent)
+                .frame(width: 40, height: 40)
+                .contentShape(.circle)
+        }
+        .buttonStyle(.plain)
+        .disabled(isDefault)
+        .accessibilityLabel(L("初期値に戻す"))
     }
 
     private var galleryButton: some View {
@@ -282,51 +313,5 @@ struct MirrorView: View {
         }
         .buttonStyle(.plain)
         .accessibilityLabel(L("スライス一覧、%d 枚", store.slices.count))
-    }
-
-    private var shutterButton: some View {
-        Button(action: fireShutter) {
-            ZStack {
-                Circle().strokeBorder(.white, lineWidth: 4).frame(width: 74, height: 74)
-                Circle().fill(.white).frame(width: 60, height: 60)
-                    .scaleEffect(shutterPulse ? 0.86 : 1)
-            }
-            .padding(6)
-            .contentShape(.circle)
-        }
-        .buttonStyle(.plain)
-        .accessibilityLabel(L("シャッター"))
-    }
-
-    private var modeSwitch: some View {
-        Button {
-            withAnimation(.snappy(duration: 0.2)) {
-                engine.mode = engine.mode == .mirror ? .trueView : .mirror
-            }
-        } label: {
-            VStack(spacing: 2) {
-                Image(systemName: "arrow.left.and.right.righttriangle.left.righttriangle.right.fill")
-                    .font(.system(size: 15, weight: .semibold))
-                Text(engine.mode.label)
-                    .font(.system(size: 10, weight: .bold, design: .rounded))
-            }
-            .foregroundStyle(engine.mode == .trueView ? Theme.accent : .white)
-            .frame(width: 56, height: 56)
-            .glassButton()
-            .contentShape(.circle)
-            .padding(4)
-        }
-        .buttonStyle(.plain)
-        .accessibilityLabel(L("左右の切り替え、いまは%@", engine.mode.label))
-    }
-
-    private func fireShutter() {
-        director.shutter()
-        // 押した手応えだけ返す。どのコマが残るかは教えない。
-        withAnimation(.easeOut(duration: 0.08)) { shutterPulse = true }
-        Task {
-            try? await Task.sleep(nanoseconds: 120_000_000)
-            withAnimation(.easeOut(duration: 0.15)) { shutterPulse = false }
-        }
     }
 }
