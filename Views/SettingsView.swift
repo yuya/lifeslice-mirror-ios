@@ -12,6 +12,7 @@ struct SettingsView: View {
     @AppStorage(Prefs.Key.driftSlice) private var driftSlice = true
     @AppStorage(Prefs.Key.cooldown) private var cooldown = 30.0
     @AppStorage(Prefs.Key.sensitivity) private var sensitivity = 1
+    @AppStorage(Prefs.Key.candidBias) private var candidBias = 2
     @AppStorage(Prefs.Key.saveToPhotos) private var saveToPhotos = false
     @AppStorage(Prefs.Key.quietMode) private var quietMode = false
     @AppStorage(Prefs.Key.reelThreshold) private var reelThreshold = 12
@@ -59,6 +60,18 @@ struct SettingsView: View {
                 }
 
                 Section {
+                    Picker(L("隙のある顔"), selection: $candidBias) {
+                        ForEach(CandidBias.allCases) { item in
+                            Text(item.label).tag(item.rawValue)
+                        }
+                    }
+                } header: {
+                    Text(L("どのコマが選ばれやすいか"))
+                } footer: {
+                    Text(L("振り幅の中から、ブレている・目を閉じている・口が開いている・首が傾いているコマほど当たりやすくします。あくまでくじ引きなので、キメ顔が選ばれることもあります。"))
+                }
+
+                Section {
                     Toggle(L("止まったら自動で撮る"), isOn: $autoSlice)
                     if autoSlice {
                         Picker(L("止まった判定"), selection: $sensitivity) {
@@ -76,7 +89,7 @@ struct SettingsView: View {
                 } header: {
                     Text(L("勝手にたまる仕組み"))
                 } footer: {
-                    Text(L("顔が映った状態で手が止まると自動で撮ります。一度も撮れないまま閉じたときは、開いていた間の映像から適当に 1 コマだけ残します。真っ暗に近いコマは残しません。残さなかった映像はその場で捨てています。"))
+                    Text(L("顔が映った状態で手が止まると自動で撮ります。一度も撮れないまま閉じたときは、開いていた間の映像から適当に 1 コマだけ残します。顔のあたりが暗いコマ、カメラを開いた直後のコマは残しません。残さなかった映像はその場で捨てています。"))
                 }
 
                 Section {

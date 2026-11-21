@@ -39,6 +39,9 @@ final class SliceDirector: ObservableObject {
     init() {
         Prefs.register()
         detector.onStill = { [weak self] in self?.handleStill() }
+        // コマごとのブレ具合を、静止検知と同じセンサーから渡す
+        let detector = self.detector
+        engine.motionProvider = { detector.latestRotation }
         // engine の変化（ズームや顔検出）を画面に伝える。
         engine.objectWillChange
             .sink { [weak self] _ in self?.objectWillChange.send() }
@@ -111,10 +114,15 @@ final class SliceDirector: ObservableObject {
         // 通知センターを覗いただけ、のような出入りで増えすぎないよう 1 分に 1 枚まで。
         let now = CACurrentMediaTime()
         let lingered = now - startedAt
-        if leavingApp, Prefs.driftSlice, slicesThisSession == 0, lingered > 1.5, now - lastDriftAt > 60, !engine.isFrozen,
-           let frame = engine.buffer.pickAny() {
-            lastDriftAt = now
-            save(frame: frame, source: .drift, offset: nil, date: Date())
+        if leavingApp, Prefs.driftSlice, slicesThisSession == 0, lingered > 1.5, now - lastDriftAt > 60, !engine.isFrozen {
+            let candidates = engine.buffer.driftCandidates()
+            if !candidates.isEmpty {
+                lastDriftAt = now
+                slicesThisSession += 1
+                choose(from: candidates) { [weak self] frame in
+                    self?.save(frame: frame, source: .drift, offset: nil, date: Date())
+                }
+            }
         }
 
         // 映像は持ち越さない。
@@ -151,15 +159,39 @@ final class SliceDirector: ObservableObject {
     }
 
     private func resolve(_ item: Pending) {
-        guard let frame = engine.buffer.pick(from: item.pressedAt - item.pre,
-                                             to: item.pressedAt + item.post) else { return }
-        let offset = frame.time - item.pressedAt
-        save(frame: frame, source: item.source, offset: offset, date: item.date.addingTimeInterval(offset))
+        let candidates = engine.buffer.candidates(from: item.pressedAt - item.pre,
+                                                  to: item.pressedAt + item.post)
+        guard !candidates.isEmpty else { return }
+        // 採点は少し時間がかかるので、数えるのは先に（立ち去りスライスと二重にならないよう）
+        slicesThisSession += 1
+        choose(from: candidates) { [weak self] frame in
+            let offset = frame.time - item.pressedAt
+            self?.save(frame: frame, source: item.source, offset: offset,
+                       date: item.date.addingTimeInterval(offset))
+        }
+    }
+
+    /// 候補を採点してくじを引く（顔の検出をするのでメインスレッドの外で）。
+    /// アプリがバックグラウンドへ行く途中でも終わるよう、少しだけ猶予をもらう。
+    private func choose(from candidates: [SurpriseBuffer.Frame],
+                        then done: @escaping @MainActor (SurpriseBuffer.Frame) -> Void) {
+        let bias = CandidBias(rawValue: Prefs.candidBias) ?? .strong
+        var taskID = UIBackgroundTaskIdentifier.invalid
+        taskID = UIApplication.shared.beginBackgroundTask {
+            UIApplication.shared.endBackgroundTask(taskID)
+            taskID = .invalid
+        }
+        Task.detached(priority: .userInitiated) {
+            let frame = CandidScorer.choose(candidates, bias: bias)
+            await MainActor.run {
+                if let frame { done(frame) }
+                if taskID != .invalid { UIApplication.shared.endBackgroundTask(taskID) }
+            }
+        }
     }
 
     private func save(frame: SurpriseBuffer.Frame, source: Slice.Source, offset: Double?, date: Date) {
         guard let slice = store.add(jpeg: frame.jpeg, date: date, source: source, offset: offset) else { return }
-        slicesThisSession += 1
         lastSaved = slice
         savedTick += 1
     }

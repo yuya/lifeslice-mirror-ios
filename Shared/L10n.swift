@@ -149,7 +149,7 @@ enum L10n {
         "次に撮るまでの間隔": "Wait before the next one",
         "止まらなくても 1 枚もらう": "Keep one even if I don't hold still",
         "勝手にたまる仕組み": "How slices pile up",
-        "顔が映った状態で手が止まると自動で撮ります。一度も撮れないまま閉じたときは、開いていた間の映像から適当に 1 コマだけ残します。真っ暗に近いコマは残しません。残さなかった映像はその場で捨てています。": "Captures automatically when your face is in view and your hand holds still. If nothing was captured before you leave, it keeps one random frame from the time the mirror was open. Frames that are almost pitch dark are never kept. Everything else is thrown away on the spot.",
+        "顔が映った状態で手が止まると自動で撮ります。一度も撮れないまま閉じたときは、開いていた間の映像から適当に 1 コマだけ残します。顔のあたりが暗いコマ、カメラを開いた直後のコマは残しません。残さなかった映像はその場で捨てています。": "Captures automatically when your face is in view and your hand holds still. If nothing was captured before you leave, it keeps one random frame from the time the mirror was open. Frames where your face is dark, and frames from right after the camera opens, are never kept. Everything else is thrown away on the spot.",
         "写真アプリにも保存": "Also save to Photos",
         "保存": "Saving",
         "スライスはいつもアプリの中に残ります。オンにすると、写真アプリの「%@」アルバムにも同じものを入れます。": "Slices always stay inside the app. Turn this on to also add them to the “%@” album in Photos.",
@@ -183,6 +183,12 @@ enum L10n {
         "日付": "Date",
         "出力": "Output",
         "見本は、えらんだ範囲のいちばん新しいスライスで作っています。": "Samples use the newest slice in the selected range.",
+        "ふつう（くじ引きだけ）": "Normal (pure lottery)",
+        "ちょっと寄せる": "A little",
+        "がっつり寄せる": "A lot",
+        "隙のある顔": "Candid faces",
+        "どのコマが選ばれやすいか": "Which frames win",
+        "振り幅の中から、ブレている・目を閉じている・口が開いている・首が傾いているコマほど当たりやすくします。あくまでくじ引きなので、キメ顔が選ばれることもあります。": "Within the window, frames that are blurry, with eyes closed, mouth open or head tilted get more lottery tickets. It is still a lottery, so your posed face can win too.",
     ]
 }
 

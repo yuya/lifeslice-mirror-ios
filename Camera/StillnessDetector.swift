@@ -28,6 +28,14 @@ final class StillnessDetector {
     /// 静止が成立した瞬間に 1 回だけ呼ばれる（メインスレッド）。
     var onStill: (() -> Void)?
 
+    private let rotationLock = NSLock()
+    private var currentRotation: Float = 0
+    /// いまの回転の速さ（rad/s）。コマごとの「ブレ具合」としてカメラ側が読む。
+    var latestRotation: Float {
+        rotationLock.lock(); defer { rotationLock.unlock() }
+        return currentRotation
+    }
+
     private let motion = CMMotionManager()
     private let queue = OperationQueue()
     private var calmSince: TimeInterval?
@@ -43,6 +51,9 @@ final class StillnessDetector {
             let r = data.rotationRate
             let a = data.userAcceleration
             let rotation = (r.x * r.x + r.y * r.y + r.z * r.z).squareRoot()
+            self.rotationLock.lock()
+            self.currentRotation = Float(rotation)
+            self.rotationLock.unlock()
             let acceleration = (a.x * a.x + a.y * a.y + a.z * a.z).squareRoot()
             let t = self.sensitivity.thresholds
             let calm = rotation < t.rotation && acceleration < t.acceleration

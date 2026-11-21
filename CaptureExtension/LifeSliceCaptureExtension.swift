@@ -31,6 +31,8 @@ final class LockedSlicer: ObservableObject {
     init(directory: URL) {
         self.directory = directory
         detector.onStill = { [weak self] in self?.handleStill() }
+        let detector = self.detector
+        engine.motionProvider = { detector.latestRotation }
     }
 
     func start() {

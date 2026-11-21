@@ -35,6 +35,9 @@ final class CameraEngine: NSObject, ObservableObject {
     let buffer = SurpriseBuffer()
     weak var previewLayer: AVCaptureVideoPreviewLayer?
 
+    /// コマごとのブレ具合（端末の回転の速さ）を教えてもらう口。無ければ 0 扱い。
+    var motionProvider: (() -> Float)?
+
     /// 1 秒あたり何コマをバッファに入れるか。
     var bufferFPS: Double = 8
 
@@ -52,6 +55,9 @@ final class CameraEngine: NSObject, ObservableObject {
     private var frameCounter = 0
     private var lastFace = false
     private var lastDark = false
+    // 起動直後（露出が合う前）のコマを見分けるため
+    private var restartPending = true
+    private var warmUntil: TimeInterval = 0
     // スレッドをまたいで読むフラグ（厳密な同期は不要な程度の値）
     private var modeFlag = false
     private var frozenFlag = false
@@ -59,6 +65,7 @@ final class CameraEngine: NSObject, ObservableObject {
     // MARK: ライフサイクル
 
     func start() {
+        restartPending = true
         switch AVCaptureDevice.authorizationStatus(for: .video) {
         case .authorized:
             authorization = .authorized
@@ -207,6 +214,10 @@ extension CameraEngine: AVCaptureVideoDataOutputSampleBufferDelegate {
         guard now - lastBufferedTime >= (1.0 / bufferFPS) - 0.005 else { return }
         guard let pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer) else { return }
         lastBufferedTime = now
+        if restartPending {
+            restartPending = false
+            warmUntil = now + SurpriseBuffer.warmUpSeconds
+        }
         frameCounter += 1
 
         // 顔検出は 4 コマに 1 回で十分（約 2 回/秒）。
@@ -245,10 +256,12 @@ extension CameraEngine: AVCaptureVideoDataOutputSampleBufferDelegate {
         guard let jpeg = ciContext.jpegRepresentation(of: image,
                                                       colorSpace: colorSpace,
                                                       options: [quality: 0.82]) else { return }
-        buffer.append(.init(time: now, jpeg: jpeg, hasFace: lastFace, luma: luma))
+        buffer.append(.init(time: now, jpeg: jpeg, hasFace: lastFace, luma: luma,
+                            motion: motionProvider?() ?? 0, settled: now >= warmUntil))
     }
 
-    /// BGRA のピクセルバッファを粗く拾って平均の明るさ（0...1）を出す。
+    /// BGRA のピクセルバッファの、中央（顔が来るあたり：横 25〜75%・縦 20〜70%）の明るさ（0...1）。
+    /// 画面全体の平均だと、明るい天井や窓に引っぱられて「顔だけ真っ暗」を見逃すため。
     private static func meanLuma(of pixelBuffer: CVPixelBuffer) -> Float {
         CVPixelBufferLockBaseAddress(pixelBuffer, .readOnly)
         defer { CVPixelBufferUnlockBaseAddress(pixelBuffer, .readOnly) }
@@ -257,14 +270,14 @@ extension CameraEngine: AVCaptureVideoDataOutputSampleBufferDelegate {
         let height = CVPixelBufferGetHeight(pixelBuffer)
         let bytesPerRow = CVPixelBufferGetBytesPerRow(pixelBuffer)
         let pixels = base.assumingMemoryBound(to: UInt8.self)
-        let step = 24
+        let step = 16
         var sum = 0
         var count = 0
-        var y = 0
-        while y < height {
+        var y = height / 5
+        while y < height * 7 / 10 {
             let row = pixels + y * bytesPerRow
-            var x = 0
-            while x < width {
+            var x = width / 4
+            while x < width * 3 / 4 {
                 let p = row + x * 4
                 sum += Int(p[2]) * 77 + Int(p[1]) * 150 + Int(p[0]) * 29   // R, G, B
                 count += 1

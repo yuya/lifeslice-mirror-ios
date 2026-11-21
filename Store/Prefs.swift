@@ -9,6 +9,7 @@ enum Prefs {
         static let driftSlice = "auto.drift"             // 静止しなかったら立ち去り際に 1 コマ
         static let cooldown = "auto.cooldown"            // 自動スライスの最短間隔（秒）
         static let sensitivity = "auto.sensitivity"
+        static let candidBias = "auto.candid"            // 隙のある顔を選びやすくする度合い
         static let saveToPhotos = "photos.autosave"
         static let quietMode = "ui.quiet"                // 撮れたことを知らせない
         static let reelThreshold = "reel.threshold"
@@ -25,6 +26,7 @@ enum Prefs {
         Key.driftSlice: true,
         Key.cooldown: 30.0,
         Key.sensitivity: 1,
+        Key.candidBias: 2,
         Key.saveToPhotos: false,
         Key.quietMode: false,
         Key.reelThreshold: 12,
@@ -55,6 +57,7 @@ enum Prefs {
     static var driftSlice: Bool { ud.bool(forKey: Key.driftSlice) }
     static var cooldown: Double { ud.double(forKey: Key.cooldown) }
     static var sensitivity: Int { ud.integer(forKey: Key.sensitivity) }
+    static var candidBias: Int { ud.integer(forKey: Key.candidBias) }
     static var saveToPhotos: Bool { ud.bool(forKey: Key.saveToPhotos) }
     static var quietMode: Bool { ud.bool(forKey: Key.quietMode) }
     static var reelThreshold: Int { max(2, ud.integer(forKey: Key.reelThreshold)) }
