@@ -6,8 +6,10 @@ import UIKit
 
 /// 「いつ・どのコマを残すか」を決める係。
 /// - 静止を検知 → その瞬間の前後の振り幅からランダムに 1 コマ（暗すぎるコマは残さない）
-/// - 何も撮れないまま閉じられた → 立ち去り際にバッファから 1 コマ
-/// - 閉じたらバッファは必ず捨てる（映像は溜め込まない）
+/// - 何も撮れないままアプリがバックグラウンドへ → 立ち去り際にバッファから 1 コマ
+///   （アプリ内で一覧やリールを開いただけでは立ち去り扱いにしない）
+/// - 鏡が見えなくなったらバッファは必ず捨てる（映像は溜め込まない）
+/// - 「次に撮るまでの間隔」は鏡が見えている間だけ進む
 @MainActor
 final class SliceDirector: ObservableObject {
     let engine = CameraEngine()
@@ -52,6 +54,8 @@ final class SliceDirector: ObservableObject {
     private var sceneActive = false
     private var mirrorVisible = true
     private var lastDriftAt: TimeInterval = 0
+    /// アプリ内で一覧・リール・設定を開いた時刻。その間は間隔のカウントを止める。
+    private var hiddenAt: TimeInterval?
 
     /// アプリが前面かどうか。
     func setSceneActive(_ active: Bool) {
@@ -61,12 +65,25 @@ final class SliceDirector: ObservableObject {
 
     /// 鏡の画面が見えているかどうか（一覧や設定を開いている間は撮らない）。
     func setMirrorVisible(_ visible: Bool) {
+        let now = CACurrentMediaTime()
+        if !visible, mirrorVisible {
+            hiddenAt = now
+        } else if visible, !mirrorVisible, let hiddenAt {
+            // 開いていた時間ぶん、前回の自動撮影を後ろへずらす（＝カウントを止めていたことにする）
+            lastAutoAt += now - hiddenAt
+            self.hiddenAt = nil
+        }
         mirrorVisible = visible
         reconcile()
     }
 
     private func reconcile() {
-        if sceneActive && mirrorVisible { becomeActive() } else { resignActive() }
+        if sceneActive && mirrorVisible {
+            becomeActive()
+        } else {
+            // 立ち去りスライスは、アプリ自体がバックグラウンドへ行くときだけ
+            resignActive(leavingApp: !sceneActive)
+        }
     }
 
     private func becomeActive() {
@@ -80,8 +97,8 @@ final class SliceDirector: ObservableObject {
         detector.start()
     }
 
-    /// アプリが前面でなくなる瞬間。ここが「バックグラウンド処理」の実体。
-    private func resignActive() {
+    /// 鏡が見えなくなる瞬間。アプリがバックグラウンドへ行くときは、ここが「バックグラウンド処理」の実体。
+    private func resignActive(leavingApp: Bool) {
         guard let startedAt = sessionStartedAt else { return }
         sessionStartedAt = nil
         detector.stop()
@@ -94,7 +111,7 @@ final class SliceDirector: ObservableObject {
         // 通知センターを覗いただけ、のような出入りで増えすぎないよう 1 分に 1 枚まで。
         let now = CACurrentMediaTime()
         let lingered = now - startedAt
-        if Prefs.driftSlice, slicesThisSession == 0, lingered > 1.5, now - lastDriftAt > 60, !engine.isFrozen,
+        if leavingApp, Prefs.driftSlice, slicesThisSession == 0, lingered > 1.5, now - lastDriftAt > 60, !engine.isFrozen,
            let frame = engine.buffer.pickAny() {
             lastDriftAt = now
             save(frame: frame, source: .drift, offset: nil, date: Date())

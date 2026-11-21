@@ -28,7 +28,9 @@ struct ReelStudioView: View {
     }
 
     /// プレビューで回すコマ数の上限（書き出しは全コマ）。
-    private static let previewLimit = 60
+    private static let previewLimit = 30
+    /// プレビューは「最新から何コマ前」から再生を始めるか（見本タイルと同じ最新のコマがすぐ見えるように）
+    private static let previewLead = 3
 
     @State private var options = ReelOptions.loadLast()
     @State private var range = Range(rawValue: UserDefaults.standard.string(forKey: Prefs.Key.lastReelRange) ?? "") ?? .recent30
@@ -39,6 +41,8 @@ struct ReelStudioView: View {
     @State private var periodReady = false
 
     @State private var frames: [UIImage] = []
+    /// プレビューを描き直した時刻。ここを起点に「最新 3 コマ → 最古へ戻ってループ」と回す
+    @State private var previewStartedAt = Date()
     @State private var tab: Tab = .colors
     /// 見本タイル（キーは "colors.c256" のように 種類.値）
     @State private var tileImages: [String: UIImage] = [:]
@@ -377,9 +381,11 @@ struct ReelStudioView: View {
                         .foregroundStyle(.secondary)
                 }
             } else {
-                TimelineView(.periodic(from: .now, by: 1.0 / options.speed.fps)) { context in
-                    let tick = Int(context.date.timeIntervalSinceReferenceDate * options.speed.fps)
-                    Image(uiImage: frames[tick % frames.count])
+                TimelineView(.periodic(from: previewStartedAt, by: 1.0 / options.speed.fps)) { context in
+                    let elapsed = max(0, context.date.timeIntervalSince(previewStartedAt))
+                    let first = max(0, frames.count - Self.previewLead)
+                    let index = (first + Int(elapsed * options.speed.fps)) % frames.count
+                    Image(uiImage: frames[index])
                         .interpolation(.none)
                         .resizable()
                         .scaledToFit()
@@ -429,6 +435,7 @@ struct ReelStudioView: View {
         }
         if Task.isCancelled { return }
         frames = rendered
+        previewStartedAt = Date()
         rendering = false
     }
 

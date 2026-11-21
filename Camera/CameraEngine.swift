@@ -2,6 +2,7 @@ import AVFoundation
 import CoreImage
 import QuartzCore
 import SwiftUI
+import UIKit
 import Vision
 
 /// インカメラのセッション管理と、不意打ちバッファへのフレーム供給。
@@ -20,6 +21,10 @@ final class CameraEngine: NSObject, ObservableObject {
     @Published private(set) var maxZoom: CGFloat = 4
     @Published private(set) var exposureBias: Float = 0
     @Published private(set) var isFrozen = false
+    /// 一時停止した瞬間の 1 枚（止めている間はこれを拡大して見る）
+    @Published private(set) var frozenImage: UIImage?
+    /// その 1 枚を撮ったとき「相手から」だったか（あとで左右を切り替えたら絵も反転させるため）
+    private(set) var frozenWasTrueView = false
     @Published private(set) var faceVisible = false
     /// いま映っている映像が、残す価値のないほど暗いかどうか。
     @Published private(set) var tooDark = false
@@ -179,6 +184,12 @@ final class CameraEngine: NSObject, ObservableObject {
 
     /// 映像を一時停止して、じっくり見られるようにする。
     func setFrozen(_ frozen: Bool) {
+        if frozen {
+            frozenImage = buffer.latest.flatMap { UIImage(data: $0.jpeg) }
+            frozenWasTrueView = mode == .trueView
+        } else {
+            frozenImage = nil
+        }
         isFrozen = frozen
         frozenFlag = frozen
         previewLayer?.connection?.isEnabled = !frozen

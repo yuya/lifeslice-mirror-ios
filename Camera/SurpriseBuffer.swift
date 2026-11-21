@@ -36,6 +36,12 @@ final class SurpriseBuffer {
         frames.removeAll(keepingCapacity: false)
     }
 
+    /// いちばん新しいコマ（一時停止したときに映しておく 1 枚）。
+    var latest: Frame? {
+        lock.lock(); defer { lock.unlock() }
+        return frames.last
+    }
+
     var isEmpty: Bool {
         lock.lock(); defer { lock.unlock() }
         return frames.isEmpty
