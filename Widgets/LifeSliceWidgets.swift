@@ -10,6 +10,7 @@ struct LifeSliceWidgetBundle: WidgetBundle {
         SliceCountWidget()
         FaceIconWidget()
         MirrorControl()
+        MirrorCameraControl()
     }
 }
 
@@ -218,5 +219,21 @@ struct MirrorControl: ControlWidget {
         }
         .displayName("LifeSlice Mirror")
         .description("Opens the mirror right away.")
+    }
+}
+
+/// カメラコントロール（側面のボタン）とアクションボタン用。
+/// iOS は「カメラ用のインテント（CameraCaptureIntent）を持つコントロール」がある app だけを
+/// カメラコントロールの選択肢に出すので、ロック画面用とは別にこちらを用意する。
+/// ロック中はロック中用の鏡（LifeSliceCapture）、解除中はアプリ本体が開く。
+struct MirrorCameraControl: ControlWidget {
+    var body: some ControlWidgetConfiguration {
+        StaticControlConfiguration(kind: "app.lifeslice.mirror.camera") {
+            ControlWidgetButton(action: MirrorCaptureIntent()) {
+                Label("Mirror Camera", image: "MirrorGlyph")
+            }
+        }
+        .displayName("LifeSlice Mirror Camera")
+        .description("For the Camera Control and the Action button.")
     }
 }
