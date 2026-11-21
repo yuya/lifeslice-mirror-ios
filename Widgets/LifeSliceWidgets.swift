@@ -87,6 +87,7 @@ struct LatestSliceView: View {
             }
         }
         .containerBackground(ink, for: .widget)
+        .widgetURL(MirrorLaunch.url)
     }
 
     @ViewBuilder
@@ -170,6 +171,7 @@ struct SliceCountView: View {
             }
         }
         .containerBackground(.clear, for: .widget)
+        .widgetURL(MirrorLaunch.url)
     }
 }
 
@@ -200,6 +202,7 @@ struct FaceIconView: View {
         }
         .widgetAccentable()
         .containerBackground(.clear, for: .widget)
+        .widgetURL(MirrorLaunch.url)
     }
 }
 
@@ -208,7 +211,8 @@ struct FaceIconView: View {
 struct MirrorControl: ControlWidget {
     var body: some ControlWidgetConfiguration {
         StaticControlConfiguration(kind: "app.lifeslice.mirror.control") {
-            ControlWidgetButton(action: MirrorCaptureIntent()) {
+            // カメラ用のインテントだとロック中に何も起きないことがあるので、アプリを開くインテントにする
+            ControlWidgetButton(action: OpenMirrorIntent()) {
                 Label("Open Mirror", image: "MirrorGlyph")
             }
         }

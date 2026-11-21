@@ -84,6 +84,12 @@ struct MirrorView: View {
         }
         .sensoryFeedback(.impact(weight: .light), trigger: quietMode ? 0 : director.savedTick)
         .onChange(of: lightOn) { _, on in ScreenLight.set(on: on) }
+        // 鏡から始める合図：開いている一覧・リール・設定を閉じ、ツールのパネルも畳む
+        .onChange(of: director.returnToMirrorTick) { _, _ in
+            showGallery = false
+            showSettings = false
+            tool = nil
+        }
         // アプリを離れている間は画面の明るさを元に戻し、戻ってきたら点け直す
         .onChange(of: scenePhase) { _, phase in ScreenLight.set(on: lightOn && phase == .active) }
         .onDisappear { ScreenLight.set(on: false) }

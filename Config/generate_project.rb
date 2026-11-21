@@ -86,6 +86,7 @@ per_target = {
     'ASSETCATALOG_COMPILER_APPICON_NAME' => 'AppIcon',
     'ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME' => 'AccentColor',
     'CODE_SIGN_ENTITLEMENTS' => 'Config/App.entitlements',
+    'INFOPLIST_FILE' => 'Config/App-Info.plist',   # 自動生成分に URL スキームを足す
     'ENABLE_PREVIEWS' => 'YES',
     'INFOPLIST_KEY_CFBundleDisplayName' => 'LifeSlice',
     'INFOPLIST_KEY_NSCameraUsageDescription' => camera_reason,
@@ -119,7 +120,6 @@ per_target = {
 per_target.each do |target, settings|
   target.build_configurations.each do |config|
     config.build_settings.merge!(common).merge!(settings)
-    config.build_settings.delete('INFOPLIST_FILE') if target == app
   end
 end
 

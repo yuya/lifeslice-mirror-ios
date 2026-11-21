@@ -19,6 +19,12 @@ final class SliceDirector: ObservableObject {
     /// 直近に保存されたスライス（「＋1」の合図用）。
     @Published private(set) var lastSaved: Slice?
     @Published private(set) var savedTick = 0
+    /// 一覧・リール・設定を閉じて鏡の画面に戻す合図（増えるたびに戻す）
+    @Published private(set) var returnToMirrorTick = 0
+
+    func returnToMirror() {
+        returnToMirrorTick += 1
+    }
 
     private struct Pending {
         let id = UUID()
