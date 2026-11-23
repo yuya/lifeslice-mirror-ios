@@ -7,7 +7,5 @@
 		<key>EXExtensionPointIdentifier</key>
 		<string>com.apple.securecapture</string>
 	</dict>
-	<key>NSCameraUsageDescription</key>
-	<string>The camera is used to work as a mirror and to keep one surprise frame.</string>
 </dict>
 </plist>
