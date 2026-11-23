@@ -26,9 +26,10 @@ struct GalleryView: View {
         return grouped
             .compactMap { key, value -> (Date, [Slice])? in
                 guard let date = calendar.date(from: key) else { return nil }
-                return (date, value.sorted { $0.date > $1.date })
+                return (date, value.sorted { $0.date < $1.date })
             }
-            .sorted { $0.0 > $1.0 }
+            // 写真アプリと同じく、古いものが上・新しいものが下
+            .sorted { $0.0 < $1.0 }
             .map { entry in
                 Month(id: entry.0,
                       title: entry.0.formatted(.dateTime.year().month(.wide).locale(L10n.locale)),
@@ -42,14 +43,6 @@ struct GalleryView: View {
         NavigationStack {
             ScrollView {
                 VStack(alignment: .leading, spacing: 22) {
-                    reelCard
-                        .padding(.horizontal, 16)
-
-                    if !reels.records.isEmpty {
-                        reelHistory
-                            .padding(.horizontal, 16)
-                    }
-
                     if store.slices.isEmpty {
                         emptyState
                     }
@@ -71,9 +64,20 @@ struct GalleryView: View {
                             }
                         }
                     }
+
+                    // 新しいものが下なので、リールまわりも親指の届く下に置く
+                    if !reels.records.isEmpty {
+                        reelHistory
+                            .padding(.horizontal, 16)
+                    }
+
+                    reelCard
+                        .padding(.horizontal, 16)
                 }
                 .padding(.vertical, 12)
             }
+            // 開いたときは、いちばん下（最新）から見せる
+            .defaultScrollAnchor(.bottom)
             .background(Theme.ink)
             .navigationTitle(L("スライス"))
             .navigationBarTitleDisplayMode(.inline)
@@ -214,8 +218,8 @@ struct SlicePagerView: View {
         _currentID = State(initialValue: slice.id)
     }
 
-    /// 一覧と同じく新しい順。
-    private var ordered: [Slice] { store.slices.reversed() }
+    /// 一覧と同じく古い順（左へスワイプで新しいほうへ）。
+    private var ordered: [Slice] { store.slices }
     private var current: Slice? { store.slices.first { $0.id == currentID } }
 
     var body: some View {

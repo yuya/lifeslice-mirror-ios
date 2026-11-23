@@ -6,8 +6,10 @@ import UIKit
 
 /// 「いつ・どのコマを残すか」を決める係。
 /// - 静止を検知 → その瞬間の前後の振り幅からランダムに 1 コマ（暗すぎるコマは残さない）
-/// - 何も撮れないまま閉じられた → 立ち去り際にバッファから 1 コマ
-/// - 閉じたらバッファは必ず捨てる（映像は溜め込まない）
+/// - 何も撮れないままアプリがバックグラウンドへ → 立ち去り際にバッファから 1 コマ
+///   （アプリ内で一覧やリールを開いただけでは立ち去り扱いにしない）
+/// - 鏡が見えなくなったらバッファは必ず捨てる（映像は溜め込まない）
+/// - 「次に撮るまでの間隔」は鏡が見えている間だけ進む
 @MainActor
 final class SliceDirector: ObservableObject {
     let engine = CameraEngine()
@@ -17,6 +19,12 @@ final class SliceDirector: ObservableObject {
     /// 直近に保存されたスライス（「＋1」の合図用）。
     @Published private(set) var lastSaved: Slice?
     @Published private(set) var savedTick = 0
+    /// 一覧・リール・設定を閉じて鏡の画面に戻す合図（増えるたびに戻す）
+    @Published private(set) var returnToMirrorTick = 0
+
+    func returnToMirror() {
+        returnToMirrorTick += 1
+    }
 
     private struct Pending {
         let id = UUID()
@@ -37,6 +45,9 @@ final class SliceDirector: ObservableObject {
     init() {
         Prefs.register()
         detector.onStill = { [weak self] in self?.handleStill() }
+        // コマごとのブレ具合を、静止検知と同じセンサーから渡す
+        let detector = self.detector
+        engine.motionProvider = { detector.latestRotation }
         // engine の変化（ズームや顔検出）を画面に伝える。
         engine.objectWillChange
             .sink { [weak self] _ in self?.objectWillChange.send() }
@@ -52,6 +63,8 @@ final class SliceDirector: ObservableObject {
     private var sceneActive = false
     private var mirrorVisible = true
     private var lastDriftAt: TimeInterval = 0
+    /// アプリ内で一覧・リール・設定を開いた時刻。その間は間隔のカウントを止める。
+    private var hiddenAt: TimeInterval?
 
     /// アプリが前面かどうか。
     func setSceneActive(_ active: Bool) {
@@ -61,12 +74,25 @@ final class SliceDirector: ObservableObject {
 
     /// 鏡の画面が見えているかどうか（一覧や設定を開いている間は撮らない）。
     func setMirrorVisible(_ visible: Bool) {
+        let now = CACurrentMediaTime()
+        if !visible, mirrorVisible {
+            hiddenAt = now
+        } else if visible, !mirrorVisible, let hiddenAt {
+            // 開いていた時間ぶん、前回の自動撮影を後ろへずらす（＝カウントを止めていたことにする）
+            lastAutoAt += now - hiddenAt
+            self.hiddenAt = nil
+        }
         mirrorVisible = visible
         reconcile()
     }
 
     private func reconcile() {
-        if sceneActive && mirrorVisible { becomeActive() } else { resignActive() }
+        if sceneActive && mirrorVisible {
+            becomeActive()
+        } else {
+            // 立ち去りスライスは、アプリ自体がバックグラウンドへ行くときだけ
+            resignActive(leavingApp: !sceneActive)
+        }
     }
 
     private func becomeActive() {
@@ -80,8 +106,8 @@ final class SliceDirector: ObservableObject {
         detector.start()
     }
 
-    /// アプリが前面でなくなる瞬間。ここが「バックグラウンド処理」の実体。
-    private func resignActive() {
+    /// 鏡が見えなくなる瞬間。アプリがバックグラウンドへ行くときは、ここが「バックグラウンド処理」の実体。
+    private func resignActive(leavingApp: Bool) {
         guard let startedAt = sessionStartedAt else { return }
         sessionStartedAt = nil
         detector.stop()
@@ -94,10 +120,15 @@ final class SliceDirector: ObservableObject {
         // 通知センターを覗いただけ、のような出入りで増えすぎないよう 1 分に 1 枚まで。
         let now = CACurrentMediaTime()
         let lingered = now - startedAt
-        if Prefs.driftSlice, slicesThisSession == 0, lingered > 1.5, now - lastDriftAt > 60, !engine.isFrozen,
-           let frame = engine.buffer.pickAny() {
-            lastDriftAt = now
-            save(frame: frame, source: .drift, offset: nil, date: Date())
+        if leavingApp, Prefs.driftSlice, slicesThisSession == 0, lingered > 1.5, now - lastDriftAt > 60, !engine.isFrozen {
+            let candidates = engine.buffer.driftCandidates()
+            if !candidates.isEmpty {
+                lastDriftAt = now
+                slicesThisSession += 1
+                choose(from: candidates) { [weak self] frame in
+                    self?.save(frame: frame, source: .drift, offset: nil, date: Date())
+                }
+            }
         }
 
         // 映像は持ち越さない。
@@ -134,15 +165,39 @@ final class SliceDirector: ObservableObject {
     }
 
     private func resolve(_ item: Pending) {
-        guard let frame = engine.buffer.pick(from: item.pressedAt - item.pre,
-                                             to: item.pressedAt + item.post) else { return }
-        let offset = frame.time - item.pressedAt
-        save(frame: frame, source: item.source, offset: offset, date: item.date.addingTimeInterval(offset))
+        let candidates = engine.buffer.candidates(from: item.pressedAt - item.pre,
+                                                  to: item.pressedAt + item.post)
+        guard !candidates.isEmpty else { return }
+        // 採点は少し時間がかかるので、数えるのは先に（立ち去りスライスと二重にならないよう）
+        slicesThisSession += 1
+        choose(from: candidates) { [weak self] frame in
+            let offset = frame.time - item.pressedAt
+            self?.save(frame: frame, source: item.source, offset: offset,
+                       date: item.date.addingTimeInterval(offset))
+        }
+    }
+
+    /// 候補を採点してくじを引く（顔の検出をするのでメインスレッドの外で）。
+    /// アプリがバックグラウンドへ行く途中でも終わるよう、少しだけ猶予をもらう。
+    private func choose(from candidates: [SurpriseBuffer.Frame],
+                        then done: @escaping @MainActor (SurpriseBuffer.Frame) -> Void) {
+        let bias = CandidBias(rawValue: Prefs.candidBias) ?? .strong
+        var taskID = UIBackgroundTaskIdentifier.invalid
+        taskID = UIApplication.shared.beginBackgroundTask {
+            UIApplication.shared.endBackgroundTask(taskID)
+            taskID = .invalid
+        }
+        Task.detached(priority: .userInitiated) {
+            let frame = CandidScorer.choose(candidates, bias: bias)
+            await MainActor.run {
+                if let frame { done(frame) }
+                if taskID != .invalid { UIApplication.shared.endBackgroundTask(taskID) }
+            }
+        }
     }
 
     private func save(frame: SurpriseBuffer.Frame, source: Slice.Source, offset: Double?, date: Date) {
         guard let slice = store.add(jpeg: frame.jpeg, date: date, source: source, offset: offset) else { return }
-        slicesThisSession += 1
         lastSaved = slice
         savedTick += 1
     }

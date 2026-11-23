@@ -19,6 +19,10 @@ struct MirrorView: View {
     @State private var lightOn = false
     @State private var flash = false
     @State private var pinchBase: CGFloat?
+    // 一時停止中の拡大（止めた 1 枚を指で拡大・移動する）
+    @State private var stillScale: CGFloat = 1
+    @State private var stillOffset: CGSize = .zero
+    @State private var stillDragBase: CGSize?
     @State private var showGallery = false
     @State private var showSettings = false
     @State private var plusOne = false
@@ -63,7 +67,7 @@ struct MirrorView: View {
         .persistentSystemOverlays(chromeHidden ? .hidden : .automatic)
         // カメラコントロール／音量ボタンは「一時停止」の切り替え（撮影ではない）
         .onCameraCaptureEvent { event in
-            if event.phase == .ended { engine.setFrozen(!engine.isFrozen) }
+            if event.phase == .ended { togglePause() }
         }
         .onChange(of: director.savedTick) { _, _ in
             guard !quietMode else { return }
@@ -80,6 +84,12 @@ struct MirrorView: View {
         }
         .sensoryFeedback(.impact(weight: .light), trigger: quietMode ? 0 : director.savedTick)
         .onChange(of: lightOn) { _, on in ScreenLight.set(on: on) }
+        // 鏡から始める合図：開いている一覧・リール・設定を閉じ、ツールのパネルも畳む
+        .onChange(of: director.returnToMirrorTick) { _, _ in
+            showGallery = false
+            showSettings = false
+            tool = nil
+        }
         // アプリを離れている間は画面の明るさを元に戻し、戻ってきたら点け直す
         .onChange(of: scenePhase) { _, phase in ScreenLight.set(on: lightOn && phase == .active) }
         .onDisappear { ScreenLight.set(on: false) }
@@ -104,25 +114,88 @@ struct MirrorView: View {
     // MARK: 鏡
 
     private var preview: some View {
-        CameraPreview(engine: engine)
-            // プレビューは標準で鏡像。「相手から」は左右を戻す。
-            .scaleEffect(x: engine.mode == .trueView ? -1 : 1, y: 1)
-            .ignoresSafeArea()
+        GeometryReader { geo in
+            ZStack {
+                CameraPreview(engine: engine)
+                    // プレビューは標準で鏡像。「相手から」は左右を戻す。
+                    .scaleEffect(x: engine.mode == .trueView ? -1 : 1, y: 1)
+
+                if engine.isFrozen, let still = engine.frozenImage {
+                    Image(uiImage: still)
+                        .resizable()
+                        .scaledToFill()
+                        .frame(width: geo.size.width, height: geo.size.height)
+                        .scaleEffect(x: stillFlipped ? -1 : 1, y: 1)
+                        .scaleEffect(stillScale)
+                        .offset(stillOffset)
+                        .clipped()
+                }
+            }
             .contentShape(Rectangle())
+            // ワンタップで一時停止／再開（ツールのパネルが出ているときは、まずパネルを閉じる）
             .onTapGesture {
-                withAnimation(.easeInOut(duration: 0.2)) {
-                    if tool != nil { tool = nil } else { chromeHidden.toggle() }
+                if tool != nil {
+                    withAnimation(.easeInOut(duration: 0.2)) { tool = nil }
+                } else {
+                    togglePause()
                 }
             }
             .gesture(
                 MagnifyGesture()
                     .onChanged { value in
-                        let base = pinchBase ?? engine.zoom
-                        pinchBase = base
-                        engine.setZoom(base * value.magnification)
+                        if engine.isFrozen {
+                            let base = pinchBase ?? stillScale
+                            pinchBase = base
+                            stillScale = min(max(1, base * value.magnification), 6)
+                            stillOffset = clamped(stillOffset, in: geo.size)
+                        } else {
+                            let base = pinchBase ?? engine.zoom
+                            pinchBase = base
+                            engine.setZoom(base * value.magnification)
+                        }
                     }
                     .onEnded { _ in pinchBase = nil }
             )
+            .simultaneousGesture(
+                DragGesture(minimumDistance: 8)
+                    .onChanged { value in
+                        guard engine.isFrozen, stillScale > 1.01 else { return }
+                        let base = stillDragBase ?? stillOffset
+                        stillDragBase = base
+                        stillOffset = clamped(CGSize(width: base.width + value.translation.width,
+                                                     height: base.height + value.translation.height), in: geo.size)
+                    }
+                    .onEnded { _ in stillDragBase = nil }
+            )
+        }
+        .ignoresSafeArea()
+    }
+
+    private var zoomLabel: String? {
+        let value = engine.isFrozen ? stillScale * engine.zoom : engine.zoom
+        return value > 1.04 ? String(format: "%.1f×", value) : nil
+    }
+
+    /// 止めた 1 枚を撮ったあとで左右を切り替えたら、絵のほうも反転させる
+    private var stillFlipped: Bool {
+        (engine.mode == .trueView) != engine.frozenWasTrueView
+    }
+
+    /// 拡大した絵の端が画面の内側に入りこまないよう、移動量を抑える
+    private func clamped(_ offset: CGSize, in size: CGSize) -> CGSize {
+        let maxX = (stillScale - 1) * size.width / 2
+        let maxY = (stillScale - 1) * size.height / 2
+        return CGSize(width: min(max(offset.width, -maxX), maxX),
+                      height: min(max(offset.height, -maxY), maxY))
+    }
+
+    private func togglePause() {
+        let freeze = !engine.isFrozen
+        engine.setFrozen(freeze)
+        if !freeze {
+            stillScale = 1
+            stillOffset = .zero
+        }
     }
 
     private func notice(title: String, message: String, button: String?, action: @escaping () -> Void) -> some View {
@@ -194,13 +267,13 @@ struct MirrorView: View {
                 GlassEffectContainer(spacing: 8) {
                     HStack(spacing: 8) {
                         ToolButton(symbol: "plus.magnifyingglass",
-                                   text: engine.zoom > 1.04 ? String(format: "%.1f×", engine.zoom) : nil,
+                                   text: zoomLabel,
                                    isOn: tool == .zoom) { toggle(.zoom) }
                         ToolButton(symbol: "sun.max.fill",
                                    isOn: tool == .brightness || abs(engine.exposureBias) > 0.05) { toggle(.brightness) }
                         ToolButton(symbol: lightOn ? "lightbulb.fill" : "lightbulb", isOn: lightOn) { lightOn.toggle() }
                         ToolButton(symbol: engine.isFrozen ? "play.fill" : "pause.fill", isOn: engine.isFrozen) {
-                            engine.setFrozen(!engine.isFrozen)
+                            togglePause()
                         }
                         ToolButton(symbol: "arrow.left.and.right.righttriangle.left.righttriangle.right.fill",
                                    isOn: engine.mode == .trueView) { flipMode() }
@@ -238,10 +311,18 @@ struct MirrorView: View {
             switch tool {
             case .zoom:
                 Image(systemName: "minus.magnifyingglass")
-                Slider(value: Binding(get: { engine.zoom }, set: { engine.setZoom($0) }),
-                       in: 1...max(1.01, engine.maxZoom))
-                Image(systemName: "plus.magnifyingglass")
-                resetButton(isDefault: engine.zoom < 1.01) { engine.setZoom(1) }
+                if engine.isFrozen {
+                    // 止めている間は、止めた 1 枚の拡大率
+                    Slider(value: Binding(get: { stillScale }, set: { stillScale = $0; stillOffset = .zero }),
+                           in: 1...6)
+                    Image(systemName: "plus.magnifyingglass")
+                    resetButton(isDefault: stillScale < 1.01) { stillScale = 1; stillOffset = .zero }
+                } else {
+                    Slider(value: Binding(get: { engine.zoom }, set: { engine.setZoom($0) }),
+                           in: 1...max(1.01, engine.maxZoom))
+                    Image(systemName: "plus.magnifyingglass")
+                    resetButton(isDefault: engine.zoom < 1.01) { engine.setZoom(1) }
+                }
             case .brightness:
                 Image(systemName: "sun.min.fill")
                 Slider(value: Binding(get: { Double(engine.exposureBias) },
