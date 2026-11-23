@@ -388,6 +388,7 @@
 						ProvisioningStyle = Automatic;
 					};
 					C999B23BCC04EB6ACC3EE495 = {
+						DevelopmentTeam = LT8Z29NSK3;
 						ProvisioningStyle = Automatic;
 					};
 					EA897F1D80F5026E8A726C68 = {
@@ -676,6 +677,7 @@
 				CLANG_ENABLE_OBJC_WEAK = NO;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = LT8Z29NSK3;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Config/Capture-Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = LifeSlice;
@@ -810,6 +812,7 @@
 				CLANG_ENABLE_OBJC_WEAK = NO;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = LT8Z29NSK3;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Config/Capture-Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = LifeSlice;
