@@ -108,7 +108,7 @@
 		071351EC613F312A48717B67 /* App-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "App-Info.plist"; sourceTree = "<group>"; };
 		0A262DF749BAA35CB05269A2 /* Signing.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = Signing.xcconfig; sourceTree = "<group>"; };
 		0B6879C36B21783E4B6FF01D /* App.entitlements */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.entitlements; path = App.entitlements; sourceTree = "<group>"; };
-		1102DC36E7823EDC53CA4475 /* generate_project.rb */ = {isa = PBXFileReference; includeInIndex = 1; path = generate_project.rb; sourceTree = "<group>"; };
+		1102DC36E7823EDC53CA4475 /* generate_project.rb */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.ruby; path = generate_project.rb; sourceTree = "<group>"; };
 		2881EB5C177A872A01CBA76E /* MirrorMark.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = MirrorMark.swift; sourceTree = "<group>"; };
 		42568D347E6EFD8431CF8C30 /* ReelOptions.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ReelOptions.swift; sourceTree = "<group>"; };
 		47B67B62EB37C8CFFAF405C1 /* Symbols.xcassets */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = folder.assetcatalog; path = Symbols.xcassets; sourceTree = "<group>"; };
@@ -192,7 +192,6 @@
 				72D87D2AA98708256C096637 /* ReelStudioView.swift */,
 				FB47FEBF8015DDBD25C43121 /* SettingsView.swift */,
 			);
-			name = Views;
 			path = Views;
 			sourceTree = "<group>";
 		};
@@ -204,7 +203,6 @@
 				CBC0BE39C7C2A6559C681A30 /* StillnessDetector.swift */,
 				52B3552838F44C957013228E /* SurpriseBuffer.swift */,
 			);
-			name = Camera;
 			path = Camera;
 			sourceTree = "<group>";
 		};
@@ -218,7 +216,6 @@
 				2881EB5C177A872A01CBA76E /* MirrorMark.swift */,
 				47B67B62EB37C8CFFAF405C1 /* Symbols.xcassets */,
 			);
-			name = Shared;
 			path = Shared;
 			sourceTree = "<group>";
 		};
@@ -231,7 +228,6 @@
 				73EA3CDDD12DF0550D3ACA2D /* SliceDirector.swift */,
 				B4171A12DA767807A110450C /* SliceStore.swift */,
 			);
-			name = Store;
 			path = Store;
 			sourceTree = "<group>";
 		};
@@ -246,7 +242,6 @@
 				D99E145BBC95F56116D2F2ED /* Widgets.entitlements */,
 				1102DC36E7823EDC53CA4475 /* generate_project.rb */,
 			);
-			name = Config;
 			path = Config;
 			sourceTree = "<group>";
 		};
@@ -276,7 +271,6 @@
 				7E076AF16C000070FBCA7B5B /* PrivacyShield.swift */,
 				F48AE1C1419306E0F18D00C7 /* Theme.swift */,
 			);
-			name = App;
 			path = App;
 			sourceTree = "<group>";
 		};
@@ -292,7 +286,6 @@
 			children = (
 				F3CDB6751AE4AA54D67FF223 /* LifeSliceWidgets.swift */,
 			);
-			name = Widgets;
 			path = Widgets;
 			sourceTree = "<group>";
 		};
@@ -303,7 +296,6 @@
 				42568D347E6EFD8431CF8C30 /* ReelOptions.swift */,
 				5940297C5E058D44C68DC3AE /* ReelRenderer.swift */,
 			);
-			name = Reel;
 			path = Reel;
 			sourceTree = "<group>";
 		};
@@ -322,7 +314,6 @@
 			children = (
 				0152C397F30DF4BC5CF14FA0 /* LifeSliceCaptureExtension.swift */,
 			);
-			name = CaptureExtension;
 			path = CaptureExtension;
 			sourceTree = "<group>";
 		};
@@ -392,6 +383,18 @@
 			attributes = {
 				LastSwiftUpdateCheck = 2600;
 				LastUpgradeCheck = 2600;
+				TargetAttributes = {
+					0A574F4591C31BAD0A960893 = {
+						ProvisioningStyle = Automatic;
+					};
+					C999B23BCC04EB6ACC3EE495 = {
+						ProvisioningStyle = Automatic;
+					};
+					EA897F1D80F5026E8A726C68 = {
+						DevelopmentTeam = LT8Z29NSK3;
+						ProvisioningStyle = Automatic;
+					};
+				};
 			};
 			buildConfigurationList = 5AEEE58CF6FD5C8CB3A7FA01 /* Build configuration list for PBXProject "LifeSliceMirror" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -403,8 +406,6 @@
 				Base,
 			);
 			mainGroup = 9E126EA22537AFABF856CAEB;
-			minimizedProjectReferenceProxies = 0;
-			preferredProjectObjectVersion = 100;
 			productRefGroup = EE6405291D65222B6DAFD8E8 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -559,6 +560,7 @@
 				CODE_SIGN_ENTITLEMENTS = Config/App.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = LT8Z29NSK3;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Config/App-Info.plist";
@@ -700,6 +702,7 @@
 				CODE_SIGN_ENTITLEMENTS = Config/App.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = LT8Z29NSK3;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Config/App-Info.plist";
@@ -796,8 +799,7 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_COMPILATION_MODE = wholemodule;
-				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
