@@ -280,7 +280,10 @@ extension CameraEngine: AVCaptureVideoDataOutputSampleBufferDelegate {
         if blur { show(image) }
         if still {
             stillRequested = false
-            finishFreeze(with: ciContext.createCGImage(image, from: image.extent))
+            // カメラのコマ自身の色空間で書き出す（決め打ちの sRGB だと、止めたとき明るく見える）
+            let space = CVImageBufferGetColorSpace(pixelBuffer)?.takeUnretainedValue() ?? colorSpace
+            finishFreeze(with: ciContext.createCGImage(image, from: image.extent,
+                                                       format: .BGRA8, colorSpace: space))
             return
         }
         guard wantsBuffer else { return }
@@ -312,8 +315,9 @@ extension CameraEngine: AVCaptureVideoDataOutputSampleBufferDelegate {
         }
 
         let quality = CIImageRepresentationOption(rawValue: kCGImageDestinationLossyCompressionQuality as String)
+        let jpegSpace = CVImageBufferGetColorSpace(pixelBuffer)?.takeUnretainedValue() ?? colorSpace
         guard let jpeg = ciContext.jpegRepresentation(of: image,
-                                                      colorSpace: colorSpace,
+                                                      colorSpace: jpegSpace,
                                                       options: [quality: 0.82]) else { return }
         buffer.append(.init(time: now, jpeg: jpeg, hasFace: lastFace, luma: luma,
                             motion: motionProvider?() ?? 0, settled: now >= warmUntil))
