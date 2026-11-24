@@ -101,7 +101,10 @@ final class SliceDirector: ObservableObject {
         slicesThisSession = 0
         // 抽選は「後」の秒数が過ぎてから行うので、前後ぶん＋余裕を持っておく。
         engine.buffer.keepSeconds = max(Prefs.preWindow + Prefs.postWindow + 1.5, 6.0)
+        engine.slicingEnabled = Prefs.slicing
         engine.start()
+        // スライスを集めないときは、静止検知も動かさない（ただの鏡）
+        guard Prefs.slicing else { return }
         detector.sensitivity = StillnessDetector.Sensitivity(rawValue: Prefs.sensitivity) ?? .normal
         detector.start()
     }
@@ -120,7 +123,7 @@ final class SliceDirector: ObservableObject {
         // 通知センターを覗いただけ、のような出入りで増えすぎないよう 1 分に 1 枚まで。
         let now = CACurrentMediaTime()
         let lingered = now - startedAt
-        if leavingApp, Prefs.driftSlice, slicesThisSession == 0, lingered > 1.5, now - lastDriftAt > 60, !engine.isFrozen {
+        if leavingApp, Prefs.slicing, Prefs.driftSlice, slicesThisSession == 0, lingered > 1.5, now - lastDriftAt > 60, !engine.isFrozen {
             let candidates = engine.buffer.driftCandidates()
             if !candidates.isEmpty {
                 lastDriftAt = now
@@ -140,7 +143,7 @@ final class SliceDirector: ObservableObject {
     // MARK: 撮る
 
     private func handleStill() {
-        guard Prefs.autoSlice, sessionStartedAt != nil, !engine.isFrozen else { return }
+        guard Prefs.slicing, Prefs.autoSlice, sessionStartedAt != nil, !engine.isFrozen else { return }
         guard engine.faceVisible, !engine.tooDark else { return }
         let now = CACurrentMediaTime()
         guard now - lastAutoAt >= Prefs.cooldown else { return }

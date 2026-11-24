@@ -11,6 +11,10 @@ struct GalleryView: View {
     @State private var selected: Slice?
     @State private var playing: ReelRecord?
     @State private var showStudio = false
+    // 選んで捨てるモード
+    @State private var selecting = false
+    @State private var picked: Set<UUID> = []
+    @State private var confirmDeletePicked = false
 
     private struct Month: Identifiable {
         let id: Date
@@ -85,6 +89,29 @@ struct GalleryView: View {
                 ToolbarItem(placement: .topBarLeading) {
                     Button(L("鏡にもどる"), systemImage: "chevron.down") { dismiss() }
                 }
+                ToolbarItem(placement: .topBarTrailing) {
+                    if !store.slices.isEmpty {
+                        Button(selecting ? L("完了") : L("選択")) {
+                            withAnimation(.snappy(duration: 0.2)) {
+                                selecting.toggle()
+                                picked.removeAll()
+                            }
+                        }
+                    }
+                }
+            }
+            .safeAreaInset(edge: .bottom) {
+                if selecting { selectionBar }
+            }
+            .confirmationDialog(L("%d 枚のスライスを捨てますか？", picked.count),
+                                isPresented: $confirmDeletePicked, titleVisibility: .visible) {
+                Button(L("%d 枚を捨てる", picked.count), role: .destructive) {
+                    store.delete(picked)
+                    picked.removeAll()
+                    selecting = false
+                }
+            } message: {
+                Text(L("元に戻せません。"))
             }
             .sheet(item: $selected) { slice in
                 SlicePagerView(startAt: slice)
@@ -101,9 +128,38 @@ struct GalleryView: View {
         .preferredColorScheme(.dark)
     }
 
+    /// 選択モードの下の帯：選んだ枚数と「捨てる」。
+    private var selectionBar: some View {
+        HStack(spacing: 12) {
+            Text(picked.isEmpty ? L("捨てるスライスを選んでください") : L("%d 枚を選択中", picked.count))
+                .font(.subheadline.weight(.semibold))
+                .foregroundStyle(.secondary)
+            Spacer()
+            Button(role: .destructive) {
+                confirmDeletePicked = true
+            } label: {
+                Label(L("捨てる"), systemImage: "trash")
+                    .padding(.horizontal, 6)
+                    .padding(.vertical, 4)
+            }
+            .buttonStyle(.borderedProminent)
+            .buttonBorderShape(.capsule)
+            .tint(.red)
+            .disabled(picked.isEmpty)
+        }
+        .padding(.horizontal, 18)
+        .padding(.vertical, 12)
+        .background(.ultraThinMaterial)
+    }
+
     private func cell(_ slice: Slice) -> some View {
-        Button {
-            selected = slice
+        let isPicked = picked.contains(slice.id)
+        return Button {
+            if selecting {
+                if isPicked { picked.remove(slice.id) } else { picked.insert(slice.id) }
+            } else {
+                selected = slice
+            }
         } label: {
             Color.clear
                 .aspectRatio(3.0 / 4.0, contentMode: .fit)
@@ -116,9 +172,22 @@ struct GalleryView: View {
                         .shadow(color: .black.opacity(0.7), radius: 2)
                         .padding(5)
                 }
+                .overlay {
+                    if selecting {
+                        ZStack(alignment: .topTrailing) {
+                            Color.black.opacity(isPicked ? 0.35 : 0)
+                            Image(systemName: isPicked ? "checkmark.circle.fill" : "circle")
+                                .font(.system(size: 20, weight: .semibold))
+                                .foregroundStyle(isPicked ? Theme.accent : .white)
+                                .background(Circle().fill(isPicked ? .white : .black.opacity(0.25)).padding(2))
+                                .padding(6)
+                        }
+                    }
+                }
                 .contentShape(.rect)
         }
         .buttonStyle(.plain)
+        .accessibilityAddTraits(selecting && isPicked ? .isSelected : [])
     }
 
     private var reelCard: some View {

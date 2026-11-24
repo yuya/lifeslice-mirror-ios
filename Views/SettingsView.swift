@@ -19,7 +19,16 @@ struct SettingsView: View {
     @AppStorage(Prefs.Key.reelHistory) private var reelHistory = 8
     @AppStorage(Prefs.Key.language) private var language = "system"
 
+    @AppStorage(Prefs.Key.slicing) private var slicing = true
+
     @State private var photosDenied = false
+    // 全削除は 2 段階で確認する（ダイアログ → 文字を打って確定）
+    @State private var confirmDeleteAll = false
+    @State private var typeToDeleteAll = false
+    @State private var deleteWord = ""
+
+    /// 全削除の最後に打ってもらう言葉
+    private var deleteKeyword: String { L("削除") }
 
     private var windowSummary: String {
         if preWindow < 0.05 && postWindow < 0.05 {
@@ -36,6 +45,15 @@ struct SettingsView: View {
     var body: some View {
         NavigationStack {
             Form {
+                Section {
+                    Toggle(L("スライスを集める"), isOn: $slicing)
+                } footer: {
+                    Text(slicing
+                         ? L("鏡を見ている間の不意打ちの 1 コマを、こっそり集めます。")
+                         : L("オフのあいだは、ただの鏡です。映像はどこにも残しません。これまでのスライスとリールはそのまま残ります。"))
+                }
+
+                if slicing {
                 Section {
                     VStack(alignment: .leading, spacing: 6) {
                         HStack {
@@ -92,6 +110,8 @@ struct SettingsView: View {
                     Text(L("顔が映った状態で手が止まると自動で撮ります。一度も撮れないまま閉じたときは、開いていた間の映像から適当に 1 コマだけ残します。顔のあたりが暗いコマ、カメラを開いた直後のコマは残しません。残さなかった映像はその場で捨てています。"))
                 }
 
+                }
+
                 Section {
                     Toggle(L("写真アプリにも保存"), isOn: $saveToPhotos)
                         .onChange(of: saveToPhotos) { _, on in
@@ -141,6 +161,19 @@ struct SettingsView: View {
                 }
 
                 Section {
+                    Button(role: .destructive) {
+                        confirmDeleteAll = true
+                    } label: {
+                        Label(L("すべてのスライスを削除…"), systemImage: "trash")
+                    }
+                    .disabled(director.store.slices.isEmpty)
+                } header: {
+                    Text(L("データ"))
+                } footer: {
+                    Text(L("いまは %d 枚です。1 枚ずつ、または選んで消すときは一覧の「選択」から。写真アプリに保存したぶんは消えません。", director.store.slices.count))
+                }
+
+                Section {
                     Picker(L("言語"), selection: $language) {
                         Text(L("iPhone の設定に合わせる")).tag("system")
                         Text("日本語").tag("ja")
@@ -169,6 +202,28 @@ struct SettingsView: View {
                 ToolbarItem(placement: .confirmationAction) {
                     Button(L("閉じる")) { dismiss() }
                 }
+            }
+            .confirmationDialog(L("%d 枚のスライスをすべて削除しますか？", director.store.slices.count),
+                                isPresented: $confirmDeleteAll, titleVisibility: .visible) {
+                Button(L("続ける"), role: .destructive) {
+                    deleteWord = ""
+                    typeToDeleteAll = true
+                }
+            } message: {
+                Text(L("元に戻せません。"))
+            }
+            .alert(L("本当に削除しますか？"), isPresented: $typeToDeleteAll) {
+                TextField(deleteKeyword, text: $deleteWord)
+                    .textInputAutocapitalization(.never)
+                    .autocorrectionDisabled()
+                Button(L("すべて削除"), role: .destructive) {
+                    guard deleteWord.trimmingCharacters(in: .whitespaces) == deleteKeyword else { return }
+                    director.store.deleteAll()
+                }
+                .disabled(deleteWord.trimmingCharacters(in: .whitespaces) != deleteKeyword)
+                Button(L("やめる"), role: .cancel) {}
+            } message: {
+                Text(L("確認のため「%@」と入力してください。", deleteKeyword))
             }
             .alert(L("写真へのアクセスが許可されていません"), isPresented: $photosDenied) {
                 Button("OK", role: .cancel) {}

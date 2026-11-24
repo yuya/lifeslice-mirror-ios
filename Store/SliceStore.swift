@@ -74,11 +74,24 @@ final class SliceStore: ObservableObject {
     }
 
     func delete(_ slice: Slice) {
-        try? FileManager.default.removeItem(at: url(for: slice))
-        slices.removeAll { $0.id == slice.id }
-        ThumbnailCache.shared.remove(slice.id)
+        delete([slice.id])
+    }
+
+    /// まとめて捨てる（一覧で選んだぶん）。
+    func delete(_ ids: Set<UUID>) {
+        guard !ids.isEmpty else { return }
+        for slice in slices where ids.contains(slice.id) {
+            try? FileManager.default.removeItem(at: url(for: slice))
+            ThumbnailCache.shared.remove(slice.id)
+        }
+        slices.removeAll { ids.contains($0.id) }
         persist()
         publishToWidget()
+    }
+
+    /// 全部捨てる。写真アプリに保存したぶんは消えない。
+    func deleteAll() {
+        delete(Set(slices.map(\.id)))
     }
 
     // MARK: 永続化

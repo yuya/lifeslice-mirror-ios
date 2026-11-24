@@ -10,6 +10,7 @@ struct MirrorView: View {
     @EnvironmentObject private var reels: ReelArchive
 
     @AppStorage(Prefs.Key.quietMode) private var quietMode = false
+    @AppStorage(Prefs.Key.backgroundBlur) private var backgroundBlur = false
     @Environment(\.scenePhase) private var scenePhase
 
     private enum Tool { case zoom, brightness }
@@ -84,6 +85,8 @@ struct MirrorView: View {
         }
         .sensoryFeedback(.impact(weight: .light), trigger: quietMode ? 0 : director.savedTick)
         .onChange(of: lightOn) { _, on in ScreenLight.set(on: on) }
+        .onAppear { engine.backgroundBlur = backgroundBlur }
+        .onChange(of: backgroundBlur) { _, on in engine.backgroundBlur = on }
         // 鏡から始める合図：開いている一覧・リール・設定を閉じ、ツールのパネルも畳む
         .onChange(of: director.returnToMirrorTick) { _, _ in
             showGallery = false
@@ -119,6 +122,11 @@ struct MirrorView: View {
                 CameraPreview(engine: engine)
                     // プレビューは標準で鏡像。「相手から」は左右を戻す。
                     .scaleEffect(x: engine.mode == .trueView ? -1 : 1, y: 1)
+
+                // 背景ぼかし中は、加工した映像を上に重ねる（左右はもう合わせてある）
+                if backgroundBlur {
+                    BlurredPreview(engine: engine)
+                }
 
                 if engine.isFrozen, let still = engine.frozenImage {
                     Image(uiImage: still)
@@ -225,6 +233,11 @@ struct MirrorView: View {
                 .foregroundStyle(.white.opacity(0.9))
                 .shadow(color: .black.opacity(0.35), radius: 4, y: 1)
             Spacer()
+            ToolButton(symbol: backgroundBlur ? "person.and.background.dotted" : "person.and.background.striped.horizontal",
+                       isOn: backgroundBlur) {
+                backgroundBlur.toggle()
+            }
+            .accessibilityLabel(backgroundBlur ? L("背景ぼかし：オン") : L("背景ぼかし：オフ"))
             ToolButton(symbol: "gearshape.fill") {
                 director.setMirrorVisible(false)
                 showSettings = true

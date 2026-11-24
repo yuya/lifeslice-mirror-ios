@@ -34,6 +34,24 @@ final class CameraEngine: NSObject, ObservableObject {
     let session = AVCaptureSession()
     let buffer = SurpriseBuffer()
     weak var previewLayer: AVCaptureVideoPreviewLayer?
+    /// 背景ぼかし中に、加工した映像を流すレイヤー
+    weak var blurLayer: CALayer?
+
+    /// 被写体（人）以外をぼかす。オンの間は加工した映像を blurLayer に流し、スライスもぼかした絵で残す。
+    @Published var backgroundBlur = false {
+        didSet {
+            blurFlag = backgroundBlur
+            if !backgroundBlur { blurLayer?.contents = nil }
+        }
+    }
+
+    /// スライスを集めるか。オフのときはバッファに何も貯めない（ただの鏡）。
+    var slicingEnabled = true {
+        didSet {
+            slicingFlag = slicingEnabled
+            if !slicingEnabled { buffer.clear() }
+        }
+    }
 
     /// コマごとのブレ具合（端末の回転の速さ）を教えてもらう口。無ければ 0 扱い。
     var motionProvider: (() -> Float)?
@@ -61,6 +79,19 @@ final class CameraEngine: NSObject, ObservableObject {
     // スレッドをまたいで読むフラグ（厳密な同期は不要な程度の値）
     private var modeFlag = false
     private var frozenFlag = false
+    private var blurFlag = false
+    private var slicingFlag = true
+    /// 一時停止を頼まれた。次のコマを 1 枚とっておいてから止める
+    private var stillRequested = false
+
+    // 背景ぼかし用（videoQueue からだけ触る）
+    private lazy var segmentation: VNGeneratePersonSegmentationRequest = {
+        let request = VNGeneratePersonSegmentationRequest()
+        request.qualityLevel = .balanced
+        request.outputPixelFormat = kCVPixelFormatType_OneComponent8
+        return request
+    }()
+    private let sequenceHandler = VNSequenceRequestHandler()
 
     // MARK: ライフサイクル
 
@@ -190,16 +221,28 @@ final class CameraEngine: NSObject, ObservableObject {
     }
 
     /// 映像を一時停止して、じっくり見られるようにする。
+    /// 止めるときは、次に届くコマをそのまま 1 枚とっておいてから止める（スライスを集めていなくても拡大できるように）。
     func setFrozen(_ frozen: Bool) {
-        if frozen {
-            frozenImage = buffer.latest.flatMap { UIImage(data: $0.jpeg) }
-            frozenWasTrueView = mode == .trueView
-        } else {
-            frozenImage = nil
-        }
         isFrozen = frozen
-        frozenFlag = frozen
-        previewLayer?.connection?.isEnabled = !frozen
+        if frozen {
+            frozenWasTrueView = mode == .trueView
+            stillRequested = true
+        } else {
+            stillRequested = false
+            frozenImage = nil
+            frozenFlag = false
+            previewLayer?.connection?.isEnabled = true
+        }
+    }
+
+    /// videoQueue から：とっておいた 1 枚を渡して、ここで本当に止める。
+    private func finishFreeze(with still: CGImage?) {
+        DispatchQueue.main.async {
+            guard self.isFrozen else { return }
+            self.frozenImage = still.map { UIImage(cgImage: $0) }
+            self.frozenFlag = true
+            self.previewLayer?.connection?.isEnabled = false
+        }
     }
 }
 
@@ -211,8 +254,36 @@ extension CameraEngine: AVCaptureVideoDataOutputSampleBufferDelegate {
                        from connection: AVCaptureConnection) {
         guard !frozenFlag else { return }
         let now = CACurrentMediaTime()
-        guard now - lastBufferedTime >= (1.0 / bufferFPS) - 0.005 else { return }
+        let blur = blurFlag
+        let still = stillRequested
+        let wantsBuffer = slicingFlag && now - lastBufferedTime >= (1.0 / bufferFPS) - 0.005
+        guard blur || still || wantsBuffer else { return }
         guard let pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer) else { return }
+
+        // 見えている絵（ぼかし・向き・左右）を作る
+        var image = CIImage(cvPixelBuffer: pixelBuffer)
+        if blur, let blurred = blurredBackground(image, pixelBuffer: pixelBuffer) {
+            image = blurred
+        }
+        if image.extent.width > image.extent.height {
+            // 接続側の回転指定が効かず横倒しで届いた場合の保険。時計回りに 90° 起こして縦にする。
+            image = image.oriented(.right)
+            image = image.transformed(by: CGAffineTransform(translationX: -image.extent.origin.x,
+                                                            y: -image.extent.origin.y))
+        }
+        if modeFlag {
+            // 反転モード：鏡像で届いているので左右を戻す。
+            let width = image.extent.width
+            image = image.transformed(by: CGAffineTransform(scaleX: -1, y: 1).translatedBy(x: -width, y: 0))
+        }
+
+        if blur { show(image) }
+        if still {
+            stillRequested = false
+            finishFreeze(with: ciContext.createCGImage(image, from: image.extent))
+            return
+        }
+        guard wantsBuffer else { return }
         lastBufferedTime = now
         if restartPending {
             restartPending = false
@@ -240,24 +311,39 @@ extension CameraEngine: AVCaptureVideoDataOutputSampleBufferDelegate {
             DispatchQueue.main.async { self.tooDark = dark }
         }
 
-        var image = CIImage(cvPixelBuffer: pixelBuffer)
-        if image.extent.width > image.extent.height {
-            // 接続側の回転指定が効かず横倒しで届いた場合の保険。時計回りに 90° 起こして縦にする。
-            image = image.oriented(.right)
-            image = image.transformed(by: CGAffineTransform(translationX: -image.extent.origin.x,
-                                                            y: -image.extent.origin.y))
-        }
-        if modeFlag {
-            // 反転モード：鏡像で届いているので左右を戻す。
-            let width = image.extent.width
-            image = image.transformed(by: CGAffineTransform(scaleX: -1, y: 1).translatedBy(x: -width, y: 0))
-        }
         let quality = CIImageRepresentationOption(rawValue: kCGImageDestinationLossyCompressionQuality as String)
         guard let jpeg = ciContext.jpegRepresentation(of: image,
                                                       colorSpace: colorSpace,
                                                       options: [quality: 0.82]) else { return }
         buffer.append(.init(time: now, jpeg: jpeg, hasFace: lastFace, luma: luma,
                             motion: motionProvider?() ?? 0, settled: now >= warmUntil))
+    }
+
+    /// 人の形を切り出して、それ以外をぼかした絵を返す。
+    private func blurredBackground(_ image: CIImage, pixelBuffer: CVPixelBuffer) -> CIImage? {
+        try? sequenceHandler.perform([segmentation], on: pixelBuffer, orientation: .up)
+        guard let maskBuffer = segmentation.results?.first?.pixelBuffer else { return nil }
+        var mask = CIImage(cvPixelBuffer: maskBuffer)
+        mask = mask.transformed(by: CGAffineTransform(scaleX: image.extent.width / mask.extent.width,
+                                                      y: image.extent.height / mask.extent.height))
+        // 境目を少しなじませる
+        mask = mask.clampedToExtent().applyingGaussianBlur(sigma: 4).cropped(to: image.extent)
+        let background = image.clampedToExtent().applyingGaussianBlur(sigma: 24).cropped(to: image.extent)
+        return image.applyingFilter("CIBlendWithMask", parameters: [
+            kCIInputBackgroundImageKey: background,
+            kCIInputMaskImageKey: mask,
+        ])
+    }
+
+    /// ぼかした映像を画面に流す（画面に要る大きさまで縮めてから）。
+    private func show(_ image: CIImage) {
+        let scale = min(1, 720 / image.extent.width)
+        let small = image.transformed(by: CGAffineTransform(scaleX: scale, y: scale))
+        guard let frame = ciContext.createCGImage(small, from: small.extent) else { return }
+        DispatchQueue.main.async {
+            guard self.backgroundBlur else { return }
+            self.blurLayer?.contents = frame
+        }
     }
 
     /// BGRA のピクセルバッファの、中央（顔が来るあたり：横 25〜75%・縦 20〜70%）の明るさ（0...1）。
@@ -320,4 +406,20 @@ struct CameraPreview: UIViewRepresentable {
     }
 
     func updateUIView(_ uiView: PreviewView, context: Context) {}
+}
+
+/// 背景ぼかし中の映像を出す面。CameraPreview の上に重ねる。
+struct BlurredPreview: UIViewRepresentable {
+    let engine: CameraEngine
+
+    func makeUIView(context: Context) -> UIView {
+        let view = UIView()
+        view.backgroundColor = .clear
+        view.layer.contentsGravity = .resizeAspectFill
+        view.layer.masksToBounds = true
+        engine.blurLayer = view.layer
+        return view
+    }
+
+    func updateUIView(_ uiView: UIView, context: Context) {}
 }
