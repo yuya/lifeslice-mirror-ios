@@ -111,6 +111,7 @@ per_target = {
     'PRODUCT_BUNDLE_IDENTIFIER' => "#{BUNDLE}.capture",
     'PRODUCT_NAME' => '$(TARGET_NAME)',
     'INFOPLIST_FILE' => 'Config/Capture-Info.plist',
+    'INFOPLIST_KEY_NSCameraUsageDescription' => camera_reason,   # ロック中の鏡もカメラを使うので必須
     'INFOPLIST_KEY_CFBundleDisplayName' => 'LifeSlice',
     'SKIP_INSTALL' => 'YES',
     'LD_RUNPATH_SEARCH_PATHS' => ['$(inherited)', '@executable_path/Frameworks', '@executable_path/../../Frameworks'],
