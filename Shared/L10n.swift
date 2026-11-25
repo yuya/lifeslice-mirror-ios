@@ -191,6 +191,8 @@ enum L10n {
         "振り幅の中から、ブレている・目を閉じている・口が開いている・首が傾いているコマほど当たりやすくします。あくまでくじ引きなので、キメ顔が選ばれることもあります。": "Within the window, frames that are blurry, with eyes closed, mouth open or head tilted get more lottery tickets. It is still a lottery, so your posed face can win too.",
         "背景ぼかし：オン": "Background blur: on",
         "背景ぼかし：オフ": "Background blur: off",
+        "4:3（引き）：オン": "4:3 wide view: on",
+        "4:3（引き）：オフ": "4:3 wide view: off",
         "スライスを集める": "Collect slices",
         "鏡を見ている間の不意打ちの 1 コマを、こっそり集めます。": "Quietly keeps a surprise frame while you use the mirror.",
         "オフのあいだは、ただの鏡です。映像はどこにも残しません。これまでのスライスとリールはそのまま残ります。": "While off, it is just a mirror. Nothing is kept. Your existing slices and reels stay.",

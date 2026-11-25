@@ -45,6 +45,19 @@ final class CameraEngine: NSObject, ObservableObject {
         }
     }
 
+    /// 4:3（引きの絵）。センサーの全体を受け取り、画面には全体を収めて見せる。
+    /// 上下の余白は、映像を引き伸ばしてぼかしたもので埋める。スライスも 4:3 のまま残す。
+    @Published var wideView = false {
+        didSet {
+            guard wideView != oldValue else { return }
+            wideFlag = wideView
+            if !wideView { backdropLayer?.contents = nil }
+            sessionQueue.async { [weak self] in self?.applyFormat() }
+        }
+    }
+    /// 4:3 のときの余白を埋める、引き伸ばしてぼかした映像のレイヤー
+    weak var backdropLayer: CALayer?
+
     /// スライスを集めるか。オフのときはバッファに何も貯めない（ただの鏡）。
     var slicingEnabled = true {
         didSet {
@@ -81,6 +94,8 @@ final class CameraEngine: NSObject, ObservableObject {
     private var frozenFlag = false
     private var blurFlag = false
     private var slicingFlag = true
+    private var wideFlag = false
+    private var lastBackdropTime: TimeInterval = 0
     /// 一時停止を頼まれた。次のコマを 1 枚とっておいてから止める
     private var stillRequested = false
 
@@ -173,11 +188,54 @@ final class CameraEngine: NSObject, ObservableObject {
 
         device = camera
         configured = true
+        DispatchQueue.main.async { self.hasCamera = true }
+        applyFormat()
+    }
+
+    /// 16:9（いつもの寄り）と 4:3（引き）を切り替える。sessionQueue から呼ぶ。
+    private func applyFormat() {
+        guard configured, let camera = device else { return }
+        session.beginConfiguration()
+        if wideFlag, let format = Self.fullSensorFormat(of: camera) {
+            do {
+                try camera.lockForConfiguration()
+                camera.activeFormat = format          // セッションは .inputPriority になる
+                camera.unlockForConfiguration()
+            } catch {}
+        } else {
+            session.sessionPreset = session.canSetSessionPreset(.hd1920x1080) ? .hd1920x1080 : .high
+        }
+        session.commitConfiguration()
+        applyPortraitOrientation()
+
+        // 形式を変えるとズームが戻ることがあるので、かけ直す
         let limit = min(camera.maxAvailableVideoZoomFactor, 5)
+        let current = zoom
+        do {
+            try camera.lockForConfiguration()
+            camera.videoZoomFactor = min(max(camera.minAvailableVideoZoomFactor, current), max(1, limit))
+            camera.unlockForConfiguration()
+        } catch {}
         DispatchQueue.main.async {
             self.maxZoom = max(1, limit)
-            self.hasCamera = true
+            if self.zoom > self.maxZoom { self.zoom = self.maxZoom }
         }
+    }
+
+    /// センサー全体を使う 4:3 の形式のうち、横 1920 以下でいちばん大きく、30fps が出るもの。
+    /// （1200 万画素のまま毎秒処理すると重いので、ほどほどの大きさにする）
+    private static func fullSensorFormat(of camera: AVCaptureDevice) -> AVCaptureDevice.Format? {
+        camera.formats
+            .filter { format in
+                let d = CMVideoFormatDescriptionGetDimensions(format.formatDescription)
+                return d.width * 3 == d.height * 4 && d.width <= 1920
+                    && format.videoSupportedFrameRateRanges.contains { $0.maxFrameRate >= 30 }
+            }
+            .max { a, b in
+                let da = CMVideoFormatDescriptionGetDimensions(a.formatDescription)
+                let db = CMVideoFormatDescriptionGetDimensions(b.formatDescription)
+                return da.width < db.width
+            }
     }
 
     /// 保存用フレームを「縦・鏡像」で受け取る指定。構成の確定後にも念のためもう一度かける。
@@ -257,7 +315,8 @@ extension CameraEngine: AVCaptureVideoDataOutputSampleBufferDelegate {
         let blur = blurFlag
         let still = stillRequested
         let wantsBuffer = slicingFlag && now - lastBufferedTime >= (1.0 / bufferFPS) - 0.005
-        guard blur || still || wantsBuffer else { return }
+        let wantsBackdrop = wideFlag && now - lastBackdropTime >= 1.0 / 15
+        guard blur || still || wantsBuffer || wantsBackdrop else { return }
         guard let pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer) else { return }
 
         // 見えている絵（ぼかし・向き・左右）を作る
@@ -278,6 +337,10 @@ extension CameraEngine: AVCaptureVideoDataOutputSampleBufferDelegate {
         }
 
         if blur { show(image) }
+        if wantsBackdrop {
+            lastBackdropTime = now
+            showBackdrop(image)
+        }
         if still {
             stillRequested = false
             // カメラのコマ自身の色空間で書き出す（決め打ちの sRGB だと、止めたとき明るく見える）
@@ -339,6 +402,18 @@ extension CameraEngine: AVCaptureVideoDataOutputSampleBufferDelegate {
         ])
     }
 
+    /// 4:3 のときの余白用：うんと縮めて強くぼかした映像（画面いっぱいに引き伸ばして敷く）。
+    private func showBackdrop(_ image: CIImage) {
+        let scale = 48 / image.extent.width
+        let small = image.transformed(by: CGAffineTransform(scaleX: scale, y: scale))
+        let blurred = small.clampedToExtent().applyingGaussianBlur(sigma: 3).cropped(to: small.extent)
+        guard let frame = ciContext.createCGImage(blurred, from: blurred.extent) else { return }
+        DispatchQueue.main.async {
+            guard self.wideView else { return }
+            self.backdropLayer?.contents = frame
+        }
+    }
+
     /// ぼかした映像を画面に流す（画面に要る大きさまで縮めてから）。
     private func show(_ image: CIImage) {
         let scale = min(1, 720 / image.extent.width)
@@ -394,6 +469,8 @@ extension CameraEngine: AVCaptureSessionControlsDelegate {
 /// AVCaptureVideoPreviewLayer を SwiftUI に載せる薄いラッパー。
 struct CameraPreview: UIViewRepresentable {
     let engine: CameraEngine
+    /// 4:3（引き）のときは全体を収める。余白は下に敷いた BackdropPreview が見える。
+    var wide = false
 
     final class PreviewView: UIView {
         override class var layerClass: AnyClass { AVCaptureVideoPreviewLayer.self }
@@ -409,12 +486,34 @@ struct CameraPreview: UIViewRepresentable {
         return view
     }
 
-    func updateUIView(_ uiView: PreviewView, context: Context) {}
+    func updateUIView(_ uiView: PreviewView, context: Context) {
+        uiView.previewLayer.videoGravity = wide ? .resizeAspect : .resizeAspectFill
+        uiView.backgroundColor = wide ? .clear : .black
+    }
+}
+
+/// 4:3 のときの余白を埋める、引き伸ばしてぼかした映像。CameraPreview の下に敷く。
+struct BackdropPreview: UIViewRepresentable {
+    let engine: CameraEngine
+
+    func makeUIView(context: Context) -> UIView {
+        let view = UIView()
+        view.backgroundColor = .black
+        view.layer.contentsGravity = .resizeAspectFill
+        view.layer.masksToBounds = true
+        view.layer.minificationFilter = .linear
+        view.layer.magnificationFilter = .linear
+        engine.backdropLayer = view.layer
+        return view
+    }
+
+    func updateUIView(_ uiView: UIView, context: Context) {}
 }
 
 /// 背景ぼかし中の映像を出す面。CameraPreview の上に重ねる。
 struct BlurredPreview: UIViewRepresentable {
     let engine: CameraEngine
+    var wide = false
 
     func makeUIView(context: Context) -> UIView {
         let view = UIView()
@@ -425,5 +524,7 @@ struct BlurredPreview: UIViewRepresentable {
         return view
     }
 
-    func updateUIView(_ uiView: UIView, context: Context) {}
+    func updateUIView(_ uiView: UIView, context: Context) {
+        uiView.layer.contentsGravity = wide ? .resizeAspect : .resizeAspectFill
+    }
 }

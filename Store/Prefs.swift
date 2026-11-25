@@ -7,6 +7,7 @@ enum Prefs {
         static let postWindow = "surprise.post"          // 止まった瞬間より後の振り幅（秒）
         static let slicing = "slicing.enabled"           // スライスを集めるか（オフ＝ただの鏡）
         static let backgroundBlur = "mirror.blur"        // 背景ぼかし
+        static let wideView = "mirror.wide"              // 4:3（引きの絵）
         static let autoSlice = "auto.still"              // 静止を検知して自動で撮る
         static let driftSlice = "auto.drift"             // 静止しなかったら立ち去り際に 1 コマ
         static let cooldown = "auto.cooldown"            // 自動スライスの最短間隔（秒）
@@ -26,6 +27,7 @@ enum Prefs {
         Key.postWindow: 3.0,
         Key.slicing: true,
         Key.backgroundBlur: false,
+        Key.wideView: false,
         Key.autoSlice: true,
         Key.driftSlice: true,
         Key.cooldown: 30.0,

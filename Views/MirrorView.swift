@@ -11,6 +11,7 @@ struct MirrorView: View {
 
     @AppStorage(Prefs.Key.quietMode) private var quietMode = false
     @AppStorage(Prefs.Key.backgroundBlur) private var backgroundBlur = false
+    @AppStorage(Prefs.Key.wideView) private var wideView = false
     @Environment(\.scenePhase) private var scenePhase
 
     private enum Tool { case zoom, brightness }
@@ -85,8 +86,12 @@ struct MirrorView: View {
         }
         .sensoryFeedback(.impact(weight: .light), trigger: quietMode ? 0 : director.savedTick)
         .onChange(of: lightOn) { _, on in ScreenLight.set(on: on) }
-        .onAppear { engine.backgroundBlur = backgroundBlur }
+        .onAppear {
+            engine.backgroundBlur = backgroundBlur
+            engine.wideView = wideView
+        }
         .onChange(of: backgroundBlur) { _, on in engine.backgroundBlur = on }
+        .onChange(of: wideView) { _, on in engine.wideView = on }
         // 鏡から始める合図：開いている一覧・リール・設定を閉じ、ツールのパネルも畳む
         .onChange(of: director.returnToMirrorTick) { _, _ in
             showGallery = false
@@ -119,19 +124,24 @@ struct MirrorView: View {
     private var preview: some View {
         GeometryReader { geo in
             ZStack {
-                CameraPreview(engine: engine)
+                // 4:3 のときの上下の余白：映像を引き伸ばしてぼかしたもの
+                if wideView {
+                    BackdropPreview(engine: engine)
+                }
+
+                CameraPreview(engine: engine, wide: wideView)
                     // プレビューは標準で鏡像。「相手から」は左右を戻す。
                     .scaleEffect(x: engine.mode == .trueView ? -1 : 1, y: 1)
 
                 // 背景ぼかし中は、加工した映像を上に重ねる（左右はもう合わせてある）
                 if backgroundBlur {
-                    BlurredPreview(engine: engine)
+                    BlurredPreview(engine: engine, wide: wideView)
                 }
 
                 if engine.isFrozen, let still = engine.frozenImage {
                     Image(uiImage: still)
                         .resizable()
-                        .scaledToFill()
+                        .aspectRatio(contentMode: wideView ? .fit : .fill)
                         .frame(width: geo.size.width, height: geo.size.height)
                         .scaleEffect(x: stillFlipped ? -1 : 1, y: 1)
                         .scaleEffect(stillScale)
@@ -233,6 +243,10 @@ struct MirrorView: View {
                 .foregroundStyle(.white.opacity(0.9))
                 .shadow(color: .black.opacity(0.35), radius: 4, y: 1)
             Spacer()
+            ToolButton(symbol: "aspectratio", text: "4:3", isOn: wideView) {
+                wideView.toggle()
+            }
+            .accessibilityLabel(wideView ? L("4:3（引き）：オン") : L("4:3（引き）：オフ"))
             ToolButton(symbol: backgroundBlur ? "person.and.background.dotted" : "person.and.background.striped.horizontal",
                        isOn: backgroundBlur) {
                 backgroundBlur.toggle()
